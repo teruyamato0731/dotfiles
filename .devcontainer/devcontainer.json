@@ -5,7 +5,7 @@
 	},
 	"remoteUser": "ubuntu",
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "bin/install",
+	"postCreateCommand": "./install.sh",
 	"customizations": {
 		"vscode": {
 			"extensions": [

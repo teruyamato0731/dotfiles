@@ -23,8 +23,8 @@
 Run the following commands:
 
 ```bash
-git clone https://github.com/teruyamato0731/dotfiles.git ~/.dotfiles
-bash ~/.dotfiles/bin/install
+git clone https://github.com/teruyamato0731/dotfiles.git ~/dotfiles
+bash ~/dotfiles/install.sh
 ```
 
 ## Try with Dev Containers
@@ -34,7 +34,7 @@ To use Dev Containers, first install the [Dev Containers](https://marketplace.vi
 Then, open the command palette (Ctrl+Shift+P) and select **Dev Containers: Open Workspace in Container...**.
 
 ```bash
-git clone https://github.com/teruyamato0731/dotfiles.git ~/.dotfiles
+git clone https://github.com/teruyamato0731/dotfiles.git ~/dotfiles
 code --install-extension ms-vscode-remote.remote-containers
-code ~/.dotfiles
+code ~/dotfiles
 ```
