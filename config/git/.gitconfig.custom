@@ -1,0 +1,13 @@
+[core]
+	editor = code --wait
+[alias]
+	b = branch
+	bd = branch -d
+	st = status -s
+	ss = stash push -u
+	sp = stash pop
+	cp = cherry-pick
+	amend = commit --amend --no-edit
+	r = reset --mixed @^
+	undo = !git reset --mixed @^ && git stash push -u -m 'Undo last commit'
+	graph = log --graph --oneline --decorate --branches --tags --remotes --all

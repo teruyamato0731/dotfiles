@@ -97,12 +97,30 @@ install_fzf() {
   fi
 }
 
+install_symlinks() {
+  info "Setting up symlinks for dotfiles..."
+  # dotfiles directory
+  mkdir -p "$(ghq root)/github.com/teruyamato0731"
+  ln -nfs "${DOTFILES_DIR}" "$(ghq root)/github.com/teruyamato0731/dotfiles"
+  # .gitconfig.custom
+  ln -nfs "${DOTFILES_DIR}/config/git/.gitconfig.custom" "${HOME}/.gitconfig.custom"
+  git config --global include.path "${HOME}/.gitconfig.custom"
+  # .bashrc.custom
+  ln -nfs "${DOTFILES_DIR}/config/bash/.bashrc.custom" "${HOME}/.bashrc.custom"
+  if ! grep -q 'source ~/.bashrc.custom' "${HOME}/.bashrc"; then
+      cat << 'EOF' >> "${HOME}/.bashrc"
+# Load custom dotfiles if available
+[ -f ~/.bashrc.custom ] && source ~/.bashrc.custom
+EOF
+  fi
+}
+
 main() {
   install_tools
   setup
   install_ghq
   install_fzf
-  . "${DOTFILES_DIR}/script/symlink.sh"
+  install_symlinks
 }
 
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
