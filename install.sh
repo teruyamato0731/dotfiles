@@ -101,6 +101,7 @@ main() {
   setup
   install_ghq
   install_fzf
+  . "${DOTFILES_DIR}/script/symlink.sh"
 }
 
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
