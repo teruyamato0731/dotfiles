@@ -91,7 +91,7 @@ install_fzf() {
     info "Installing fzf..."
     ghq get --shallow "https://github.com/junegunn/fzf.git"
     ghq get --shallow "https://github.com/junegunn/fzf-git.sh.git"
-    "$(ghq root)/github.com/junegunn/fzf/install" --xdg --key-bindings --completion --update-rc
+    "$(ghq root)/github.com/junegunn/fzf/install" --xdg --key-bindings --completion --no-update-rc
   else
     info "fzf is already installed."
   fi
