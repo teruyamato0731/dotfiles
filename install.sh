@@ -80,7 +80,7 @@ install_ghq() {
     unzip ./tmp/ghq.zip -d tmp
     sudo install -D ./tmp/ghq_linux_amd64/ghq /usr/local/bin/ghq
     sudo cp ./tmp/ghq_linux_amd64/misc/bash/_ghq /usr/share/bash-completion/completions/_ghq
-    rm -rf ./tmp/*
+    rm -rf ./tmp/ghq*
   else
     info "ghq is already installed."
   fi
