@@ -19,9 +19,22 @@ err_exit() {
 }
 
 get_dotfiles_dir() {
-  local script_path
-  script_path="${BASH_SOURCE[0]:-$0}"
-  cd -P "$(dirname "$script_path")" >/dev/null 2>&1
+  # Decide dotfiles directory based on how the script was invoked.
+  # - If DOTFILES_DIR env is set, prefer it.
+  # - If piped execution, error out.
+  # - Otherwise, use the directory containing this script.
+  if [ -n "${DOTFILES_DIR:-}" ]; then
+    printf '%s\n' "${DOTFILES_DIR}"
+    return 0
+  fi
+
+  local src
+  src="${BASH_SOURCE[0]:-$0}"
+  if [[ "${src}" == /dev/fd/* || "${src}" == /proc/* ]]; then
+    err_exit "Detected piped execution; please set DOTFILES_DIR and retry."
+  fi
+
+  cd -P "$(dirname "${src}")" >/dev/null 2>&1
   pwd
 }
 
@@ -45,6 +58,17 @@ install_tools() {
     fd-find \
     gh \
     jq
+}
+
+setup() {
+  repo_url="https://github.com/teruyamato0731/dotfiles.git"
+  if [ ! -d "${DOTFILES_DIR}" ]; then
+    # Clone dotfiles if missing
+    warn "DOTFILES_DIR not found; cloning ${repo_url} into ${DOTFILES_DIR}."
+    git clone --depth 1 "${repo_url}" "${DOTFILES_DIR}" || err_exit "git clone failed: ${repo_url} -> ${DOTFILES_DIR}"
+  fi
+  mkdir -p "${DOTFILES_DIR}/tmp"
+  cd "${DOTFILES_DIR}"
 }
 
 install_ghq() {
@@ -73,6 +97,7 @@ install_fzf() {
 
 main() {
   install_tools
+  setup
   install_ghq
   install_fzf
 }
