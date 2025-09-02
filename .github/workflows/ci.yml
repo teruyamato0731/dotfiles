@@ -33,4 +33,5 @@ jobs:
       - name: Dev Container
         uses: devcontainers/ci@v0.3
         with:
-          runCmd: bin/install
+          runCmd: |
+            ./install.sh
