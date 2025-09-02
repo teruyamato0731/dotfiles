@@ -5,7 +5,6 @@ set -euo pipefail
 # This script sets up the development environment by installing necessary packages and tools.
 # The following commands are required to run this script:
 # - sudo
-# - git
 
 # Logging functions
 info() {
@@ -36,6 +35,7 @@ install_tools() {
   sudo apt-get update
   sudo apt-get install -y \
     bash-completion \
+    git \
     curl \
     unzip \
     tree \
