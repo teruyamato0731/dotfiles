@@ -30,8 +30,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Dev Container
+      - name: Run in Dev Container
         uses: devcontainers/ci@v0.3
         with:
           runCmd: |
             ./install.sh
+
+  host:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+
+    steps:
+      - name: Run on Host
+        run: |
+          DOTFILES_DIR=~/dotfiles \
+          bash <(curl -fsSL https://raw.githubusercontent.com/teruyamato0731/dotfiles/main/install.sh)
