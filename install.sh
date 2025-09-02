@@ -63,9 +63,9 @@ install_ghq() {
 install_fzf() {
   if ! command -v fzf &>/dev/null; then
     info "Installing fzf..."
-    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.local/bin/.fzf
-    git clone --depth 1 https://github.com/junegunn/fzf-git.sh.git ~/.local/bin/.fzf-git
-    ~/.local/bin/.fzf/install --xdg --key-bindings --completion --update-rc
+    ghq get --shallow "https://github.com/junegunn/fzf.git"
+    ghq get --shallow "https://github.com/junegunn/fzf-git.sh.git"
+    "$(ghq root)/github.com/junegunn/fzf/install" --xdg --key-bindings --completion --update-rc
   else
     info "fzf is already installed."
   fi
