@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-# 
+#
 # dotfiles symlink script
 # This script creates symlinks for the dotfiles in the home directory.
 

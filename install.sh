@@ -5,6 +5,7 @@ set -euo pipefail
 # This script sets up the development environment by installing necessary packages and tools.
 # The following commands are required to run this script:
 # - sudo
+# - apt-get
 
 # Logging functions
 info() {
