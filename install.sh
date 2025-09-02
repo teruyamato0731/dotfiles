@@ -68,17 +68,18 @@ setup() {
     git clone --depth 1 "${repo_url}" "${DOTFILES_DIR}" || err_exit "git clone failed: ${repo_url} -> ${DOTFILES_DIR}"
   fi
   mkdir -p "${DOTFILES_DIR}/tmp"
+  mkdir -p "${DOTFILES_DIR}/backup"
   cd "${DOTFILES_DIR}"
 }
 
 install_ghq() {
   if ! command -v ghq &>/dev/null; then
     info "Installing ghq..."
-    curl -sL -o ghq.zip "https://github.com/x-motemen/ghq/releases/download/v1.8.0/ghq_linux_amd64.zip"
-    unzip ./ghq.zip
-    sudo install -D ghq_linux_amd64/ghq /usr/local/bin/ghq
-    sudo cp ghq_linux_amd64/misc/bash/_ghq /usr/share/bash-completion/completions/_ghq
-    rm -rf ./ghq.zip ./ghq_linux_amd64
+    curl -sL -o ./tmp/ghq.zip "https://github.com/x-motemen/ghq/releases/download/v1.8.0/ghq_linux_amd64.zip"
+    unzip ./tmp/ghq.zip -d tmp
+    sudo install -D ./tmp/ghq_linux_amd64/ghq /usr/local/bin/ghq
+    sudo cp ./tmp/ghq_linux_amd64/misc/bash/_ghq /usr/share/bash-completion/completions/_ghq
+    rm -rf ./tmp/*
   else
     info "ghq is already installed."
   fi
