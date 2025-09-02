@@ -7,9 +7,6 @@ set -euo pipefail
 # - sudo
 # - git
 
-# shellcheck disable=SC2034
-DEBIAN_FRONTEND=noninteractive
-
 # Logging functions
 info() {
   printf '\033[32m[Info] %s:\n  %s\033[m\n' "$0:${BASH_LINENO[0]}" "$*"
@@ -21,6 +18,18 @@ err_exit() {
   printf '\033[31m[Error] %s:\n  %s\033[m\n' "$0:${BASH_LINENO[0]}" "$*" >&2
   exit 1
 }
+
+get_dotfiles_dir() {
+  local script_path
+  script_path="${BASH_SOURCE[0]:-$0}"
+  cd -P "$(dirname "$script_path")" >/dev/null 2>&1
+  pwd
+}
+
+# shellcheck disable=SC2034
+DEBIAN_FRONTEND=noninteractive
+
+DOTFILES_DIR="$(get_dotfiles_dir)"
 
 install_tools() {
   info "Installing CLI tools and utilities..."
