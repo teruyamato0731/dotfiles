@@ -12,23 +12,25 @@
 
 </div>
 
-## Prerequisites
+## Installation
 
-- apt-get
-- git
-- sudo
-- bash
+<details><summary>Prerequisites</summary>
 
-## Install your PC
+- `bash`
+- `sudo`
+- `apt-get`
+- `git` or `curl`
 
-Run the following commands:
+</details>
+
+Clone the repo and run the installer:
 
 ```bash
 git clone https://github.com/teruyamato0731/dotfiles.git ~/dotfiles
-bash ~/dotfiles/install.sh
+~/dotfiles/install.sh
 ```
 
-Or run the following one-liner command:
+Or use the one-liner:
 
 ```bash
 DOTFILES_DIR="$HOME/dotfiles" bash <(curl -fsSL https://raw.githubusercontent.com/teruyamato0731/dotfiles/main/install.sh)
@@ -46,7 +48,7 @@ code --install-extension ms-vscode-remote.remote-containers
 code ~/dotfiles
 ```
 
-## Try on Docker Container
+<details><summary>Try on Docker Container</summary>
 
 You can try it on a Docker container as follows:
 
@@ -55,3 +57,19 @@ docker run --rm -it ubuntu:24.04 bash
 apt-get update && apt-get install -y curl
 DOTFILES_DIR="$HOME/dotfiles" bash <(curl -fsSL https://raw.githubusercontent.com/teruyamato0731/dotfiles/main/install.sh)
 ```
+
+</details>
+
+<details><summary>Apply to all Dev Containers</summary>
+
+To have these dotfiles applied automatically inside every VS Code Dev Container you open, add the following to your VS Code user settings (Open Settings → Open Settings (JSON)):
+
+```json
+{
+    "dotfiles.repository": "https://github.com/teruyamato0731/dotfiles.git",
+    "dotfiles.installCommand": "./install.sh",
+    "dotfiles.targetPath": "~/dotfiles"
+},
+```
+
+</details>
