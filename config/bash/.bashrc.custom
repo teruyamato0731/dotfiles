@@ -27,7 +27,3 @@ export FZF_ALT_C_OPTS='--walker-skip .git,node_modules,build
 
 # shellcheck disable=SC1091
 [ -f "$HOME/.local/bin/.fzf-git/fzf-git.sh" ] && source "$HOME/.local/bin/.fzf-git/fzf-git.sh"
-
-# Alt+Gでfzfによるgcoを起動
-bind -x ' "\eg": "git checkout $(_fzf_git_each_ref --no-multi)" '
-# TODO: **をbranchにする
