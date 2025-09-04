@@ -17,7 +17,7 @@ alias ll='ls -alF'
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.bash ] && source "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.bash
 export FZF_DEFAULT_OPTS='--height 40% --layout reverse --border'
 export FZF_CTRL_T_OPTS='--walker-skip .git,node_modules,build
-    --preview "cat -n {}"
+    --preview "bat -n --color=always {}"
     --preview-window "~3"
     --header "Press Ctrl-O to open editor"
     --color header:italic
@@ -27,3 +27,15 @@ export FZF_ALT_C_OPTS='--walker-skip .git,node_modules,build
 
 # shellcheck disable=SC1091
 [ -f "$HOME/.local/bin/.fzf-git/fzf-git.sh" ] && source "$HOME/.local/bin/.fzf-git/fzf-git.sh"
+
+gcd() {
+    local dir
+    dir="$(ghq list | fzf \
+        --preview "bat --color=always --style=header,grid,numbers --line-range :80 $(ghq root)/{}/README*" \
+        --color header:italic --header 'Press Enter to cd' \
+        --prompt 'ghq> ' )" \
+    && cd "$(ghq root)/${dir}" || return
+}
+
+# Alt+Gでfzfによるgcdを起動
+bind -x ' "\eg": "gcd" '
