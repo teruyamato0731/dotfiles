@@ -44,8 +44,13 @@ gsw() {
         fzf +m --height 80% \
             --preview 'git log -n 10 --color=always --oneline {}' \
             --header 'Press Enter to switch' --color header:italic \
-            --prompt 'branch> ')" \
-    && git switch "${branch}"
+            --footer='Ctrl-Q to create new branch: ' \
+            --bind 'change:transform-footer:echo Ctrl-Q to create new branch: {q}' \
+            --bind 'ctrl-q:become(git switch -c {q})' \
+            --prompt 'branch> ')"
+    if [ -n "${branch}" ]; then
+        git switch "${branch}"
+    fi
 }
 
 bind -x '"\C-o": "gcd"'
