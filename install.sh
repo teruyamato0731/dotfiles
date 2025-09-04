@@ -4,8 +4,12 @@ set -euo pipefail
 # dotfiles installation script
 # This script sets up the development environment by installing necessary packages and tools.
 # The following commands are required to run this script:
-# - sudo
-# - apt-get
+#   - sudo
+#   - apt-get
+# Usage:
+#   ./install.sh or DOTFILES_DIR=/path/to/dotfiles ./install.sh
+# After running the script, please execute the following command:
+#   `git config --global include.path "${HOME}/.gitconfig.custom"`
 
 # Logging functions
 info() {
@@ -104,7 +108,6 @@ install_symlinks() {
   ln -nfs "${DOTFILES_DIR}" "$(ghq root)/github.com/teruyamato0731/dotfiles"
   # .gitconfig.custom
   ln -nfs "${DOTFILES_DIR}/config/git/.gitconfig.custom" "${HOME}/.gitconfig.custom"
-  git config --global include.path "${HOME}/.gitconfig.custom"
   # .bashrc.custom
   ln -nfs "${DOTFILES_DIR}/config/bash/.bashrc.custom" "${HOME}/.bashrc.custom"
   if ! grep -q 'source ~/.bashrc.custom' "${HOME}/.bashrc"; then
