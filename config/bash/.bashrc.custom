@@ -30,12 +30,23 @@ export FZF_ALT_C_OPTS='--walker-skip .git,node_modules,build
 
 gcd() {
     local dir
-    dir="$(ghq list | fzf \
+    dir="$(ghq list | fzf +m \
         --preview "bat --color=always --style=header,grid,numbers --line-range :80 $(ghq root)/{}/README*" \
-        --color header:italic --header 'Press Enter to cd' \
-        --prompt 'ghq> ' )" \
+        --color header:italic --header 'Press Enter to cd, Ctrl-O to open in code' \
+        --bind 'ctrl-o:become(code "$(ghq root)"/{})' \
+        --prompt 'ghq> ')" \
     && cd "$(ghq root)/${dir}" || return
 }
 
-# Alt+Gでfzfによるgcdを起動
-bind -x ' "\eg": "gcd" '
+gsw() {
+    local branch
+    branch="$(git branch --all | sed -e 's/.* //' -e 's/.*origin\///' | sort -u | \
+        fzf +m \
+            --preview 'git log -n 10 --color=always --oneline {}' \
+            --header 'Press Enter to switch' \
+            --prompt 'branch> ')" \
+    && git switch "${branch}"
+}
+
+bind -x '"\C-o": "gcd"'
+bind -x '"\C-_": "gsw"'
