@@ -8,6 +8,9 @@
 	"postCreateCommand": "./install.sh",
 	"customizations": {
 		"vscode": {
+			"settings": {
+				"dotfiles.repository": "Override user's dotfiles.repository"
+			},
 			"extensions": [
 				"yzhang.markdown-all-in-one",
 				"docker.docker",
