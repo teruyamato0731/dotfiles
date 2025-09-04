@@ -63,6 +63,7 @@ install_tools() {
     fd-find \
     gh \
     jq
+  sudo ln -nfs /usr/bin/batcat /usr/local/bin/bat
 }
 
 setup() {
