@@ -26,7 +26,7 @@ export FZF_ALT_C_OPTS='--walker-skip .git,node_modules,build
     --preview "tree --gitignore -C {}"'
 
 # shellcheck disable=SC1091
-[ -f "$HOME/.local/bin/.fzf-git/fzf-git.sh" ] && source "$HOME/.local/bin/.fzf-git/fzf-git.sh"
+[ -f "$(ghq root)/github.com/junegunn/fzf-git.sh/fzf-git.sh" ] && source "$(ghq root)/github.com/junegunn/fzf-git.sh/fzf-git.sh"
 
 gcd() {
     local dir
