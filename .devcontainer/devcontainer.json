@@ -5,7 +5,7 @@
 	},
 	"remoteUser": "ubuntu",
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "./install.sh",
+	"postCreateCommand": "./install.sh && git config --global --add include.path ~/.gitconfig.custom",
 	"customizations": {
 		"vscode": {
 			"settings": {

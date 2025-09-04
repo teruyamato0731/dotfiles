@@ -1,13 +1,14 @@
 [core]
 	editor = code --wait
 [alias]
-	b = branch
-	bd = branch -d
-	st = status -s
-	ss = stash push -u
-	sp = stash pop
-	cp = cherry-pick
+	aliases = "!git config --get-regexp '^alias\\.' \
+		| awk '{ sub(/^alias./, \"\"); name=$1; $1=\"\"; \
+				gsub(/[[:space:]]+/, \" \"); if(length($0) > 120) $0 = substr($0, 1, 117)\"...\" ; \
+				printf \"%-8s=%s\\n\", name, $0}' \
+		| sort"
 	amend = commit --amend --no-edit
-	r = reset --mixed @^
+	b = branch
+	cp = cherry-pick
+	sp = stash pop
+	ss = stash push -u
 	undo = !git reset --mixed @^ && git stash push -u -m 'Undo last commit'
-	graph = log --graph --oneline --decorate --branches --tags --remotes --all
