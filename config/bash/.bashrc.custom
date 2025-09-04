@@ -30,9 +30,9 @@ export FZF_ALT_C_OPTS='--walker-skip .git,node_modules,build
 
 gcd() {
     local dir
-    dir="$(ghq list | fzf +m \
-        --preview "bat --color=always --style=header,grid,numbers --line-range :80 $(ghq root)/{}/README*" \
-        --color header:italic --header 'Press Enter to cd, Ctrl-O to open in code' \
+    dir="$(ghq list | fzf +m --height 80% \
+        --preview "cd $(ghq root) && bat --color=always --style=header,grid,numbers --line-range :80 {}/README*" \
+        --header 'Press Enter to cd, Ctrl-O to open in code' --color header:italic \
         --bind 'ctrl-o:become(code "$(ghq root)"/{})' \
         --prompt 'ghq> ')" \
     && cd "$(ghq root)/${dir}" || return
@@ -41,9 +41,9 @@ gcd() {
 gsw() {
     local branch
     branch="$(git branch --all | sed -e 's/.* //' -e 's/.*origin\///' | sort -u | \
-        fzf +m \
+        fzf +m --height 80% \
             --preview 'git log -n 10 --color=always --oneline {}' \
-            --header 'Press Enter to switch' \
+            --header 'Press Enter to switch' --color header:italic \
             --prompt 'branch> ')" \
     && git switch "${branch}"
 }
