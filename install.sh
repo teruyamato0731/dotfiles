@@ -105,8 +105,10 @@ install_fzf() {
 install_symlinks() {
   info "Setting up symlinks for dotfiles..."
   # dotfiles directory
-  mkdir -p "$(ghq root)/github.com/teruyamato0731"
-  ln -nfs "${DOTFILES_DIR}" "$(ghq root)/github.com/teruyamato0731/dotfiles"
+  if [ ! -d "$(ghq root)/github.com/teruyamato0731/dotfiles" ]; then
+    mkdir -p "$(ghq root)/github.com/teruyamato0731"
+    ln -nfs "${DOTFILES_DIR}" "$(ghq root)/github.com/teruyamato0731/dotfiles"
+  fi
   # .gitconfig.custom
   ln -nfs "${DOTFILES_DIR}/config/git/.gitconfig.custom" "${HOME}/.gitconfig.custom"
   # .bashrc.custom
