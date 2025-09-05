@@ -15,9 +15,9 @@ alias ll='ls -alF'
 # For fzf
 # shellcheck disable=SC1091
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.bash ] && source "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.bash
-export FZF_DEFAULT_OPTS='--height 40% --layout reverse --border'
+export FZF_DEFAULT_OPTS='--height 95% --layout reverse --border'
 export FZF_CTRL_T_OPTS='--walker-skip .git,node_modules,build
-    --preview "bat -n --color=always {}"
+    --preview "bat -n --color=always {} 2> /dev/null || tree -C {}"
     --preview-window "~3"
     --header "Press Ctrl-O to open editor"
     --color header:italic
@@ -30,19 +30,21 @@ export FZF_ALT_C_OPTS='--walker-skip .git,node_modules,build
 
 gcd() {
     local dir
-    dir="$(ghq list | fzf +m --height 80% \
-        --preview "cd $(ghq root) && bat --color=always --style=header,grid,numbers --line-range :80 {}/README*" \
+    dir="$(ghq list | fzf +m \
+        --preview "cd $(ghq root) && bat --color=always --style=header,grid,numbers --line-range :200 {}/README* 2> /dev/null || tree -C {}" \
         --header 'Press Enter to cd, Ctrl-O to open in code' --color header:italic \
         --bind 'ctrl-o:become(code "$(ghq root)"/{})' \
-        --prompt 'ghq> ')" \
-    && cd "$(ghq root)/${dir}" || return
+        --prompt 'ghq> ')"
+    if [ -n "${dir}" ]; then
+        cd "$(ghq root)"/"${dir}" && pwd
+    fi
 }
 
 gsw() {
     local branch
     branch="$(git branch --all | sed -e 's/.* //' -e 's/.*origin\///' | sort -u | \
-        fzf +m --height 80% \
-            --preview 'git log -n 10 --color=always --oneline {}' \
+        fzf +m \
+            --preview 'git log -n 30 --color=always --oneline {}' \
             --header 'Press Enter to switch' --color header:italic \
             --footer='Ctrl-Q to create new branch: ' \
             --bind 'change:transform-footer:echo Ctrl-Q to create new branch: {q}' \
