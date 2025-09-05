@@ -11,6 +11,7 @@ PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[0
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias ll='ls -alF'
+alias cat='bat --paging=never'
 
 # For fzf
 # shellcheck disable=SC1091
@@ -53,6 +54,10 @@ gsw() {
     if [ -n "${branch}" ]; then
         git switch "${branch}"
     fi
+}
+
+batdiff() {
+    git diff --name-only --relative --diff-filter=d -z | xargs -0 bat --diff
 }
 
 bind -x '"\C-o": "gcd"'

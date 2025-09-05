@@ -63,7 +63,8 @@ install_tools() {
     fd-find \
     gh \
     jq
-  sudo ln -nfs /usr/bin/batcat /usr/local/bin/bat
+  sudo ln -nfs "$(which batcat)" /usr/local/bin/bat
+  sudo ln -nfs "$(which fdfind)" /usr/local/bin/fd
 }
 
 setup() {
