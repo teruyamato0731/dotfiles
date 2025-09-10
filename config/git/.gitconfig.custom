@@ -12,3 +12,11 @@
 	sp = stash pop
 	ss = stash push -u
 	undo = !git reset --mixed @^ && git stash push -u -m 'Undo last commit'
+	fixup = "!f() { \
+		local commit_sha; \
+		commit_sha=\"${1:-$(git log --oneline --color -n 20 | \
+			fzf +m --accept-nth 1 --ansi \
+			--header 'Select a commit to fixup:' \
+			--preview 'git show --color {1}')}\"; \
+		[ -n \"$commit_sha\" ] && git commit --fixup=\"${commit_sha}\"; \
+	}; f"
