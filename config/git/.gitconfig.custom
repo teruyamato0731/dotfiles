@@ -9,9 +9,10 @@
 	amend = commit --amend --no-edit
 	b = branch
 	cp = cherry-pick
+	graph = log --graph --oneline --decorate --branches --tags --remotes --all
 	sp = stash pop
 	ss = stash push -u
-	undo = !git reset --mixed @^ && git stash push -u -m 'Undo last commit'
+	undo = reset --mixed @^
 	fixup = "!f() { \
 		local commit_sha; \
 		commit_sha=\"${1:-$(git log --oneline --color -n 20 | \
