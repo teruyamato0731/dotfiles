@@ -122,12 +122,22 @@ EOF
   fi
 }
 
+post_instructions() {
+  info "Dotfiles installation and setup completed successfully."
+
+  if ! git config --global --get-all include.path | grep -qx -- "${HOME}/.gitconfig.custom"; then
+    echo "Please run the following command to include the custom git configuration:"
+    printf '  `git config --global include.path \"${HOME}/.gitconfig.custom`\n'
+  fi
+}
+
 main() {
   install_tools
   setup
   install_ghq
   install_fzf
   install_symlinks
+  post_instructions
 }
 
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
