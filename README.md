@@ -36,6 +36,62 @@ Or use the one-liner:
 DOTFILES_DIR="$HOME/dotfiles" bash <(curl -fsSL https://raw.githubusercontent.com/teruyamato0731/dotfiles/main/install.sh)
 ```
 
+## Installed Tools and Features
+
+### CLI Tools and Utilities
+
+This dotfiles repository automatically installs the following useful CLI tools and utilities:
+
+#### Basic Tools
+- **bash-completion** - Enhanced Bash completion functionality
+- **git** - Version control system
+- **curl** - Data transfer tool
+- **unzip** - Archive extraction tool
+- **tree** - Directory structure visualization
+- **htop** - Interactive process viewer
+- **jq** - JSON processor
+
+#### Enhanced Alternative Tools
+- **bat** - Syntax-highlighted `cat` alternative (creates `batcat` → `bat` symlink)
+- **ripgrep** - Fast `grep` alternative
+- **fd-find** - Fast `find` alternative (creates `fdfind` → `fd` symlink)
+- **gh** - GitHub CLI
+
+#### Development Support Tools
+- **ghq** (v1.8.0) - Git repository unified management tool
+- **fzf** - Fast fuzzy finder
+
+### Custom Configurations and Aliases
+
+#### Bash Configuration (`.bashrc.custom`)
+- **Enhanced Prompt**: PS1 with Git branch and status display
+- **Useful Aliases**:
+  - `ls` → Enable color display
+  - `grep` → Enable color display  
+  - `ll` → `ls -alF`
+  - `cat` → `bat --paging=never`
+
+#### Advanced fzf Integration
+- **Environment Variables**: Search with preview functionality
+- **Custom Functions**:
+  - `gcd()` - Select ghq repository with fzf and cd
+  - `gsw()` - Select Git branch with fzf and switch  
+  - `batdiff()` - Display Git diff with bat
+- **Key Bindings**:
+  - `Ctrl+O` - Execute gcd function
+  - `Ctrl+_` - Execute gsw function
+
+#### Git Configuration (`.gitconfig.custom`)
+- **Editor**: VS Code (`code --wait`)
+- **Useful Aliases**:
+  - `aliases` - Display configured aliases list
+  - `amend` - Modify the latest commit
+  - `graph` - Graphical log display
+  - `fixup` - Select commit with fzf for fixup
+  - `ss` / `sp` - stash push/pop
+  - `undo` - Undo the latest commit
+- **Commit Template**: Conventional Commits format
+
 ## Try with Dev Containers
 
 To use Dev Containers, first install the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension for VS Code.
