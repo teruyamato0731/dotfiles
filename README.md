@@ -36,79 +36,61 @@ Or use the one-liner:
 DOTFILES_DIR="$HOME/dotfiles" bash <(curl -fsSL https://raw.githubusercontent.com/teruyamato0731/dotfiles/main/install.sh)
 ```
 
-## インストールされるツールと機能
+## Installed Tools and Features
 
-### CLIツールとユーティリティ
+### CLI Tools and Utilities
 
-このdotfilesリポジトリは、以下の便利なCLIツールとユーティリティを自動的にインストールします：
+This dotfiles repository automatically installs the following useful CLI tools and utilities:
 
-#### 基本ツール
-- **bash-completion** - Bashの補完機能を強化
-- **git** - バージョン管理システム
-- **curl** - データ転送ツール
-- **unzip** - アーカイブ展開ツール
-- **tree** - ディレクトリ構造の可視化
-- **htop** - 対話型プロセスビューア
-- **jq** - JSONプロセッサ
+#### Basic Tools
+- **bash-completion** - Enhanced Bash completion functionality
+- **git** - Version control system
+- **curl** - Data transfer tool
+- **unzip** - Archive extraction tool
+- **tree** - Directory structure visualization
+- **htop** - Interactive process viewer
+- **jq** - JSON processor
 
-#### 高機能な代替ツール
-- **bat** - シンタックスハイライト付きの`cat`代替（`batcat` → `bat`へのシンボリックリンク作成）
-- **ripgrep** - 高速な`grep`代替
-- **fd-find** - 高速な`find`代替（`fdfind` → `fd`へのシンボリックリンク作成）
+#### Enhanced Alternative Tools
+- **bat** - Syntax-highlighted `cat` alternative (creates `batcat` → `bat` symlink)
+- **ripgrep** - Fast `grep` alternative
+- **fd-find** - Fast `find` alternative (creates `fdfind` → `fd` symlink)
 - **gh** - GitHub CLI
 
-#### 開発支援ツール
-- **ghq** (v1.8.0) - Gitリポジトリの統一管理ツール
-- **fzf** - 高速なファジーファインダー
-- **fzf-git.sh** - fzfのGit統合拡張
+#### Development Support Tools
+- **ghq** (v1.8.0) - Git repository unified management tool
+- **fzf** - Fast fuzzy finder
 
-### カスタム設定とエイリアス
+### Custom Configurations and Aliases
 
-#### Bash設定 (`.bashrc.custom`)
-- **プロンプト強化**: Gitブランチとステータスを表示するPS1
-- **便利なエイリアス**:
-  - `ls` → カラー表示有効
-  - `grep` → カラー表示有効  
+#### Bash Configuration (`.bashrc.custom`)
+- **Enhanced Prompt**: PS1 with Git branch and status display
+- **Useful Aliases**:
+  - `ls` → Enable color display
+  - `grep` → Enable color display  
   - `ll` → `ls -alF`
   - `cat` → `bat --paging=never`
 
-#### 高度なfzf統合
-- **環境変数設定**: プレビュー機能付きの検索
-- **カスタム関数**:
-  - `gcd()` - ghqリポジトリをfzfで選択してcd
-  - `gsw()` - Gitブランチをfzfで選択してswitch  
-  - `batdiff()` - Git差分をbatで表示
-- **キーバインド**:
-  - `Ctrl+O` - gcd関数実行
-  - `Ctrl+_` - gsw関数実行
+#### Advanced fzf Integration
+- **Environment Variables**: Search with preview functionality
+- **Custom Functions**:
+  - `gcd()` - Select ghq repository with fzf and cd
+  - `gsw()` - Select Git branch with fzf and switch  
+  - `batdiff()` - Display Git diff with bat
+- **Key Bindings**:
+  - `Ctrl+O` - Execute gcd function
+  - `Ctrl+_` - Execute gsw function
 
-#### Git設定 (`.gitconfig.custom`)
-- **エディタ**: VS Code (`code --wait`)
-- **便利なエイリアス**:
-  - `aliases` - 設定済みエイリアス一覧表示
-  - `amend` - 直前のコミットを修正
-  - `graph` - グラフィカルなログ表示
-  - `fixup` - fzfでコミット選択してfixup
+#### Git Configuration (`.gitconfig.custom`)
+- **Editor**: VS Code (`code --wait`)
+- **Useful Aliases**:
+  - `aliases` - Display configured aliases list
+  - `amend` - Modify the latest commit
+  - `graph` - Graphical log display
+  - `fixup` - Select commit with fzf for fixup
   - `ss` / `sp` - stash push/pop
-  - `undo` - 直前のコミットを取り消し
-- **コミットテンプレート**: Conventional Commitsフォーマット
-
-#### C++開発設定 (`.clang-format`)
-- **ベーススタイル**: Google Style
-- **C++17標準**対応
-- **カラム制限**: 120文字
-- **カスタマイズ**: 日本語コメント対応、インデント設定など
-
-### 開発環境統合
-
-#### VS Code Dev Containers対応
-- **自動セットアップ**: `.devcontainer`設定済み
-- **統合サポート**: VS Code設定でdotfilesを自動適用可能
-
-#### ディレクトリ構造管理
-- **ghq統合**: `$(ghq root)/github.com/teruyamato0731/dotfiles`へのシンボリックリンク
-- **設定ファイル**: `~/.gitconfig.custom`と`~/.bashrc.custom`へのシンボリックリンク
-- **自動読み込み**: `~/.bashrc`にカスタム設定の読み込みを追加
+  - `undo` - Undo the latest commit
+- **Commit Template**: Conventional Commits format
 
 ## Try with Dev Containers
 
