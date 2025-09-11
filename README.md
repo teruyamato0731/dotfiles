@@ -120,7 +120,7 @@ This dotfiles repository automatically installs the following useful CLI tools a
   - `batdiff()` - Display Git diff with bat
 - **Key Bindings**:
   - `Ctrl+O` - Execute gcd function
-  - `Ctrl+_` - Execute gsw function
+  - `Ctrl+]` - Execute gsw function
 
 #### Git Configuration (`.gitconfig.custom`)
 - **Editor**: VS Code (`code --wait`)

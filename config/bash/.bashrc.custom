@@ -76,4 +76,4 @@ batdiff() {
 }
 
 bind -x '"\C-o": "gcd"'
-bind -x '"\C-_": "gsw"'
+bind -x '"\C-]": "gsw"'
