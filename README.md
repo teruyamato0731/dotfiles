@@ -36,7 +36,48 @@ Or use the one-liner:
 DOTFILES_DIR="$HOME/dotfiles" bash <(curl -fsSL https://raw.githubusercontent.com/teruyamato0731/dotfiles/main/install.sh)
 ```
 
-## Installed Tools and Features
+## Try with Dev Containers
+
+To use Dev Containers, first install the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension for VS Code by running the command:
+
+```bash
+code --install-extension ms-vscode-remote.remote-containers
+```
+
+Then, open the command palette (Ctrl+Shift+P) and select **Dev Containers: Open Workspace in Container...**.
+
+```bash
+git clone https://github.com/teruyamato0731/dotfiles.git ~/dotfiles
+code ~/dotfiles
+```
+
+<details><summary>Try on Docker Container</summary>
+
+You can try it on a Docker container as follows:
+
+```bash
+docker run --rm -it ubuntu:24.04 bash
+apt-get update && apt-get install -y curl
+DOTFILES_DIR="$HOME/dotfiles" bash <(curl -fsSL https://raw.githubusercontent.com/teruyamato0731/dotfiles/main/install.sh)
+```
+
+</details>
+
+<details><summary>Apply to all Dev Containers</summary>
+
+To have these dotfiles applied automatically inside every VS Code Dev Container you open, add the following to your VS Code user settings (Open Settings → Open Settings (JSON)):
+
+```json
+{
+    "dotfiles.repository": "https://github.com/teruyamato0731/dotfiles.git",
+    "dotfiles.installCommand": "./install.sh",
+    "dotfiles.targetPath": "~/dotfiles"
+},
+```
+
+</details>
+
+## Features
 
 ### CLI Tools and Utilities
 
@@ -91,41 +132,3 @@ This dotfiles repository automatically installs the following useful CLI tools a
   - `ss` / `sp` - stash push/pop
   - `undo` - Undo the latest commit
 - **Commit Template**: Conventional Commits format
-
-## Try with Dev Containers
-
-To use Dev Containers, first install the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension for VS Code.
-
-Then, open the command palette (Ctrl+Shift+P) and select **Dev Containers: Open Workspace in Container...**.
-
-```bash
-git clone https://github.com/teruyamato0731/dotfiles.git ~/dotfiles
-code --install-extension ms-vscode-remote.remote-containers
-code ~/dotfiles
-```
-
-<details><summary>Try on Docker Container</summary>
-
-You can try it on a Docker container as follows:
-
-```bash
-docker run --rm -it ubuntu:24.04 bash
-apt-get update && apt-get install -y curl
-DOTFILES_DIR="$HOME/dotfiles" bash <(curl -fsSL https://raw.githubusercontent.com/teruyamato0731/dotfiles/main/install.sh)
-```
-
-</details>
-
-<details><summary>Apply to all Dev Containers</summary>
-
-To have these dotfiles applied automatically inside every VS Code Dev Container you open, add the following to your VS Code user settings (Open Settings → Open Settings (JSON)):
-
-```json
-{
-    "dotfiles.repository": "https://github.com/teruyamato0731/dotfiles.git",
-    "dotfiles.installCommand": "./install.sh",
-    "dotfiles.targetPath": "~/dotfiles"
-},
-```
-
-</details>
