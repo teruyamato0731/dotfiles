@@ -36,6 +36,8 @@ Or use the one-liner:
 DOTFILES_DIR="$HOME/dotfiles" bash <(curl -fsSL https://raw.githubusercontent.com/teruyamato0731/dotfiles/main/install.sh)
 ```
 
+## ここにインストールされるものや、機能を書く
+
 ## Try with Dev Containers
 
 To use Dev Containers, first install the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension for VS Code.
