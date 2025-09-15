@@ -90,6 +90,7 @@ This dotfiles repository automatically installs the following useful CLI tools a
 - **unzip** - Archive extraction tool
 - **tree** - Directory structure visualization
 - **htop** - Interactive process viewer
+- **btm** - Resource monitor
 - **jq** - JSON processor
 
 #### Enhanced Alternative Tools
@@ -108,15 +109,16 @@ This dotfiles repository automatically installs the following useful CLI tools a
 - **Enhanced Prompt**: PS1 with Git branch and status display
 - **Useful Aliases**:
   - `ls` → Enable color display
-  - `grep` → Enable color display  
+  - `grep` → Enable color display
   - `ll` → `ls -alF`
   - `cat` → `bat --paging=never`
+  - `lg` → `lazygit`
 
 #### Advanced fzf Integration
 - **Environment Variables**: Search with preview functionality
 - **Custom Functions**:
   - `gcd()` - Select ghq repository with fzf and cd
-  - `gsw()` - Select Git branch with fzf and switch  
+  - `gsw()` - Select Git branch with fzf and switch
   - `batdiff()` - Display Git diff with bat
 - **Key Bindings**:
   - `Ctrl+O` - Execute gcd function
