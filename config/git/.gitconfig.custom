@@ -8,11 +8,8 @@
 		| sort"
 	amend = commit --amend --no-edit
 	b = branch
+	bd = branch -d
 	cp = cherry-pick
-	graph = log --graph --oneline --decorate --branches --tags --remotes --all
-	sp = stash pop
-	ss = stash push -u
-	undo = reset --mixed @^
 	fixup = "!f() { \
 		local commit_sha; \
 		commit_sha=\"${1:-$(git log --oneline --color -n 20 | \
@@ -21,3 +18,8 @@
 			--preview 'git show --color {1}')}\"; \
 		[ -n \"$commit_sha\" ] && git commit --fixup=\"${commit_sha}\"; \
 	}; f"
+	graph = log --graph --oneline --decorate --branches --tags --remotes --all
+	sp = stash pop
+	ss = stash push -u
+	undo = reset --mixed @^
+	fpush = push --force-with-lease
