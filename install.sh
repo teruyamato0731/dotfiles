@@ -111,6 +111,13 @@ install_btm() {
   fi
 }
 
+install_uv() {
+  if ! command -v uv &>/dev/null; then
+    info "Installing uv..."
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+  fi
+}
+
 install_symlinks() {
   info "Setting up symlinks for dotfiles..."
   # dotfiles directory
@@ -145,6 +152,7 @@ main() {
   install_ghq
   install_fzf
   install_btm
+  install_uv
   install_symlinks
   post_instructions
 }
