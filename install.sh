@@ -103,6 +103,14 @@ install_fzf() {
   fi
 }
 
+install_btm() {
+  if ! command -v btm &>/dev/null; then
+    info "Installing btm..."
+    curl -sLo ./tmp/bottom.deb "https://github.com/ClementTsang/bottom/releases/download/0.11.1/bottom_0.11.1-1_amd64.deb"
+    sudo dpkg -i ./tmp/bottom.deb
+  fi
+}
+
 install_symlinks() {
   info "Setting up symlinks for dotfiles..."
   # dotfiles directory
@@ -136,6 +144,7 @@ main() {
   setup
   install_ghq
   install_fzf
+  install_btm
   install_symlinks
   post_instructions
 }
