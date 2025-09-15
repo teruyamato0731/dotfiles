@@ -12,6 +12,7 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias ll='ls -alF'
 alias cat='bat --paging=never'
+alias lg='lazygit'
 
 # For fzf
 # shellcheck disable=SC1091

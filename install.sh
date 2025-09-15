@@ -103,6 +103,15 @@ install_fzf() {
   fi
 }
 
+install_lazygit() {
+  if ! command -v lazygit &>/dev/null; then
+    info "Installing lazygit..."
+    curl -sLo ./tmp/lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v0.55.0/lazygit_0.55.0_linux_x86_64.tar.gz"
+    tar xf ./tmp/lazygit.tar.gz -C ./tmp
+    sudo install ./tmp/lazygit /usr/local/bin
+  fi
+}
+
 install_btm() {
   if ! command -v btm &>/dev/null; then
     info "Installing btm..."
@@ -151,6 +160,7 @@ main() {
   setup
   install_ghq
   install_fzf
+  install_lazygit
   install_btm
   install_uv
   install_symlinks
