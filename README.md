@@ -21,6 +21,11 @@
 - `apt-get`
 - `git` or `curl`
 
+```bash
+sudo apt-get update
+sudo apt-get install -y curl git
+```
+
 </details>
 
 Clone the repo and run the installer:
