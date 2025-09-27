@@ -120,6 +120,16 @@ install_btm() {
   fi
 }
 
+install_tio() {
+  # snap がある場合のみ
+  if command -v snap &>/dev/null; then
+    if ! command -v tio &>/dev/null; then
+      info "Installing tio..."
+      snap install tio --classic
+    fi
+  fi
+}
+
 install_uv() {
   if ! command -v uv &>/dev/null; then
     info "Installing uv..."
@@ -161,6 +171,7 @@ main() {
   install_ghq
   install_fzf
   install_lazygit
+  install_tio
   install_btm
   install_uv
   install_symlinks
