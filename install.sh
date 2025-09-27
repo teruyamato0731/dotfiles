@@ -125,7 +125,7 @@ install_tio() {
   if command -v snap &>/dev/null; then
     if ! command -v tio &>/dev/null; then
       info "Installing tio..."
-      snap install tio --classic
+      sudo snap install tio --classic
     fi
   fi
 }
