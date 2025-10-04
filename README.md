@@ -62,7 +62,8 @@ You can try it on a Docker container as follows:
 
 ```bash
 docker run --rm -it ubuntu:24.04 bash
-apt-get update && apt-get install -y curl
+apt-get update && apt-get install -y curl sudo
+su ubuntu
 DOTFILES_DIR="$HOME/dotfiles" bash <(curl -fsSL https://raw.githubusercontent.com/teruyamato0731/dotfiles/main/install.sh)
 ```
 
