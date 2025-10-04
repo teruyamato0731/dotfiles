@@ -140,3 +140,11 @@ This dotfiles repository automatically installs the following useful CLI tools a
   - `ss` / `sp` - stash push/pop
   - `undo` - Undo the latest commit
 - **Commit Template**: Conventional Commits format
+
+## After Installation
+
+```
+gh auth login
+gh extension install nektos/act
+git config --global --add include.path ~/.gitconfig.custom
+```
