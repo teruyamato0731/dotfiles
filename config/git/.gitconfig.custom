@@ -19,7 +19,9 @@
 		[ -n \"$commit_sha\" ] && git commit --fixup=\"${commit_sha}\"; \
 	}; f"
 	graph = log --graph --oneline --decorate --branches --tags --remotes --all
+	rpull = pull --rebase
 	sp = stash pop
 	ss = stash push -u
 	undo = reset --mixed @^
+	update = submodule update --init --recursive
 	fpush = push --force-with-lease
