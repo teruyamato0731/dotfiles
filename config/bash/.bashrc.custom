@@ -27,7 +27,7 @@ export FZF_CTRL_T_OPTS='--walker-skip .git,node_modules,build
     --header "Press Ctrl-O to open editor"
     --color header:italic
     --bind "ctrl-o:become(code {})"'
-export FZF_ALT_C_OPTS='--walker-skip .git,node_modules,build
+export FZF_ALT_C_OPTS='--walker-skip .git,node_modules,build,Debug,Release
     --preview "tree --gitignore -C {}"'
 
 # Use fd (https://github.com/sharkdp/fd) for listing path candidates.
