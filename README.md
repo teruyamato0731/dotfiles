@@ -144,7 +144,9 @@ This dotfiles repository automatically installs the following useful CLI tools a
 ## After Installation
 
 ```
-gh auth login
+gh auth login -p ssh --web
 gh extension install nektos/act
+git config --global user.name "Your Name"
+git config --global user.email "you@example.com"
 git config --global --add include.path ~/.gitconfig.custom
 ```
