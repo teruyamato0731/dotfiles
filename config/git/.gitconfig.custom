@@ -19,6 +19,14 @@
 		[ -n \"$commit_sha\" ] && git commit --fixup=\"${commit_sha}\"; \
 	}; f"
 	graph = log --graph --oneline --decorate --branches --tags --remotes --all
+	rb = "!f() { \
+		local commit_sha; \
+		commit_sha=\"${1:-$(git log --oneline --color -n 20 | \
+			fzf +m --accept-nth 1 --ansi \
+			--header 'Select a commit to rebase onto:' \
+			--preview 'git show --color {1}')}\"; \
+		[ -n \"$commit_sha\" ] && git rebase -i --autosquash \"$commit_sha\"; \
+	}; f"
 	rpull = pull --rebase
 	sp = stash pop
 	ss = stash push -u
