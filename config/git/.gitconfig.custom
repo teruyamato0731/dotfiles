@@ -19,6 +19,7 @@
 		[ -n \"$commit_sha\" ] && git commit --fixup=\"${commit_sha}\"; \
 	}; f"
 	graph = log --graph --oneline --decorate --branches --tags --remotes --all
+	pp = pull --prune
 	rb = "!f() { \
 		local commit_sha; \
 		commit_sha=\"${1:-$(git log --oneline --color -n 20 | \
