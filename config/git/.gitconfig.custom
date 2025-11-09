@@ -33,3 +33,25 @@
 	undo = reset --mixed @^
 	update = submodule update --init --recursive
 	fpush = push --force-with-lease
+	wsw = "!f() { \
+		git fetch origin; \
+		local branch; \
+		branch=\"$(git branch --remotes -v | \
+			sed -E '/(main|dev|archive|wip)/d; s|^.*origin/||' | \
+			fzf +m \
+				--preview 'git log -n 30 --color=always --oneline origin/{1}' \
+				--header 'Press Enter to add worktrees' --color header:italic \
+				--prompt 'worktree> ' \
+				--accept-nth=1 \
+			)\"; \
+		if [ -n \"$branch\" ]; then \
+			local basename; \
+			basename=\"$(basename \"$(git rev-parse --show-toplevel)\")\"; \
+			pathname=\"${basename}.worktrees/$(echo "$branch" | sed -e 's|/|-|g' -e 's|#||g')\"; \
+			echo \"Creating worktree: ../${pathname}\"; \
+			git worktree add ../\"${pathname}\" \"${branch}\" || return; \
+			cd ../\"${pathname}\" || return; \
+			git checkout "${branch}"; \
+			code .; \
+		fi; \
+	}; f"
