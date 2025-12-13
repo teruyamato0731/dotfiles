@@ -137,6 +137,15 @@ install_uv() {
   fi
 }
 
+install_cpp_tools() {
+  info "Installing C++ development tools..."
+  sudo apt-get install -y \
+    build-essential \
+    cmake \
+    libgtest-dev \
+    ccache
+}
+
 install_symlinks() {
   info "Setting up symlinks for dotfiles..."
   # dotfiles directory
@@ -174,6 +183,7 @@ main() {
   install_tio
   install_btm
   install_uv
+  install_cpp_tools
   install_symlinks
   post_instructions
 }
