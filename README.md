@@ -19,7 +19,7 @@
 - `bash`
 - `sudo`
 - `apt-get`
-- `git` or `curl`
+- `git` or `wget` or `curl`
 
 ```bash
 sudo apt-get update
@@ -28,17 +28,23 @@ sudo apt-get install -y curl git
 
 </details>
 
-Clone the repo and run the installer:
+Use this one liner:
+
+```bash
+DOTFILES_DIR="$HOME/dotfiles" bash <(wget -qO- https://raw.githubusercontent.com/teruyamato0731/dotfiles/main/install.sh)
+```
+
+Or use curl:
+
+```bash
+DOTFILES_DIR="$HOME/dotfiles" bash <(curl -fsSL https://raw.githubusercontent.com/teruyamato0731/dotfiles/main/install.sh)
+```
+
+Or use git:
 
 ```bash
 git clone https://github.com/teruyamato0731/dotfiles.git ~/dotfiles
 ~/dotfiles/install.sh
-```
-
-Or use the one-liner:
-
-```bash
-DOTFILES_DIR="$HOME/dotfiles" bash <(curl -fsSL https://raw.githubusercontent.com/teruyamato0731/dotfiles/main/install.sh)
 ```
 
 ## Try with Dev Containers
@@ -145,6 +151,7 @@ This dotfiles repository automatically installs the following useful CLI tools a
 
 ```
 gh auth login -p ssh --web
+gh auth setup-git
 gh extension install nektos/act
 git config --global user.name "Your Name"
 git config --global user.email "you@example.com"
