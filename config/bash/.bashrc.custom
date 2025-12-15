@@ -4,8 +4,21 @@
 # shellcheck disable=SC2034
 GIT_PS1_SHOWDIRTYSTATE=true
 GIT_PS1_SHOWUPSTREAM=auto
+if command -v ghq >/dev/null 2>&1; then
+    __GHQ_GITHUB_PATH="$(ghq root)/github.com/"
+else
+    __GHQ_GITHUB_PATH="$HOME/ghq/github.com/"
+fi
+_shorten_path() {
+    # "$(ghq root)/github.com/" を @ に短縮する
+    local path="${PWD}"
+    local path="${PWD/#$__GHQ_GITHUB_PATH/@}"
+    # ホームディレクトリを ~ に短縮
+    path="${path/#$HOME/\~}"
+    echo "${path}"
+}
 # shellcheck disable=SC2154
-PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\] ➜ \[\033[01;34m\]\w\[\033[00m\]$(__git_ps1 " \[\033[0;36m\](\[\033[1;31m\]%s\[\033[0;36m\])\[\033[00m\]") \n\$ '
+PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\] ➜ \[\033[01;34m\]$(_shorten_path)\[\033[00m\]$(__git_ps1 " \[\033[0;36m\](\[\033[1;31m\]%s\[\033[0;36m\])\[\033[00m\]") \n\$ '
 
 # Aliases
 alias ls='ls --color=auto'
