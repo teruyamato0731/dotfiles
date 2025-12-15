@@ -72,6 +72,20 @@ gsw() {
     fi
 }
 
+# ghq get repository with fzf
+gg() {
+    local repo
+    repo="$(gh api -X GET /user/repos -F sort=updated -F per_page=30 --jq '.[] | "\(.full_name) \(.clone_url)"' | fzf +m \
+        --header 'Press Enter to clone selected repository' --color header:italic \
+        --with-nth=1 \
+        --accept-nth=2 \
+        --preview "GH_FORCE_TTY=${FZF_PREVIEW_COLUMNS} gh repo view {1}" \
+        --prompt 'repo> ')"
+    if [ -n "${repo}" ]; then
+        ghq get "${repo}"
+    fi
+}
+
 batdiff() {
     git diff --name-only --relative --diff-filter=d -z | xargs -0 bat --diff
 }
