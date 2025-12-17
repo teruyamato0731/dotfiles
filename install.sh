@@ -158,10 +158,7 @@ install_symlinks() {
   # .bashrc.custom
   ln -nfs "${DOTFILES_DIR}/config/bash/.bashrc.custom" "${HOME}/.bashrc.custom"
   if ! grep -q 'source ~/.bashrc.custom' "${HOME}/.bashrc"; then
-      cat << 'EOF' >> "${HOME}/.bashrc"
-# Load custom dotfiles if available
-[ -f ~/.bashrc.custom ] && source ~/.bashrc.custom
-EOF
+    echo '[ -f ~/.bashrc.custom ] && source ~/.bashrc.custom' >> "${HOME}/.bashrc"
   fi
 }
 
