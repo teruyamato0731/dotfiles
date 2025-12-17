@@ -5,17 +5,17 @@
 GIT_PS1_SHOWDIRTYSTATE=true
 GIT_PS1_SHOWUPSTREAM=auto
 if command -v ghq >/dev/null 2>&1; then
-    __GHQ_GITHUB_PATH="$(ghq root)/github.com/"
+  __GHQ_GITHUB_PATH="$(ghq root)/github.com/"
 else
-    __GHQ_GITHUB_PATH="$HOME/ghq/github.com/"
+  __GHQ_GITHUB_PATH="$HOME/ghq/github.com/"
 fi
 _shorten_path() {
-    # "$(ghq root)/github.com/" を @ に短縮する
-    local path="${PWD}"
-    local path="${PWD/#$__GHQ_GITHUB_PATH/@}"
-    # ホームディレクトリを ~ に短縮
-    path="${path/#$HOME/\~}"
-    echo "${path}"
+  # "$(ghq root)/github.com/" を @ に短縮する
+  local path="${PWD}"
+  local path="${PWD/#$__GHQ_GITHUB_PATH/@}"
+  # ホームディレクトリを ~ に短縮
+  path="${path/#$HOME/\~}"
+  echo "${path}"
 }
 # shellcheck disable=SC2154
 PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\] ➜ \[\033[01;34m\]$(_shorten_path)\[\033[00m\]$(__git_ps1 " \[\033[0;36m\](\[\033[1;31m\]%s\[\033[0;36m\])\[\033[00m\]") \n\$ '
@@ -35,13 +35,13 @@ export FZF_CTRL_T_COMMAND='fd --hidden'
 export FZF_ALT_C_COMMAND='fd --type d --hidden'
 export FZF_DEFAULT_OPTS='--height 95% --layout reverse --border'
 export FZF_CTRL_T_OPTS='--walker-skip .git,node_modules,build
-    --preview "bat -n --color=always {} 2> /dev/null || tree -C {}"
-    --preview-window "~3"
-    --header "Press Ctrl-O to open editor"
-    --color header:italic
-    --bind "ctrl-o:become(code {})"'
+  --preview "bat -n --color=always {} 2> /dev/null || tree -C {}"
+  --preview-window "~3"
+  --header "Press Ctrl-O to open editor"
+  --color header:italic
+  --bind "ctrl-o:become(code {})"'
 export FZF_ALT_C_OPTS='--walker-skip .git,node_modules,build,Debug,Release
-    --preview "tree --gitignore -C {}"'
+  --preview "tree --gitignore -C {}"'
 
 # Use fd (https://github.com/sharkdp/fd) for listing path candidates.
 # - The first argument to the function ($1) is the base path to start traversal
@@ -59,52 +59,52 @@ _fzf_compgen_dir() {
 [ -f "$(ghq root)/github.com/junegunn/fzf-git.sh/fzf-git.sh" ] && source "$(ghq root)/github.com/junegunn/fzf-git.sh/fzf-git.sh"
 
 gcd() {
-    local dir
-    dir="$(ghq list | fzf +m \
-        --preview "cd $(ghq root) && bat --color=always --style=header,grid,numbers --line-range :200 {}/README* 2> /dev/null || tree -C {}" \
-        --header 'Press Enter to cd, Ctrl-O to open in code' --color header:italic \
-        --bind 'ctrl-o:become(code "$(ghq root)"/{})' \
-        --prompt 'ghq> ')"
-    if [ -n "${dir}" ]; then
-        cd "$(ghq root)"/"${dir}" && pwd
-    fi
+  local dir
+  dir="$(ghq list | fzf +m \
+    --preview "cd $(ghq root) && bat --color=always --style=header,grid,numbers --line-range :200 {}/README* 2> /dev/null || tree -C {}" \
+    --header 'Press Enter to cd, Ctrl-O to open in code' --color header:italic \
+    --bind 'ctrl-o:become(code "$(ghq root)"/{})' \
+    --prompt 'ghq> ')"
+  if [ -n "${dir}" ]; then
+    cd "$(ghq root)"/"${dir}" && pwd
+  fi
 }
 
 gsw() {
-    local branch
-    branch="$(git branch --all | sed -e 's/.* //' -e 's/.*origin\///' | sort -u | \
-        fzf +m \
-            --preview 'git log -n 30 --color=always --oneline {}' \
-            --header 'Press Enter to switch' --color header:italic \
-            --footer='Ctrl-Q to create new branch: ' \
-            --bind 'change:transform-footer:echo Ctrl-Q to create new branch: {q}' \
-            --bind 'ctrl-q:become(git switch -c {q})' \
-            --prompt 'branch> ')"
-    if [ -n "${branch}" ]; then
-        git switch "${branch}"
-    fi
+  local branch
+  branch="$(git branch --all | sed -e 's/.* //' -e 's/.*origin\///' | sort -u | \
+    fzf +m \
+      --preview 'git log -n 30 --color=always --oneline {}' \
+      --header 'Press Enter to switch' --color header:italic \
+      --footer='Ctrl-Q to create new branch: ' \
+      --bind 'change:transform-footer:echo Ctrl-Q to create new branch: {q}' \
+      --bind 'ctrl-q:become(git switch -c {q})' \
+      --prompt 'branch> ')"
+  if [ -n "${branch}" ]; then
+    git switch "${branch}"
+  fi
 }
 
 # ghq get repository with fzf
 gg() {
-    local repo
-    repo="$(gh api -X GET /user/repos -F sort=updated -F per_page=30 --jq '.[] | "\(.full_name) \(.clone_url)"' | fzf +m \
-        --header 'Press Enter to clone selected repository' --color header:italic \
-        --with-nth=1 \
-        --accept-nth=2 \
-        --preview "GH_FORCE_TTY=${FZF_PREVIEW_COLUMNS} gh repo view {1}" \
-        --prompt 'repo> ')"
-    if [ -n "${repo}" ]; then
-        ghq get "${repo}"
-    fi
+  local repo
+  repo="$(gh api -X GET /user/repos -F sort=updated -F per_page=30 --jq '.[] | "\(.full_name) \(.clone_url)"' | fzf +m \
+    --header 'Press Enter to clone selected repository' --color header:italic \
+    --with-nth=1 \
+    --accept-nth=2 \
+    --preview "GH_FORCE_TTY=${FZF_PREVIEW_COLUMNS} gh repo view {1}" \
+    --prompt 'repo> ')"
+  if [ -n "${repo}" ]; then
+    ghq get "${repo}"
+  fi
 }
 
 batdiff() {
-    git diff --name-only --relative --diff-filter=d -z | xargs -0 bat --diff
+  git diff --name-only --relative --diff-filter=d -z | xargs -0 bat --diff
 }
 
 bathelp() {
-    "$@" --help 2>&1 | bat --plain --language=help
+  "$@" --help 2>&1 | bat --plain --language=help
 }
 
 bind -x '"\C-o": "gcd"'
