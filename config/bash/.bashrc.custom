@@ -109,3 +109,15 @@ bathelp() {
 
 bind -x '"\C-o": "gcd"'
 bind -x '"\C-]": "gsw"'
+
+if [[ -n "$WSL_DISTRO_NAME" ]]; then
+  # For WSL, set Windows browser as default
+  # This allow `gh browse` or `open .`
+  # ref: https://x.com/mattn_jp/status/1965950125416808682
+  # ref: https://zenn.dev/kaityo256/articles/open_command_on_wsl
+  export BROWSER='/mnt/c/Windows/System32/rundll32.exe url.dll,FileProtocolHandler'
+  open() {
+    local path="${1:-.}"
+    explorer.exe "$(wslpath -w "${path}")"
+  }
+fi
