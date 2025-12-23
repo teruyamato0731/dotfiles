@@ -28,7 +28,7 @@ sudo apt-get install -y curl git
 
 </details>
 
-Use this one liner:
+Use this command with wget:
 
 ```bash
 DOTFILES_DIR="$HOME/dotfiles" bash <(wget -qO- https://raw.githubusercontent.com/teruyamato0731/dotfiles/main/install.sh)
