@@ -94,13 +94,14 @@ gsw() {
 # ghq get repository with fzf
 gg() {
   local repo
-  repo="$(gh api -X GET /user/repos -F sort=updated -F per_page=30 --jq '.[] | "\(.full_name) \(.clone_url)"' | fzf +m \
+  # shellcheck disable=SC2016
+  repo="$(gh api -X GET /user/repos -F sort=updated -F per_page=100 --jq '.[] | "\(.full_name) \(.clone_url)"' | fzf +m \
     --query "${1:-}" \
     --select-1 \
     --header 'Press Enter to clone selected repository' --color header:italic \
     --with-nth=1 \
     --accept-nth=2 \
-    --preview "GH_FORCE_TTY=${FZF_PREVIEW_COLUMNS} gh repo view {1}" \
+    --preview 'GH_FORCE_TTY=${FZF_PREVIEW_COLUMNS} gh repo view {1}' \
     --prompt 'repo> ')"
   if [ -n "${repo}" ]; then
     ghq get "${repo}"
