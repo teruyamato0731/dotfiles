@@ -58,9 +58,12 @@ _fzf_compgen_dir() {
 # shellcheck disable=SC1091
 [ -f "$(ghq root)/github.com/junegunn/fzf-git.sh/fzf-git.sh" ] && source "$(ghq root)/github.com/junegunn/fzf-git.sh/fzf-git.sh"
 
+# cd to ghq repo, open in code
 gcd() {
   local dir
   dir="$(ghq list | fzf +m \
+    --query "${1:-}" \
+    --select-1 \
     --preview "cd $(ghq root) && bat --color=always --style=header,grid,numbers --line-range :200 {}/README* 2> /dev/null || tree -C {}" \
     --header 'Press Enter to cd, Ctrl-O to open in code' --color header:italic \
     --bind 'ctrl-o:become(code "$(ghq root)"/{})' \
@@ -70,10 +73,13 @@ gcd() {
   fi
 }
 
+# git switch branch with fzf
 gsw() {
   local branch
   branch="$(git branch --all | sed -e 's/.* //' -e 's/.*origin\///' | sort -u | \
     fzf +m \
+      --query "${1:-}" \
+      --select-1 \
       --preview 'git log -n 30 --color=always --oneline {}' \
       --header 'Press Enter to switch' --color header:italic \
       --footer='Ctrl-Q to create new branch: ' \
@@ -89,6 +95,8 @@ gsw() {
 gg() {
   local repo
   repo="$(gh api -X GET /user/repos -F sort=updated -F per_page=30 --jq '.[] | "\(.full_name) \(.clone_url)"' | fzf +m \
+    --query "${1:-}" \
+    --select-1 \
     --header 'Press Enter to clone selected repository' --color header:italic \
     --with-nth=1 \
     --accept-nth=2 \
