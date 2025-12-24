@@ -40,6 +40,8 @@
 		branch=\"$(git branch --remotes -v | \
 			sed -E '/(main|dev|archive|wip)/d; s|^.*origin/||' | \
 			fzf +m \
+				--query \"${1:-}\" \
+				--select-1 \
 				--preview 'git log -n 30 --color=always --oneline origin/{1}' \
 				--header 'Press Enter to add worktrees' --color header:italic \
 				--prompt 'worktree> ' \
