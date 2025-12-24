@@ -48,8 +48,10 @@
 				--accept-nth=1 \
 			)\"; \
 		if [ -n \"$branch\" ]; then \
+			cd $(git rev-parse --git-common-dir | xargs dirname) || return; \
 			local basename; \
-			basename=\"$(basename \"$(git rev-parse --show-toplevel)\")\"; \
+			basename=\"$(basename \"${PWD}\")\"; \
+			local pathname; \
 			pathname=\"${basename}.worktrees/$(echo "$branch" | sed -e 's|/|-|g' -e 's|#||g')\"; \
 			echo \"Creating worktree: ../${pathname}\"; \
 			git worktree add ../\"${pathname}\" \"${branch}\" || return; \
