@@ -137,6 +137,19 @@ install_uv() {
   fi
 }
 
+install_fonts() {
+  info "Installing fonts..."
+  # Moralerspace fonts
+  curl -sLo ./tmp/Moralerspace_v2.0.0.zip "https://github.com/yuru7/moralerspace/releases/download/v2.0.0/Moralerspace_v2.0.0.zip"
+  curl -sLo ./tmp/MoralerspaceHW_v2.0.0.zip "https://github.com/yuru7/moralerspace/releases/download/v2.0.0/MoralerspaceHW_v2.0.0.zip"
+  unzip ./tmp/Moralerspace_v2.0.0.zip -d ./tmp
+  unzip ./tmp/MoralerspaceHW_v2.0.0.zip -d ./tmp
+  mkdir -p "${HOME}/.local/share/fonts"
+  mv ./tmp/Moralerspace_v2.0.0/*.ttf "${HOME}/.local/share/fonts/"
+  mv ./tmp/MoralerspaceHW_v2.0.0/*.ttf "${HOME}/.local/share/fonts/"
+  rm -rf -- ./tmp/Moralerspace*
+}
+
 install_cpp_tools() {
   info "Installing C++ development tools..."
   sudo apt-get install -y \
@@ -180,6 +193,7 @@ main() {
   install_tio
   install_btm
   install_uv
+  install_fonts
   install_cpp_tools
   install_symlinks
   post_instructions
