@@ -39,6 +39,11 @@ get_dotfiles_dir() {
     err_exit "Detected piped execution; please set DOTFILES_DIR and retry."
   fi
 
+  # curl から pipe で実行された場合の対策
+  if [[ ! -e "${src}" ]]; then
+    err_exit "Cannot determine dotfiles directory; please set DOTFILES_DIR and retry."
+  fi
+
   cd -P "$(dirname "${src}")" >/dev/null 2>&1
   pwd
 }
@@ -199,6 +204,6 @@ main() {
   post_instructions
 }
 
-if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+if [[ -z "${BASH_SOURCE[0]:-}" || "${BASH_SOURCE[0]:-}" == "$0" ]]; then
   main "$@"
 fi
