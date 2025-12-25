@@ -1,21 +1,21 @@
 {
-	"name": "dotfiles-ubuntu",
-	"build": {
-		"dockerfile": "Dockerfile"
-	},
-	"remoteUser": "ubuntu",
-	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "./install.sh && git config --global --add include.path ~/.gitconfig.custom",
-	"customizations": {
-		"vscode": {
-			"settings": {
-				"dotfiles.repository": "Override user's dotfiles.repository"
-			},
-			"extensions": [
-				"yzhang.markdown-all-in-one",
-				"docker.docker",
-				"timonwong.shellcheck"
-			]
-		}
-	}
+  "name": "dotfiles-ubuntu",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "remoteUser": "ubuntu",
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": "./install.sh && git config --global --add include.path ~/.gitconfig.custom",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "dotfiles.repository": "Override user's dotfiles.repository"
+      },
+      "extensions": [
+        "yzhang.markdown-all-in-one",
+        "docker.docker",
+        "timonwong.shellcheck"
+      ]
+    }
+  }
 }
