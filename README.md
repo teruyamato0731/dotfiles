@@ -155,5 +155,5 @@ gh auth setup-git
 gh extension install nektos/gh-act
 git config --global user.name "Your Name"
 git config --global user.email "you@example.com"
-git config --global --add include.path ~/.gitconfig.custom
+git config --global --add include.path '~/.gitconfig.custom'
 ```

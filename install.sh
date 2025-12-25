@@ -167,7 +167,7 @@ post_instructions() {
 
   if ! git config --global --get-all include.path | grep -qx -- "${HOME}/.gitconfig.custom"; then
     echo "Please run the following command to include the custom git configuration:"
-    printf '  `git config --global include.path \"${HOME}/.gitconfig.custom`\n'
+    printf "  git config --global --add include.path '~/.gitconfig.custom'\n"
   fi
 }
 
