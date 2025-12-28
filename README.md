@@ -47,7 +47,15 @@ Or use wget:
 wget -qO- https://raw.githubusercontent.com/teruyamato0731/dotfiles/main/install.sh | bash
 ```
 
-## Try with Dev Containers
+## Try on Docker
+
+You can try these dotfiles in a Docker container without installing them on your host system:
+
+```bash
+docker run --rm -it ghcr.io/teruyamato0731/dotfiles:latest bash
+```
+
+## Try on Dev Containers
 
 To use Dev Containers, first install the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension for VS Code by running the command:
 
@@ -61,19 +69,6 @@ Then, open the command palette (Ctrl+Shift+P) and select **Dev Containers: Open 
 git clone https://github.com/teruyamato0731/dotfiles.git ~/dotfiles
 code ~/dotfiles
 ```
-
-<details><summary>Try on Docker Container</summary>
-
-You can try it on a Docker container as follows:
-
-```bash
-docker run --rm -it ubuntu:24.04 bash
-apt-get update && apt-get install -y curl sudo
-su ubuntu
-DOTFILES_DIR="$HOME/dotfiles" bash <(curl -fsSL https://raw.githubusercontent.com/teruyamato0731/dotfiles/main/install.sh)
-```
-
-</details>
 
 <details><summary>Apply to all Dev Containers</summary>
 
