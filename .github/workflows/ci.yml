@@ -50,6 +50,9 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/teruyamato0731/dotfiles
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=sha
 
       - name: Build Docker image
         uses: docker/build-push-action@v6
