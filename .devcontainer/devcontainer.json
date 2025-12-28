@@ -1,7 +1,8 @@
 {
   "name": "dotfiles-ubuntu",
   "build": {
-    "dockerfile": "Dockerfile"
+    "dockerfile": "Dockerfile",
+    "target": "dev"
   },
   "remoteUser": "ubuntu",
   // Use 'postCreateCommand' to run commands after the container is created.
