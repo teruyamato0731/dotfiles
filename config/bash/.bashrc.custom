@@ -66,7 +66,7 @@ gcd() {
     --select-1 \
     --preview "cd $(ghq root) && bat --color=always --style=header,grid,numbers --line-range :200 {}/README* 2> /dev/null || tree -C {}" \
     --header 'Press Enter to cd, Ctrl-O to open in code' --color header:italic \
-    --bind 'ctrl-o:become(code "$(ghq root)"/{})' \
+    --bind 'ctrl-o:become(d="$(ghq root)"/{}; w=$(fd -d 1 -e code-workspace . "$d" | head -n 1); code "${w:-$d}")' \
     --prompt 'ghq> ')"
   if [ -n "${dir}" ]; then
     cd "$(ghq root)"/"${dir}" && pwd
