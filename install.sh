@@ -26,7 +26,7 @@ err_exit() {
 get_dotfiles_dir() {
   # Decide dotfiles directory based on how the script was invoked.
   # - If DOTFILES_DIR env is set, prefer it.
-  # - If piped execution, error out.
+  # - If piped or redirected, fall back to $HOME/dotfiles.
   # - Otherwise, use the directory containing this script.
   if [ -n "${DOTFILES_DIR:-}" ]; then
     printf '%s\n' "${DOTFILES_DIR}"
@@ -35,13 +35,9 @@ get_dotfiles_dir() {
 
   local src
   src="${BASH_SOURCE[0]:-$0}"
-  if [[ "${src}" == /dev/fd/* || "${src}" == /proc/* ]]; then
-    err_exit "Detected piped execution; please set DOTFILES_DIR and retry."
-  fi
-
-  # curl から pipe で実行された場合の対策
-  if [[ ! -e "${src}" ]]; then
-    err_exit "Cannot determine dotfiles directory; please set DOTFILES_DIR and retry."
+  if [[ "${src}" == /dev/fd/* || "${src}" == /proc/* || ! -e "${src}" ]]; then
+    printf '%s\n' "${HOME}/dotfiles"
+    return 0
   fi
 
   cd -P "$(dirname "${src}")" >/dev/null 2>&1
