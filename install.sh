@@ -9,7 +9,7 @@ set -euo pipefail
 # Usage:
 #   ./install.sh or DOTFILES_DIR=/path/to/dotfiles ./install.sh
 # After running the script, please execute the following command:
-#   `git config --global include.path "${HOME}/.gitconfig.custom"`
+#   git config --global include.path '~/.gitconfig.custom'
 
 # Logging functions
 info() {
