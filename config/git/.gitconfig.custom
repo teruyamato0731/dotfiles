@@ -34,34 +34,3 @@
 	undo = reset --mixed @^
 	update = submodule update --init --recursive
 	fpush = push --force-with-lease
-	wsw = "!f() { \
-		git fetch origin; \
-		local branch; \
-		branch=\"$(git branch --remotes -v | \
-			sed -E '/(main|dev|archive|wip)/d; s|^.*origin/||' | \
-			fzf +m \
-				--query \"${1:-}\" \
-				--select-1 \
-				--preview 'git log -n 30 --color=always --oneline origin/{1}' \
-				--header 'Press Enter to add worktrees' --color header:italic \
-				--prompt 'worktree> ' \
-				--accept-nth=1 \
-			)\"; \
-		if [ -n \"$branch\" ]; then \
-			cd $(git rev-parse --git-common-dir | xargs dirname) || return; \
-			local basename; \
-			basename=\"$(basename \"${PWD}\")\"; \
-			local pathname; \
-			pathname=\"${basename}.worktrees/$(echo "$branch" | sed -e 's|/|-|g' -e 's|#||g')\"; \
-			if [ ! -d ../\"${pathname}\" ]; then \
-				echo \"Creating worktree: ../${pathname}\"; \
-				git worktree add ../\"${pathname}\" \"${branch}\" || return; \
-				cd ../\"${pathname}\" || return; \
-				git checkout "${branch}"; \
-			else \
-				echo \"Worktree already exists: ../${pathname}\"; \
-				cd ../\"${pathname}\" || return; \
-			fi; \
-			code .; \
-		fi; \
-	}; f"

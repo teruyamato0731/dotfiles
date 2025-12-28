@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# 引数をfzfのクエリとして利用
+QUERY="${1:-}"
+
+# リモート情報の更新
+git fetch origin
+
+# ブランチ選択
+branch="$(git branch --remotes -v | \
+  sed -E '/(main|dev|archive|wip)/d; s|^.*origin/||' | \
+  fzf +m \
+    --query "$QUERY" \
+    --select-1 \
+    --preview 'git log -n 30 --color=always --oneline origin/{1}' \
+    --header 'Press Enter to add worktrees' --color header:italic \
+    --prompt 'worktree> ' \
+    --accept-nth=1 \
+)"
+
+if [ -z "$branch" ]; then
+  exit 0
+fi
+
+# worktreeのルートディレクトリ（.gitのある場所）の親を取得
+repo_root="$(git rev-parse --git-common-dir | xargs dirname)"
+cd "$repo_root" || exit 1
+
+# ディレクトリ名の生成
+repo_name="$(basename "$PWD")"
+safe_branch_name="$(echo "$branch" | sed -e 's|/|-|g' -e 's|#||g')"
+worktree_path="${repo_name}.worktrees/${safe_branch_name}"
+
+# worktreeの作成または移動
+if [ ! -d "../$worktree_path" ]; then
+  echo "Creating worktree: ../$worktree_path"
+  git worktree add "../$worktree_path" "$branch"
+else
+  echo "Worktree already exists: ../$worktree_path"
+fi
+
+# worktreeへ移動
+cd "../$worktree_path" || exit 1
+
+# code-workspaceがあればそれを、なければカレントディレクトリを開く
+workspace_file="$(fd -d 1 -e code-workspace . | head -n 1)"
+code "${workspace_file:-.}"
