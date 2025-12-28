@@ -23,28 +23,28 @@
 
 ```bash
 sudo apt-get update
-sudo apt-get install -y curl git
+sudo apt-get install -y git
 ```
 
 </details>
 
-Use this command with wget:
+Clone this repository and run the installation script:
 
 ```bash
-DOTFILES_DIR="$HOME/dotfiles" bash <(wget -qO- https://raw.githubusercontent.com/teruyamato0731/dotfiles/main/install.sh)
+git clone https://github.com/teruyamato0731/dotfiles.git ~/dotfiles
+~/dotfiles/install.sh
 ```
 
 Or use curl:
 
 ```bash
-DOTFILES_DIR="$HOME/dotfiles" bash <(curl -fsSL https://raw.githubusercontent.com/teruyamato0731/dotfiles/main/install.sh)
+curl -fsSL https://raw.githubusercontent.com/teruyamato0731/dotfiles/main/install.sh | bash
 ```
 
-Or use git:
+Or use wget:
 
 ```bash
-git clone https://github.com/teruyamato0731/dotfiles.git ~/dotfiles
-~/dotfiles/install.sh
+wget -qO- https://raw.githubusercontent.com/teruyamato0731/dotfiles/main/install.sh | bash
 ```
 
 ## Try with Dev Containers
@@ -96,6 +96,7 @@ To have these dotfiles applied automatically inside every VS Code Dev Container 
 This dotfiles repository automatically installs the following useful CLI tools and utilities:
 
 #### Basic Tools
+
 - **bash-completion** - Enhanced Bash completion functionality
 - **git** - Version control system
 - **curl** - Data transfer tool
@@ -106,50 +107,55 @@ This dotfiles repository automatically installs the following useful CLI tools a
 - **jq** - JSON processor
 
 #### Enhanced Alternative Tools
+
 - **bat** - Syntax-highlighted `cat` alternative (creates `batcat` → `bat` symlink)
 - **ripgrep** - Fast `grep` alternative
 - **fd-find** - Fast `find` alternative (creates `fdfind` → `fd` symlink)
 - **gh** - GitHub CLI
 
 #### Development Support Tools
+
 - **ghq** (v1.8.0) - Git repository unified management tool
 - **fzf** - Fast fuzzy finder
 
 ### Custom Configurations and Aliases
 
 #### Bash Configuration (`.bashrc.custom`)
+
 - **Enhanced Prompt**: PS1 with Git branch and status display
 - **Useful Aliases**:
-  - `ls` → Enable color display
-  - `grep` → Enable color display
-  - `ll` → `ls -alF`
-  - `cat` → `bat --paging=never`
-  - `lg` → `lazygit`
+    - `ls` → Enable color display
+    - `grep` → Enable color display
+    - `ll` → `ls -alF`
+    - `cat` → `bat --paging=never`
+    - `lg` → `lazygit`
 
 #### Advanced fzf Integration
+
 - **Environment Variables**: Search with preview functionality
 - **Custom Functions**:
-  - `gcd()` - Select ghq repository with fzf and cd
-  - `gsw()` - Select Git branch with fzf and switch
-  - `batdiff()` - Display Git diff with bat
+    - `gcd()` - Select ghq repository with fzf and cd
+    - `gsw()` - Select Git branch with fzf and switch
+    - `batdiff()` - Display Git diff with bat
 - **Key Bindings**:
-  - `Ctrl+O` - Execute gcd function
-  - `Ctrl+]` - Execute gsw function
+    - `Ctrl+O` - Execute gcd function
+    - `Ctrl+]` - Execute gsw function
 
 #### Git Configuration (`.gitconfig.custom`)
+
 - **Editor**: VS Code (`code --wait`)
 - **Useful Aliases**:
-  - `aliases` - Display configured aliases list
-  - `amend` - Modify the latest commit
-  - `graph` - Graphical log display
-  - `fixup` - Select commit with fzf for fixup
-  - `ss` / `sp` - stash push/pop
-  - `undo` - Undo the latest commit
+    - `aliases` - Display configured aliases list
+    - `amend` - Modify the latest commit
+    - `graph` - Graphical log display
+    - `fixup` - Select commit with fzf for fixup
+    - `ss` / `sp` - stash push/pop
+    - `undo` - Undo the latest commit
 - **Commit Template**: Conventional Commits format
 
 ## After Installation
 
-```
+```bash
 gh auth login -p ssh --web
 gh auth setup-git
 gh extension install nektos/gh-act
