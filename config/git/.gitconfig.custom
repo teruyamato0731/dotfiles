@@ -53,10 +53,15 @@
 			basename=\"$(basename \"${PWD}\")\"; \
 			local pathname; \
 			pathname=\"${basename}.worktrees/$(echo "$branch" | sed -e 's|/|-|g' -e 's|#||g')\"; \
-			echo \"Creating worktree: ../${pathname}\"; \
-			git worktree add ../\"${pathname}\" \"${branch}\" || return; \
-			cd ../\"${pathname}\" || return; \
-			git checkout "${branch}"; \
+			if [ ! -d ../\"${pathname}\" ]; then \
+				echo \"Creating worktree: ../${pathname}\"; \
+				git worktree add ../\"${pathname}\" \"${branch}\" || return; \
+				cd ../\"${pathname}\" || return; \
+				git checkout "${branch}"; \
+			else \
+				echo \"Worktree already exists: ../${pathname}\"; \
+				cd ../\"${pathname}\" || return; \
+			fi; \
 			code .; \
 		fi; \
 	}; f"
