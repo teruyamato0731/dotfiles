@@ -15,6 +15,7 @@ die() {
 }
 
 main() {
+  cd "$(dirname "$0")/.." || die "Failed to change directory to project root."
   info "Building Docker image: ${IMAGE_NAME}"
   docker build -t "${IMAGE_NAME}" -f "${DOCKERFILE_PATH}" . || die "Failed to build Docker image."
 
