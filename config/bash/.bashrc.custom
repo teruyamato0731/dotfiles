@@ -121,7 +121,7 @@ bathelp() {
 }
 
 bind -x '"\C-o": "gcd"'
-bind -x '"\C-]": "gsw"'
+bind -x '"\C-]": "git wsw"'
 
 if [[ -n "$WSL_DISTRO_NAME" ]]; then
   # For WSL, set Windows browser as default
