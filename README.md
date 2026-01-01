@@ -131,10 +131,13 @@ This dotfiles repository automatically installs the following useful CLI tools a
 - **Custom Functions**:
     - `gcd()` - Select ghq repository with fzf and cd
     - `gsw()` - Select Git branch with fzf and switch
+    - `gg()` - Search GitHub repositories with fzf and execute `ghq get`
+    - `bathelp()` - Preview help with bat
     - `batdiff()` - Display Git diff with bat
+    - `git wsw` - Select Git worktree with fzf and open in VS Code
 - **Key Bindings**:
     - `Ctrl+O` - Execute gcd function
-    - `Ctrl+]` - Execute gsw function
+    - `Ctrl+]` - Execute `git wsw`
 
 #### Git Configuration (`.gitconfig.custom`)
 
@@ -146,7 +149,6 @@ This dotfiles repository automatically installs the following useful CLI tools a
     - `fixup` - Select commit with fzf for fixup
     - `ss` / `sp` - stash push/pop
     - `undo` - Undo the latest commit
-- **Commit Template**: Conventional Commits format
 
 ## After Installation
 
