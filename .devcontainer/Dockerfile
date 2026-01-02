@@ -9,8 +9,11 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   sudo \
   git \
   # For devcontainer
+  language-pack-ja \
   curl \
   gnupg
+
+ENV LANG=ja_JP.UTF-8
 
 # Grant sudo privileges to the existing 'ubuntu' user
 RUN echo "ubuntu ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ubuntu
