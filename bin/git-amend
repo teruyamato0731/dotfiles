@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# 1. すでにステージングされているファイルがあるか確認
+if ! git diff --cached --quiet; then
+  # ステージング済みなら、そのままamendして終了
+  git commit --amend --no-edit
+  exit 0
+fi
+
+# 2. 変更があるファイル（未ステージング）の一覧を取得
+# 何も変更がなければ終了
+if [ -z "$(git status --short)" ]; then
+  echo "Nothing to amend (working tree clean)."
+  exit 0
+fi
+
+CMD='git -c color.status=always -c core.quotePath=false status --short'
+
+preview_file() {
+  local file="$1"
+  if [ ! -e "$file" ]; then
+    # ファイルが削除されている場合
+    git diff --color=always HEAD -- "$file" | bat --color=always -l diff --file-name "[Deleted] $file"
+  elif ! git diff --cached --quiet HEAD -- "$file"; then
+    # ステージング済みの場合
+    git diff --cached --color=always -- "$file" | bat --color=always -l diff --file-name "[Staged] $file"
+  elif ! git diff --quiet HEAD -- "$file"; then
+    # 変更がある場合
+    bat --color=always --style=header,grid,numbers,changes --diff "$file" --file-name "[Modified] $file"
+  else
+    # 新規ファイルの場合
+    bat --color=always -l diff "$file" --file-name "[New File] $file"
+  fi
+}
+export -f preview_file
+
+# 3. fzfでファイル選択
+# git status --short の出力形式: " M file.txt", "?? newfile.txt"
+# {1} = ステータス, {2..} = ファイル名
+$CMD | fzf \
+  --ansi \
+  --select-1 \
+  --exit-0 \
+  --prompt 'amend> ' \
+  --header 'TAB to add, Enter to confirm' --color header:italic \
+  --preview "preview_file '{2..}'" \
+  --nth 2.. \
+  --bind "ctrl-r:reload($CMD)" \
+  --bind "tab:execute-silent(git add '{2..}')+reload($CMD)+down" \
+  --bind "shift-tab:execute-silent(git restore --staged '{2..}')+reload($CMD)+up" \
+  --bind "ctrl-space:execute-silent(if git diff --cached --quiet HEAD -- '{2..}'; then git add '{2..}'; else git restore --staged '{2..}'; fi)+reload($CMD)" \
+  --bind "ctrl-u:execute-silent(git restore --staged .)+reload($CMD)+top" \
+  --bind "ctrl-a:execute(git add .)+reload($CMD)+top" \
+  --bind "ctrl-o:execute(code '{2..}')"
+
+# 4. amend実行
+if ! git diff --cached --quiet; then
+  git commit --amend --no-edit
+else
+  echo "Nothing staged. Aborted."
+  exit 1
+fi

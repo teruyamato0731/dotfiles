@@ -6,7 +6,6 @@
 				gsub(/[[:space:]]+/, \" \"); if(length($0) > 120) $0 = substr($0, 1, 117)\"...\" ; \
 				printf \"%-8s=%s\\n\", name, $0}' \
 		| sort"
-	amend = commit --amend --no-edit
 	b = branch
 	bd = branch -d
 	cp = cherry-pick
