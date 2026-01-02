@@ -1,7 +1,9 @@
 # shellcheck disable=SC2148
+# shellcheck disable=SC2034
+
+TERM='xterm-256color'
 
 # For PS1
-# shellcheck disable=SC2034
 GIT_PS1_SHOWDIRTYSTATE=true
 GIT_PS1_SHOWUPSTREAM=auto
 if command -v ghq >/dev/null 2>&1; then
