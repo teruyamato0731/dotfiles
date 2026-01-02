@@ -4,12 +4,11 @@ set -euo pipefail
 # 引数をfzfのクエリとして利用
 QUERY="${1:-}"
 
-# リモート情報の更新
-git fetch origin
+# shellcheck disable=SC2089
+CMD='git branch --remotes -v | sed -E "/(main|dev|archive|wip)/d; s|^.*origin/||"'
 
 # ブランチ選択
-branch="$(git branch --remotes -v | \
-  sed -E '/(main|dev|archive|wip)/d; s|^.*origin/||' | \
+branch="$(eval "$CMD" | \
   fzf +m \
     --query "$QUERY" \
     --select-1 \
@@ -17,6 +16,7 @@ branch="$(git branch --remotes -v | \
     --header 'Press Enter to add worktrees' --color header:italic \
     --prompt 'worktree> ' \
     --accept-nth=1 \
+    --bind "load:reload-sync(git fetch origin; $CMD)+unbind(load)" \
 )"
 
 if [ -z "$branch" ]; then
