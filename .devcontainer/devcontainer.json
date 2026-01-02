@@ -5,8 +5,12 @@
     "target": "dev"
   },
   "remoteUser": "ubuntu",
+  "initializeCommand": "mkdir -p ${localWorkspaceFolder}/.cache",
   // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": "./install.sh && git config --global --add include.path ~/.gitconfig.custom",
+  "containerEnv": {
+    "HISTFILE": "${containerWorkspaceFolder}/.cache/.bash_history"
+  },
   "customizations": {
     "vscode": {
       "settings": {
