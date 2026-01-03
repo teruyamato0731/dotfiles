@@ -174,6 +174,9 @@ install_symlinks() {
   if ! grep -q 'source ~/.bashrc.custom' "${HOME}/.bashrc"; then
     echo '[ -f ~/.bashrc.custom ] && source ~/.bashrc.custom' >> "${HOME}/.bashrc"
   fi
+  # git ignore global
+  mkdir -p "${HOME}/.config/git"
+  ln -nfs "${DOTFILES_DIR}/config/git/ignore" "${HOME}/.config/git/ignore"
 }
 
 post_instructions() {
