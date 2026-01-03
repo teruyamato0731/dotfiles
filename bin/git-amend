@@ -38,7 +38,7 @@ export -f preview_file
 # 3. fzfでファイル選択
 # git status --short の出力形式: " M file.txt", "?? newfile.txt"
 # {1} = ステータス, {2..} = ファイル名
-$CMD | fzf \
+$CMD | SHELL="$BASH" fzf \
   --ansi \
   --select-1 \
   --exit-0 \
