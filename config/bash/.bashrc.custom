@@ -114,6 +114,12 @@ gg() {
   fi
 }
 
+# Generate Co-Authored-By trailer for git commit messages
+# Usage: cab <github-username>
+cab() {
+  gh api /users/"$1" -q '"Co-Authored-By: \((.name // .login)) <\(.id)+\(.login)@users.noreply.github.com>"'
+}
+
 batdiff() {
   git diff --name-only --relative --diff-filter=d -z | xargs -0 bat --diff
 }
