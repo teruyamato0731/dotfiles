@@ -117,7 +117,7 @@ gg() {
 # Generate Co-Authored-By trailer for git commit messages
 # Usage: cab <github-username>
 cab() {
-  gh api /users/"$1" -q '"Co-Authored-By: \((.name // .login)) <\(.id)+\(.login)@users.noreply.github.com>"'
+  gh api "/users/$1" -q '"Co-Authored-By: \(.name // .login) <\(.email // "\(.id)+\(.login)@users.noreply.github.com")>"'
 }
 
 batdiff() {
