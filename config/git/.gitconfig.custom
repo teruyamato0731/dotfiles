@@ -1,5 +1,7 @@
 [core]
 	editor = code --wait
+[push]
+	autoSetupRemote = true
 [alias]
 	aliases = "!git config --get-regexp '^alias\\.' \
 		| awk '{ sub(/^alias./, \"\"); name=$1; $1=\"\"; \
