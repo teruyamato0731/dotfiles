@@ -5,18 +5,19 @@ set -euo pipefail
 QUERY="${1:-}"
 
 # shellcheck disable=SC2089
-CMD='git branch --remotes -v | sed -E "/(main|dev|archive|wip)/d; s|^.*origin/||"'
+CMD='git branch --remotes -v | sed -E "/(HEAD|archive|wip)/d; s|^.*origin/||"'
 
 # ブランチ選択
 branch="$(eval "$CMD" | \
   fzf +m \
     --query "$QUERY" \
-    --select-1 \
     --preview 'git log -n 30 --color=always --oneline origin/{1}' \
     --header 'Press Enter to add worktrees' --color header:italic \
     --prompt 'worktree> ' \
     --accept-nth=1 \
     --bind "load:reload-sync(git fetch origin; $CMD)+unbind(load)" \
+    --bind 'ctrl-/:change-preview-window(down,70%,border-horizontal|hidden|)' \
+    --bind 'ctrl-o:accept' \
 )"
 
 if [ -z "$branch" ]; then
