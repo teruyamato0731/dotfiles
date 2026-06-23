@@ -157,8 +157,8 @@ install_fonts() {
 
   mkdir -p "${font_cache_dir}" "${font_dir}"
 
-  if compgen -G "${font_dir}/MoralerspaceNeon-Regular.ttf" >/dev/null &&
-    compgen -G "${font_dir}/MoralerspaceNeonHW-Regular.ttf" >/dev/null; then
+  if [ -f "${font_dir}/MoralerspaceNeon-Regular.ttf" ] &&
+     [ -f "${font_dir}/MoralerspaceNeonHW-Regular.ttf" ]; then
     info "Moralerspace fonts are already installed."
     return 0
   fi
