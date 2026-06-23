@@ -149,7 +149,7 @@ y() {
   local cwd
   local status
 
-  tmp="$(mktemp -t "yazi-cwd.XXXXXX")" || return
+  tmp="$(mktemp "${TMPDIR:-/tmp}/yazi-cwd.XXXXXX")" || return
   command yazi "$@" --cwd-file="$tmp"
   status=$?
   cwd="$(cat -- "$tmp" 2>/dev/null || true)"
