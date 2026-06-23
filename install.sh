@@ -127,6 +127,8 @@ install_bash_completions() {
   local mise
   local completion_dir
   local ghq_bin
+  local bat_bin
+  local rg_bin
   local fd_bin
   local btm_bin
   local uv_bin
@@ -143,6 +145,20 @@ install_bash_completions() {
     install_completion_file "$(dirname "${ghq_bin}")/misc/bash/_ghq" "${completion_dir}/ghq"
   else
     warn "ghq is not installed by mise; skipping ghq completion."
+  fi
+
+  bat_bin="$("${mise}" which bat 2>/dev/null || true)"
+  if [ -n "${bat_bin}" ]; then
+    install_completion_file "$(dirname "${bat_bin}")/autocomplete/bat.bash" "${completion_dir}/bat"
+  else
+    warn "bat is not installed by mise; skipping bat completion."
+  fi
+
+  rg_bin="$("${mise}" which rg 2>/dev/null || true)"
+  if [ -n "${rg_bin}" ]; then
+    install_completion_file "$(dirname "${rg_bin}")/complete/rg.bash" "${completion_dir}/rg"
+  else
+    warn "rg is not installed by mise; skipping rg completion."
   fi
 
   fd_bin="$("${mise}" which fd 2>/dev/null || true)"
