@@ -128,6 +128,24 @@ install_uv() {
   fi
 }
 
+download_if_missing() {
+  local url="$1"
+  local dest="$2"
+  local tmp
+
+  if [ -f "${dest}" ]; then
+    return 0
+  fi
+
+  tmp="$(mktemp "${dest}.tmp.XXXXXX")"
+  if curl -fsSLo "${tmp}" "${url}"; then
+    mv -f "${tmp}" "${dest}"
+  else
+    rm -f "${tmp}"
+    return 1
+  fi
+}
+
 install_fonts() {
   info "Installing fonts..."
   local font_cache_dir="${CACHE_DIR}/fonts"
@@ -136,22 +154,21 @@ install_fonts() {
   local moralerspace_zip="${font_cache_dir}/Moralerspace_${version}.zip"
   local moralerspace_hw_zip="${font_cache_dir}/MoralerspaceHW_${version}.zip"
   local extract_dir
-  local installed_font
 
   mkdir -p "${font_cache_dir}" "${font_dir}"
 
-  installed_font="$(find "${font_dir}" -maxdepth 1 -name 'Moralerspace*.ttf' -print -quit)"
-  if [ -n "${installed_font}" ]; then
+  if compgen -G "${font_dir}/MoralerspaceNeon-Regular.ttf" >/dev/null &&
+    compgen -G "${font_dir}/MoralerspaceNeonHW-Regular.ttf" >/dev/null; then
     info "Moralerspace fonts are already installed."
     return 0
   fi
 
-  if [ ! -f "${moralerspace_zip}" ]; then
-    curl -fsSLo "${moralerspace_zip}" "https://github.com/yuru7/moralerspace/releases/download/${version}/Moralerspace_${version}.zip"
-  fi
-  if [ ! -f "${moralerspace_hw_zip}" ]; then
-    curl -fsSLo "${moralerspace_hw_zip}" "https://github.com/yuru7/moralerspace/releases/download/${version}/MoralerspaceHW_${version}.zip"
-  fi
+  download_if_missing \
+    "https://github.com/yuru7/moralerspace/releases/download/${version}/Moralerspace_${version}.zip" \
+    "${moralerspace_zip}"
+  download_if_missing \
+    "https://github.com/yuru7/moralerspace/releases/download/${version}/MoralerspaceHW_${version}.zip" \
+    "${moralerspace_hw_zip}"
 
   extract_dir="$(mktemp -d)"
   unzip -q "${moralerspace_zip}" -d "${extract_dir}"
