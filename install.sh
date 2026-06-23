@@ -81,16 +81,29 @@ setup() {
 }
 
 install_ghq() {
-  if ! command -v ghq &>/dev/null; then
-    info "Installing ghq..."
-    curl -sL -o ./tmp/ghq.zip "https://github.com/x-motemen/ghq/releases/download/v1.8.0/ghq_linux_amd64.zip"
-    unzip ./tmp/ghq.zip -d tmp
-    sudo install -D ./tmp/ghq_linux_amd64/ghq /usr/local/bin/ghq
-    sudo cp ./tmp/ghq_linux_amd64/misc/bash/_ghq /usr/share/bash-completion/completions/_ghq
-    rm -rf ./tmp/ghq*
-  else
-    info "ghq is already installed."
+  GHQ_VERSION="1.10.1"
+  local current_version=""
+  if command -v ghq >/dev/null 2>&1; then
+    current_version="$(ghq --version 2>/dev/null | grep -Eo '[0-9]+(\.[0-9]+){1,2}' | head -n1 || true)"
   fi
+  if [ "${current_version}" = "${GHQ_VERSION}" ]; then
+    info "ghq ${GHQ_VERSION} is already installed."
+    return 0
+  fi
+  if [ -n "${current_version}" ]; then
+    info "Updating ghq: ${current_version} -> ${GHQ_VERSION}"
+  else
+    info "Installing ghq ${GHQ_VERSION}..."
+  fi
+  rm -rf ./tmp/ghq ./tmp/ghq.zip
+  mkdir -p ./tmp/ghq
+  curl -fsSL \
+    -o ./tmp/ghq.zip \
+    "https://github.com/x-motemen/ghq/releases/download/v${GHQ_VERSION}/ghq_linux_amd64.zip"
+  unzip -q ./tmp/ghq.zip -d ./tmp/ghq
+  sudo install -D ./tmp/ghq/ghq_linux_amd64/ghq /usr/local/bin/ghq
+  sudo install -D ./tmp/ghq/ghq_linux_amd64/misc/bash/_ghq /usr/share/bash-completion/completions/_ghq
+  rm -rf ./tmp/ghq ./tmp/ghq.zip
 }
 
 install_fzf() {
