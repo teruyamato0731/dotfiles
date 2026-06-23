@@ -42,32 +42,32 @@ alias cat='bat --paging=never'
 
 # For fzf
 # shellcheck disable=SC1091
-if command -v fzf >/dev/null 2>&1; then
-  eval "$(fzf --bash)"
-fi
-export FZF_DEFAULT_COMMAND='fd --type f --hidden'
-export FZF_CTRL_T_COMMAND='fd --hidden'
-export FZF_ALT_C_COMMAND='fd --type d --hidden'
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git'
+export FZF_CTRL_T_COMMAND='fd --hidden --exclude .git'
+export FZF_ALT_C_COMMAND='fd --type d --hidden --exclude .git'
 export FZF_DEFAULT_OPTS='--height 70% --layout reverse --border'
-export FZF_CTRL_T_OPTS='--walker-skip .git,node_modules,build
+export FZF_CTRL_T_OPTS='
   --preview "bat -n --color=always {} 2> /dev/null || tree -C {}"
   --preview-window "~3"
   --header "Press Ctrl-O to open editor"
   --color header:italic
   --bind "ctrl-o:become(code {})"'
-export FZF_ALT_C_OPTS='--walker-skip .git,node_modules,build,Debug,Release
+export FZF_ALT_C_OPTS='
   --preview "tree --gitignore -C {}"'
+if command -v fzf >/dev/null 2>&1; then
+  eval "$(fzf --bash)"
+fi
 
 # Use fd (https://github.com/sharkdp/fd) for listing path candidates.
 # - The first argument to the function ($1) is the base path to start traversal
 # - See the source code (completion.{bash,zsh}) for the details.
 _fzf_compgen_path() {
-  fd --hidden . "$1"
+  fd --hidden --exclude ".git" . "$1"
 }
 
 # Use fd to generate the list for directory completion
 _fzf_compgen_dir() {
-  fd --type d --hidden . "$1"
+  fd --type d --hidden --exclude ".git" . "$1"
 }
 
 # cd to ghq repo, open in code
