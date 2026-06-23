@@ -98,19 +98,20 @@ This dotfiles repository automatically installs the following useful CLI tools a
 - **unzip** - Archive extraction tool
 - **tree** - Directory structure visualization
 - **htop** - Interactive process viewer
-- **btm** - Resource monitor
 - **jq** - JSON processor
+- **mise** - Development tool and runtime manager
 
 #### Enhanced Alternative Tools
 
-- **bat** - Syntax-highlighted `cat` alternative (creates `batcat` → `bat` symlink)
+- **bat** - Syntax-highlighted `cat` alternative
 - **ripgrep** - Fast `grep` alternative
-- **fd-find** - Fast `find` alternative (creates `fdfind` → `fd` symlink)
+- **fd** - Fast `find` alternative
+- **btm** - Resource monitor
 - **gh** - GitHub CLI
 
 #### Development Support Tools
 
-- **ghq** (v1.8.0) - Git repository unified management tool
+- **ghq** (v1.10.1) - Git repository unified management tool
 - **fzf** - Fast fuzzy finder
 
 ### Custom Configurations and Aliases

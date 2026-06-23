@@ -3,6 +3,12 @@
 
 TERM='xterm-256color'
 
+if [ -x "$HOME/.local/bin/mise" ]; then
+  eval "$("$HOME/.local/bin/mise" activate bash)"
+elif command -v mise >/dev/null 2>&1; then
+  eval "$(mise activate bash)"
+fi
+
 # For PS1
 GIT_PS1_SHOWDIRTYSTATE=true
 GIT_PS1_SHOWUPSTREAM=auto
@@ -34,7 +40,9 @@ alias cat='bat --paging=never'
 
 # For fzf
 # shellcheck disable=SC1091
-[ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.bash ] && source "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.bash
+if command -v fzf >/dev/null 2>&1; then
+  eval "$(fzf --bash)"
+fi
 export FZF_DEFAULT_COMMAND='fd --type f --hidden'
 export FZF_CTRL_T_COMMAND='fd --hidden'
 export FZF_ALT_C_COMMAND='fd --type d --hidden'
@@ -159,8 +167,10 @@ rgf() {
       --bind 'ctrl-/:change-preview-window(down,70%,border-horizontal|hidden|)'
 }
 
-bind -x '"\C-o": "gcd"'
-bind -x '"\C-]": "git wsw"'
+if [[ $- == *i* ]]; then
+  bind -x '"\C-o": "gcd"'
+  bind -x '"\C-]": "git wsw"'
+fi
 
 if [[ -n "$WSL_DISTRO_NAME" ]]; then
   # For WSL, set Windows browser as default
