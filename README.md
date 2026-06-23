@@ -123,7 +123,6 @@ This dotfiles repository automatically installs the following useful CLI tools a
     - `grep` → Enable color display
     - `ll` → `ls -alF`
     - `cat` → `bat --paging=never`
-    - `lg` → `lazygit`
 
 #### Advanced fzf Integration
 

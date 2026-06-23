@@ -97,19 +97,9 @@ install_fzf() {
   if ! command -v fzf &>/dev/null; then
     info "Installing fzf..."
     ghq get --shallow "https://github.com/junegunn/fzf.git"
-    ghq get --shallow "https://github.com/junegunn/fzf-git.sh.git"
     "$(ghq root)/github.com/junegunn/fzf/install" --xdg --key-bindings --completion --no-update-rc
   else
     info "fzf is already installed."
-  fi
-}
-
-install_lazygit() {
-  if ! command -v lazygit &>/dev/null; then
-    info "Installing lazygit..."
-    curl -sLo ./tmp/lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v0.55.0/lazygit_0.55.0_linux_x86_64.tar.gz"
-    tar xf ./tmp/lazygit.tar.gz -C ./tmp
-    sudo install ./tmp/lazygit /usr/local/bin
   fi
 }
 
@@ -193,7 +183,6 @@ main() {
   setup
   install_ghq
   install_fzf
-  install_lazygit
   install_tio
   install_btm
   install_uv
