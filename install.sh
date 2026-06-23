@@ -144,7 +144,8 @@ install_fonts() {
 install_symlinks() {
   info "Setting up symlinks for dotfiles..."
   local ghq_root
-  ghq_root="$(git config --get ghq.root || echo "${HOME}/ghq")"
+  ghq_root="$(git config --get ghq.root || true)"
+  ghq_root="${ghq_root:-${HOME}/ghq}"
   # dotfiles directory
   if [ ! -d "${ghq_root}/github.com/teruyamato0731/dotfiles" ]; then
     mkdir -p "${ghq_root}/github.com/teruyamato0731"
