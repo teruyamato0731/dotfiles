@@ -108,6 +108,7 @@ This dotfiles repository automatically installs the following useful CLI tools a
 - **fd** - Fast `find` alternative
 - **btm** - Resource monitor
 - **gh** - GitHub CLI
+- **yazi** - Terminal file manager
 
 #### Development Support Tools
 
@@ -134,6 +135,7 @@ This dotfiles repository automatically installs the following useful CLI tools a
     - `gg()` - Search GitHub repositories with fzf and execute `ghq get`
     - `bathelp()` - Preview help with bat
     - `batdiff()` - Display Git diff with bat
+    - `y()` - Launch yazi and apply its final cwd to the shell
     - `git wsw` - Select Git worktree with fzf and open in VS Code
 - **Key Bindings**:
     - `Ctrl+O` - Execute gcd function

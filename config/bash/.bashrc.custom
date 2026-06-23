@@ -138,6 +138,30 @@ bathelp() {
   "$@" --help 2>&1 | bat --plain --language=help
 }
 
+# yazi file manager
+y() {
+  if ! command -v yazi >/dev/null 2>&1; then
+    echo "yazi is not installed." >&2
+    return 127
+  fi
+
+  local tmp
+  local cwd
+  local status
+
+  tmp="$(mktemp -t "yazi-cwd.XXXXXX")" || return
+  command yazi "$@" --cwd-file="$tmp"
+  status=$?
+  cwd="$(cat -- "$tmp" 2>/dev/null || true)"
+  command rm -f -- "$tmp"
+
+  if [ -n "${cwd}" ] && [ "${cwd}" != "${PWD}" ] && [ -d "${cwd}" ]; then
+    builtin cd -- "${cwd}"
+  fi
+
+  return "${status}"
+}
+
 # ripgrep + fzf + bat + code
 # Usage:
 #   rgf <検索ワード> : 検索ワードを入力した状態でインタラクティブ検索を起動
