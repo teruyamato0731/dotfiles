@@ -147,11 +147,7 @@ install_cpp_tools() {
 install_symlinks() {
   info "Setting up symlinks for dotfiles..."
   local ghq_root
-  if command -v ghq >/dev/null 2>&1; then
-    ghq_root="$(ghq root)"
-  else
-    ghq_root="${HOME}/ghq"
-  fi
+  ghq_root="$(git config --get ghq.root || echo "${HOME}/ghq")"
   # dotfiles directory
   if [ ! -d "${ghq_root}/github.com/teruyamato0731/dotfiles" ]; then
     mkdir -p "${ghq_root}/github.com/teruyamato0731"

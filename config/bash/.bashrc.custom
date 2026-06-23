@@ -3,9 +3,11 @@
 
 TERM='xterm-256color'
 
-if [ -x "$HOME/.local/bin/mise" ]; then
-  eval "$("$HOME/.local/bin/mise" activate bash)"
-elif command -v mise >/dev/null 2>&1; then
+if [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+  export PATH="$HOME/.local/bin:$PATH"
+fi
+
+if command -v mise >/dev/null 2>&1; then
   eval "$(mise activate bash)"
 fi
 
