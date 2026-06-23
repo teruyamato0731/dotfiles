@@ -44,15 +44,12 @@ get_dotfiles_dir() {
   pwd
 }
 
-# shellcheck disable=SC2034
-DEBIAN_FRONTEND=noninteractive
-
 DOTFILES_DIR="$(get_dotfiles_dir)"
 
 install_tools() {
   info "Installing base OS packages..."
   sudo apt-get update
-  sudo apt-get install -y \
+  sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
     bash-completion \
     git \
     curl \
@@ -100,9 +97,12 @@ install_mise() {
 install_mise_tools() {
   info "Installing mise-managed tools..."
   local mise
+  local mise_config
   mise="$(mise_bin)" || err_exit "mise is not installed."
-  "${mise}" trust "${HOME}/.config/mise/config.toml"
-  "${mise}" install
+  mise_config="${HOME}/.config/mise/config.toml"
+  "${mise}" trust "${mise_config}"
+  # Install from the global mise config, independent of the dotfiles repo cwd.
+  "${mise}" install -C "${HOME}"
 }
 
 install_tio() {
@@ -125,8 +125,8 @@ install_uv() {
 install_fonts() {
   info "Installing fonts..."
   # Moralerspace fonts
-  curl -sLo ./tmp/Moralerspace_v2.0.0.zip "https://github.com/yuru7/moralerspace/releases/download/v2.0.0/Moralerspace_v2.0.0.zip"
-  curl -sLo ./tmp/MoralerspaceHW_v2.0.0.zip "https://github.com/yuru7/moralerspace/releases/download/v2.0.0/MoralerspaceHW_v2.0.0.zip"
+  curl -fsSLo ./tmp/Moralerspace_v2.0.0.zip "https://github.com/yuru7/moralerspace/releases/download/v2.0.0/Moralerspace_v2.0.0.zip"
+  curl -fsSLo ./tmp/MoralerspaceHW_v2.0.0.zip "https://github.com/yuru7/moralerspace/releases/download/v2.0.0/MoralerspaceHW_v2.0.0.zip"
   unzip ./tmp/Moralerspace_v2.0.0.zip -d ./tmp
   unzip ./tmp/MoralerspaceHW_v2.0.0.zip -d ./tmp
   mkdir -p "${HOME}/.local/share/fonts"
