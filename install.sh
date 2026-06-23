@@ -121,13 +121,6 @@ install_tio() {
   fi
 }
 
-install_uv() {
-  if ! command -v uv &>/dev/null; then
-    info "Installing uv..."
-    curl -LsSf https://astral.sh/uv/install.sh | sh
-  fi
-}
-
 download_if_missing() {
   local url="$1"
   local dest="$2"
@@ -219,7 +212,6 @@ main() {
   install_symlinks
   install_mise_tools
   install_tio
-  install_uv
   install_fonts
   post_instructions
 }
