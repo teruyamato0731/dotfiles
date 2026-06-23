@@ -45,6 +45,7 @@ get_dotfiles_dir() {
 }
 
 DOTFILES_DIR="$(get_dotfiles_dir)"
+CACHE_DIR="${XDG_CACHE_HOME:-${HOME}/.cache}/dotfiles"
 APT_PACKAGES=(
   bash-completion
   git
@@ -73,8 +74,7 @@ setup() {
     warn "DOTFILES_DIR not found; cloning ${repo_url} into ${DOTFILES_DIR}."
     git clone --depth 1 "${repo_url}" "${DOTFILES_DIR}" || err_exit "git clone failed: ${repo_url} -> ${DOTFILES_DIR}"
   fi
-  mkdir -p "${DOTFILES_DIR}/tmp"
-  mkdir -p "${DOTFILES_DIR}/backup"
+  mkdir -p "${CACHE_DIR}"
   cd "${DOTFILES_DIR}"
 }
 
@@ -128,17 +128,54 @@ install_uv() {
   fi
 }
 
+download_if_missing() {
+  local url="$1"
+  local dest="$2"
+  local tmp
+
+  if [ -f "${dest}" ]; then
+    return 0
+  fi
+
+  tmp="$(mktemp "${dest}.tmp.XXXXXX")"
+  if curl -fsSLo "${tmp}" "${url}"; then
+    mv -f "${tmp}" "${dest}"
+  else
+    rm -f "${tmp}"
+    return 1
+  fi
+}
+
 install_fonts() {
   info "Installing fonts..."
-  # Moralerspace fonts
-  curl -fsSLo ./tmp/Moralerspace_v2.0.0.zip "https://github.com/yuru7/moralerspace/releases/download/v2.0.0/Moralerspace_v2.0.0.zip"
-  curl -fsSLo ./tmp/MoralerspaceHW_v2.0.0.zip "https://github.com/yuru7/moralerspace/releases/download/v2.0.0/MoralerspaceHW_v2.0.0.zip"
-  unzip ./tmp/Moralerspace_v2.0.0.zip -d ./tmp
-  unzip ./tmp/MoralerspaceHW_v2.0.0.zip -d ./tmp
-  mkdir -p "${HOME}/.local/share/fonts"
-  mv ./tmp/Moralerspace_v2.0.0/*.ttf "${HOME}/.local/share/fonts/"
-  mv ./tmp/MoralerspaceHW_v2.0.0/*.ttf "${HOME}/.local/share/fonts/"
-  rm -rf -- ./tmp/Moralerspace*
+  local font_cache_dir="${CACHE_DIR}/fonts"
+  local font_dir="${HOME}/.local/share/fonts"
+  local version="v2.0.0"
+  local moralerspace_zip="${font_cache_dir}/Moralerspace_${version}.zip"
+  local moralerspace_hw_zip="${font_cache_dir}/MoralerspaceHW_${version}.zip"
+  local extract_dir
+
+  mkdir -p "${font_cache_dir}" "${font_dir}"
+
+  if [ -f "${font_dir}/MoralerspaceNeon-Regular.ttf" ] &&
+     [ -f "${font_dir}/MoralerspaceNeonHW-Regular.ttf" ]; then
+    info "Moralerspace fonts are already installed."
+    return 0
+  fi
+
+  download_if_missing \
+    "https://github.com/yuru7/moralerspace/releases/download/${version}/Moralerspace_${version}.zip" \
+    "${moralerspace_zip}"
+  download_if_missing \
+    "https://github.com/yuru7/moralerspace/releases/download/${version}/MoralerspaceHW_${version}.zip" \
+    "${moralerspace_hw_zip}"
+
+  extract_dir="$(mktemp -d)"
+  unzip -q "${moralerspace_zip}" -d "${extract_dir}"
+  unzip -q "${moralerspace_hw_zip}" -d "${extract_dir}"
+  find "${extract_dir}" -name '*.ttf' -exec mv -f {} "${font_dir}/" \;
+  rm -rf -- "${extract_dir}"
+  fc-cache -f "${font_dir}" >/dev/null 2>&1 || true
 }
 
 install_symlinks() {
