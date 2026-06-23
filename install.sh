@@ -45,19 +45,25 @@ get_dotfiles_dir() {
 }
 
 DOTFILES_DIR="$(get_dotfiles_dir)"
+APT_PACKAGES=(
+  bash-completion
+  git
+  curl
+  unzip
+  tree
+  htop
+  gh
+  jq
+  build-essential
+  cmake
+  libgtest-dev
+  ccache
+)
 
-install_tools() {
-  info "Installing base OS packages..."
+install_apt_packages() {
+  info "Installing apt packages..."
   sudo apt-get update
-  sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    bash-completion \
-    git \
-    curl \
-    unzip \
-    tree \
-    htop \
-    gh \
-    jq
+  sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "${APT_PACKAGES[@]}"
 }
 
 setup() {
@@ -135,15 +141,6 @@ install_fonts() {
   rm -rf -- ./tmp/Moralerspace*
 }
 
-install_cpp_tools() {
-  info "Installing C++ development tools..."
-  sudo apt-get install -y \
-    build-essential \
-    cmake \
-    libgtest-dev \
-    ccache
-}
-
 install_symlinks() {
   info "Setting up symlinks for dotfiles..."
   local ghq_root
@@ -178,7 +175,7 @@ post_instructions() {
 }
 
 main() {
-  install_tools
+  install_apt_packages
   setup
   install_mise
   install_symlinks
@@ -186,7 +183,6 @@ main() {
   install_tio
   install_uv
   install_fonts
-  install_cpp_tools
   post_instructions
 }
 
