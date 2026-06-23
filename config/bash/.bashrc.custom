@@ -3,6 +3,14 @@
 
 TERM='xterm-256color'
 
+if [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+  export PATH="$HOME/.local/bin:$PATH"
+fi
+
+if command -v mise >/dev/null 2>&1; then
+  eval "$(mise activate bash)"
+fi
+
 # For PS1
 GIT_PS1_SHOWDIRTYSTATE=true
 GIT_PS1_SHOWUPSTREAM=auto
@@ -34,11 +42,13 @@ alias cat='bat --paging=never'
 
 # For fzf
 # shellcheck disable=SC1091
-[ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.bash ] && source "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.bash
+if command -v fzf >/dev/null 2>&1; then
+  eval "$(fzf --bash)"
+fi
 export FZF_DEFAULT_COMMAND='fd --type f --hidden'
 export FZF_CTRL_T_COMMAND='fd --hidden'
 export FZF_ALT_C_COMMAND='fd --type d --hidden'
-export FZF_DEFAULT_OPTS='--height 95% --layout reverse --border'
+export FZF_DEFAULT_OPTS='--height 70% --layout reverse --border'
 export FZF_CTRL_T_OPTS='--walker-skip .git,node_modules,build
   --preview "bat -n --color=always {} 2> /dev/null || tree -C {}"
   --preview-window "~3"
@@ -59,9 +69,6 @@ _fzf_compgen_path() {
 _fzf_compgen_dir() {
   fd --type d --hidden . "$1"
 }
-
-# shellcheck disable=SC1091
-[ -f "$(ghq root)/github.com/junegunn/fzf-git.sh/fzf-git.sh" ] && source "$(ghq root)/github.com/junegunn/fzf-git.sh/fzf-git.sh"
 
 # cd to ghq repo, open in code
 gcd() {
@@ -159,8 +166,10 @@ rgf() {
       --bind 'ctrl-/:change-preview-window(down,70%,border-horizontal|hidden|)'
 }
 
-bind -x '"\C-o": "gcd"'
-bind -x '"\C-]": "git wsw"'
+if [[ $- == *i* ]]; then
+  bind -x '"\C-o": "gcd"'
+  bind -x '"\C-]": "git wsw"'
+fi
 
 if [[ -n "$WSL_DISTRO_NAME" ]]; then
   # For WSL, set Windows browser as default

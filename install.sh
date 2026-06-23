@@ -44,28 +44,26 @@ get_dotfiles_dir() {
   pwd
 }
 
-# shellcheck disable=SC2034
-DEBIAN_FRONTEND=noninteractive
-
 DOTFILES_DIR="$(get_dotfiles_dir)"
+APT_PACKAGES=(
+  bash-completion
+  git
+  curl
+  unzip
+  tree
+  htop
+  gh
+  jq
+  build-essential
+  cmake
+  libgtest-dev
+  ccache
+)
 
-install_tools() {
-  info "Installing CLI tools and utilities..."
+install_apt_packages() {
+  info "Installing apt packages..."
   sudo apt-get update
-  sudo apt-get install -y \
-    bash-completion \
-    git \
-    curl \
-    unzip \
-    tree \
-    htop \
-    bat \
-    ripgrep \
-    fd-find \
-    gh \
-    jq
-  sudo ln -nfs "$(which batcat)" /usr/local/bin/bat
-  sudo ln -nfs "$(which fdfind)" /usr/local/bin/fd
+  sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "${APT_PACKAGES[@]}"
 }
 
 setup() {
@@ -80,48 +78,37 @@ setup() {
   cd "${DOTFILES_DIR}"
 }
 
-install_ghq() {
-  GHQ_VERSION="1.10.1"
-  local current_version=""
-  if command -v ghq >/dev/null 2>&1; then
-    current_version="$(ghq --version 2>/dev/null | grep -Eo '[0-9]+(\.[0-9]+){1,2}' | head -n1 || true)"
-  fi
-  if [ "${current_version}" = "${GHQ_VERSION}" ]; then
-    info "ghq ${GHQ_VERSION} is already installed."
+mise_bin() {
+  if command -v mise >/dev/null 2>&1; then
+    command -v mise
     return 0
   fi
-  if [ -n "${current_version}" ]; then
-    info "Updating ghq: ${current_version} -> ${GHQ_VERSION}"
-  else
-    info "Installing ghq ${GHQ_VERSION}..."
+  if [ -x "${HOME}/.local/bin/mise" ]; then
+    printf '%s\n' "${HOME}/.local/bin/mise"
+    return 0
   fi
-  rm -rf ./tmp/ghq ./tmp/ghq.zip
-  mkdir -p ./tmp/ghq
-  curl -fsSL \
-    -o ./tmp/ghq.zip \
-    "https://github.com/x-motemen/ghq/releases/download/v${GHQ_VERSION}/ghq_linux_amd64.zip"
-  unzip -q ./tmp/ghq.zip -d ./tmp/ghq
-  sudo install -D ./tmp/ghq/ghq_linux_amd64/ghq /usr/local/bin/ghq
-  sudo install -D ./tmp/ghq/ghq_linux_amd64/misc/bash/_ghq /usr/share/bash-completion/completions/_ghq
-  rm -rf ./tmp/ghq ./tmp/ghq.zip
+  return 1
 }
 
-install_fzf() {
-  if ! command -v fzf &>/dev/null; then
-    info "Installing fzf..."
-    ghq get --shallow "https://github.com/junegunn/fzf.git"
-    "$(ghq root)/github.com/junegunn/fzf/install" --xdg --key-bindings --completion --no-update-rc
-  else
-    info "fzf is already installed."
+install_mise() {
+  if mise_bin >/dev/null 2>&1; then
+    info "mise is already installed."
+    return 0
   fi
+
+  info "Installing mise..."
+  curl -fsSL https://mise.run | MISE_QUIET=1 sh
 }
 
-install_btm() {
-  if ! command -v btm &>/dev/null; then
-    info "Installing btm..."
-    curl -sLo ./tmp/bottom.deb "https://github.com/ClementTsang/bottom/releases/download/0.11.1/bottom_0.11.1-1_amd64.deb"
-    sudo dpkg -i ./tmp/bottom.deb
-  fi
+install_mise_tools() {
+  info "Installing mise-managed tools..."
+  local mise
+  local mise_config
+  mise="$(mise_bin)" || err_exit "mise is not installed."
+  mise_config="${HOME}/.config/mise/config.toml"
+  "${mise}" trust "${mise_config}"
+  # Install from the global mise config, independent of the dotfiles repo cwd.
+  "${mise}" install -C "${HOME}"
 }
 
 install_tio() {
@@ -144,8 +131,8 @@ install_uv() {
 install_fonts() {
   info "Installing fonts..."
   # Moralerspace fonts
-  curl -sLo ./tmp/Moralerspace_v2.0.0.zip "https://github.com/yuru7/moralerspace/releases/download/v2.0.0/Moralerspace_v2.0.0.zip"
-  curl -sLo ./tmp/MoralerspaceHW_v2.0.0.zip "https://github.com/yuru7/moralerspace/releases/download/v2.0.0/MoralerspaceHW_v2.0.0.zip"
+  curl -fsSLo ./tmp/Moralerspace_v2.0.0.zip "https://github.com/yuru7/moralerspace/releases/download/v2.0.0/Moralerspace_v2.0.0.zip"
+  curl -fsSLo ./tmp/MoralerspaceHW_v2.0.0.zip "https://github.com/yuru7/moralerspace/releases/download/v2.0.0/MoralerspaceHW_v2.0.0.zip"
   unzip ./tmp/Moralerspace_v2.0.0.zip -d ./tmp
   unzip ./tmp/MoralerspaceHW_v2.0.0.zip -d ./tmp
   mkdir -p "${HOME}/.local/share/fonts"
@@ -154,21 +141,15 @@ install_fonts() {
   rm -rf -- ./tmp/Moralerspace*
 }
 
-install_cpp_tools() {
-  info "Installing C++ development tools..."
-  sudo apt-get install -y \
-    build-essential \
-    cmake \
-    libgtest-dev \
-    ccache
-}
-
 install_symlinks() {
   info "Setting up symlinks for dotfiles..."
+  local ghq_root
+  ghq_root="$(git config --get ghq.root || true)"
+  ghq_root="${ghq_root:-${HOME}/ghq}"
   # dotfiles directory
-  if [ ! -d "$(ghq root)/github.com/teruyamato0731/dotfiles" ]; then
-    mkdir -p "$(ghq root)/github.com/teruyamato0731"
-    ln -nfs "${DOTFILES_DIR}" "$(ghq root)/github.com/teruyamato0731/dotfiles"
+  if [ ! -d "${ghq_root}/github.com/teruyamato0731/dotfiles" ]; then
+    mkdir -p "${ghq_root}/github.com/teruyamato0731"
+    ln -nfs "${DOTFILES_DIR}" "${ghq_root}/github.com/teruyamato0731/dotfiles"
   fi
   # .gitconfig.custom
   ln -nfs "${DOTFILES_DIR}/config/git/.gitconfig.custom" "${HOME}/.gitconfig.custom"
@@ -180,6 +161,9 @@ install_symlinks() {
   # git ignore global
   mkdir -p "${HOME}/.config/git"
   ln -nfs "${DOTFILES_DIR}/config/git/ignore" "${HOME}/.config/git/ignore"
+  # mise config
+  mkdir -p "${HOME}/.config/mise"
+  ln -nfs "${DOTFILES_DIR}/config/mise/config.toml" "${HOME}/.config/mise/config.toml"
 }
 
 post_instructions() {
@@ -192,16 +176,14 @@ post_instructions() {
 }
 
 main() {
-  install_tools
+  install_apt_packages
   setup
-  install_ghq
-  install_fzf
+  install_mise
+  install_symlinks
+  install_mise_tools
   install_tio
-  install_btm
   install_uv
   install_fonts
-  install_cpp_tools
-  install_symlinks
   post_instructions
 }
 

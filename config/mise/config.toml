@@ -1,0 +1,12 @@
+[settings]
+experimental = true
+disable_backends = ["asdf", "vfox"]
+minimum_release_age = "7d"
+
+[tools]
+"aqua:x-motemen/ghq" = "1.10.1"
+"aqua:junegunn/fzf" = "0.73.1"
+"aqua:sharkdp/bat" = "0.26.1"
+"aqua:BurntSushi/ripgrep" = "15.1.0"
+"aqua:sharkdp/fd" = "10.4.2"
+"aqua:ClementTsang/bottom" = "0.14.1"

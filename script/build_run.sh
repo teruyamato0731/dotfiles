@@ -20,7 +20,11 @@ main() {
   docker build -t "${IMAGE_NAME}" -f "${DOCKERFILE_PATH}" . || die "Failed to build Docker image."
 
   info "Running Docker container from image: ${IMAGE_NAME}"
-  docker run --rm -it "${IMAGE_NAME}" || die "Failed to run Docker container."
+  local docker_run_opts=(--rm)
+  if [ -t 0 ] && [ -t 1 ]; then
+    docker_run_opts+=(-it)
+  fi
+  docker run "${docker_run_opts[@]}" "${IMAGE_NAME}" || die "Failed to run Docker container."
 }
 
 main "$@"
