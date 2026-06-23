@@ -111,6 +111,85 @@ install_mise_tools() {
   "${mise}" install -C "${HOME}"
 }
 
+install_completion_file() {
+  local src="$1"
+  local dest="$2"
+
+  if [ -f "${src}" ]; then
+    cp -f "${src}" "${dest}"
+  else
+    warn "Completion file not found: ${src}"
+  fi
+}
+
+install_bash_completions() {
+  info "Installing bash completions..."
+  local mise
+  local completion_dir
+  local ghq_bin
+  local bat_bin
+  local rg_bin
+  local fd_bin
+  local btm_bin
+  local uv_bin
+  local uvx_bin
+
+  mise="$(mise_bin)" || err_exit "mise is not installed."
+  completion_dir="${XDG_DATA_HOME:-${HOME}/.local/share}/bash-completion/completions"
+  mkdir -p "${completion_dir}"
+
+  "${mise}" completion bash --include-bash-completion-lib > "${completion_dir}/mise"
+
+  ghq_bin="$("${mise}" which ghq 2>/dev/null || true)"
+  if [ -n "${ghq_bin}" ]; then
+    install_completion_file "$(dirname "${ghq_bin}")/misc/bash/_ghq" "${completion_dir}/ghq"
+  else
+    warn "ghq is not installed by mise; skipping ghq completion."
+  fi
+
+  bat_bin="$("${mise}" which bat 2>/dev/null || true)"
+  if [ -n "${bat_bin}" ]; then
+    install_completion_file "$(dirname "${bat_bin}")/autocomplete/bat.bash" "${completion_dir}/bat"
+  else
+    warn "bat is not installed by mise; skipping bat completion."
+  fi
+
+  rg_bin="$("${mise}" which rg 2>/dev/null || true)"
+  if [ -n "${rg_bin}" ]; then
+    install_completion_file "$(dirname "${rg_bin}")/complete/rg.bash" "${completion_dir}/rg"
+  else
+    warn "rg is not installed by mise; skipping rg completion."
+  fi
+
+  fd_bin="$("${mise}" which fd 2>/dev/null || true)"
+  if [ -n "${fd_bin}" ]; then
+    install_completion_file "$(dirname "${fd_bin}")/autocomplete/fd.bash" "${completion_dir}/fd"
+  else
+    warn "fd is not installed by mise; skipping fd completion."
+  fi
+
+  btm_bin="$("${mise}" which btm 2>/dev/null || true)"
+  if [ -n "${btm_bin}" ]; then
+    install_completion_file "$(dirname "${btm_bin}")/completion/btm.bash" "${completion_dir}/btm"
+  else
+    warn "btm is not installed by mise; skipping btm completion."
+  fi
+
+  uv_bin="$("${mise}" which uv 2>/dev/null || true)"
+  if [ -n "${uv_bin}" ]; then
+    "${uv_bin}" generate-shell-completion bash > "${completion_dir}/uv"
+  else
+    warn "uv is not installed by mise; skipping uv completion."
+  fi
+
+  uvx_bin="$("${mise}" which uvx 2>/dev/null || true)"
+  if [ -n "${uvx_bin}" ]; then
+    "${uvx_bin}" --generate-shell-completion bash > "${completion_dir}/uvx"
+  else
+    warn "uvx is not installed by mise; skipping uvx completion."
+  fi
+}
+
 install_tio() {
   # snap がある場合のみ
   if command -v snap &>/dev/null; then
@@ -211,6 +290,7 @@ main() {
   install_mise
   install_symlinks
   install_mise_tools
+  install_bash_completions
   install_tio
   install_fonts
   post_instructions
