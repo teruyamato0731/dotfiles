@@ -1,0 +1,17 @@
+[mgr]
+show_hidden = true
+sort_by = "natural"
+sort_sensitive = false
+sort_reverse = false
+sort_dir_first = true
+linemode = "size"
+
+[preview]
+tab_size = 2
+max_width = 1000
+max_height = 1000
+
+[opener]
+edit = [
+  { run = '${EDITOR:-nano} %s', block = true, for = "unix" },
+]

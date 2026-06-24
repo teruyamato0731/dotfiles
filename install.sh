@@ -50,6 +50,7 @@ APT_PACKAGES=(
   bash-completion
   git
   curl
+  file
   unzip
   tree
   htop
@@ -133,6 +134,7 @@ install_bash_completions() {
   local btm_bin
   local uv_bin
   local uvx_bin
+  local yazi_bin
 
   mise="$(mise_bin)" || err_exit "mise is not installed."
   completion_dir="${XDG_DATA_HOME:-${HOME}/.local/share}/bash-completion/completions"
@@ -187,6 +189,14 @@ install_bash_completions() {
     "${uvx_bin}" --generate-shell-completion bash > "${completion_dir}/uvx"
   else
     warn "uvx is not installed by mise; skipping uvx completion."
+  fi
+
+  yazi_bin="$("${mise}" which yazi 2>/dev/null || true)"
+  if [ -n "${yazi_bin}" ]; then
+    install_completion_file "$(dirname "${yazi_bin}")/completions/yazi.bash" "${completion_dir}/yazi"
+    install_completion_file "$(dirname "${yazi_bin}")/completions/ya.bash" "${completion_dir}/ya"
+  else
+    warn "yazi is not installed by mise; skipping yazi completion."
   fi
 }
 
@@ -273,6 +283,12 @@ install_symlinks() {
   # mise config
   mkdir -p "${HOME}/.config/mise"
   ln -nfs "${DOTFILES_DIR}/config/mise/config.toml" "${HOME}/.config/mise/config.toml"
+  # yazi config
+  mkdir -p "${HOME}/.config/yazi"
+  ln -nfs "${DOTFILES_DIR}/config/yazi/init.lua" "${HOME}/.config/yazi/init.lua"
+  ln -nfs "${DOTFILES_DIR}/config/yazi/yazi.toml" "${HOME}/.config/yazi/yazi.toml"
+  ln -nfs "${DOTFILES_DIR}/config/yazi/keymap.toml" "${HOME}/.config/yazi/keymap.toml"
+  ln -nfs "${DOTFILES_DIR}/config/yazi/plugins" "${HOME}/.config/yazi/plugins"
 }
 
 post_instructions() {
