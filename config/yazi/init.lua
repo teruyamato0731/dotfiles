@@ -41,18 +41,21 @@ Header:children_add(function()
     return ""
   end
 
-  local git = git_info()
-  if git then
-    return ui.Line {
-      ui.Span(ya.user_name() .. " ➜ "):fg("green"),
-      ui.Span("(" .. git.branch .. ") "):fg("cyan"),
-    }
+  return ui.Span(ya.user_name() .. " ➜ "):fg("green")
+end, 500, Header.LEFT)
+
+Header:children_add(function()
+  if ya.target_family() ~= "unix" then
+    return ""
   end
 
-  return ui.Line {
-    ui.Span(ya.user_name() .. " ➜ "):fg("green"),
-  }
-end, 500, Header.LEFT)
+  local git = git_info()
+  if not git then
+    return ""
+  end
+
+  return ui.Span(" (" .. git.branch .. ") "):fg("cyan")
+end, 2000, Header.LEFT)
 
 Status:children_add(function()
   local h = cx.active.current.hovered
