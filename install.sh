@@ -288,6 +288,7 @@ install_symlinks() {
   ln -nfs "${DOTFILES_DIR}/config/yazi/init.lua" "${HOME}/.config/yazi/init.lua"
   ln -nfs "${DOTFILES_DIR}/config/yazi/yazi.toml" "${HOME}/.config/yazi/yazi.toml"
   ln -nfs "${DOTFILES_DIR}/config/yazi/keymap.toml" "${HOME}/.config/yazi/keymap.toml"
+  ln -nfs "${DOTFILES_DIR}/config/yazi/theme.toml" "${HOME}/.config/yazi/theme.toml"
   ln -nfs "${DOTFILES_DIR}/config/yazi/plugins" "${HOME}/.config/yazi/plugins"
 }
 
