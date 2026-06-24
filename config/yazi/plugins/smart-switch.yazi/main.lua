@@ -3,7 +3,8 @@
 local function entry(_, job)
   local idx = tonumber(job.args[1])
   if not idx then
-    return ya.err("smart-switch: missing tab index")
+    ya.dbg("smart-switch: missing tab index")
+    return
   end
 
   local cur = cx.active.current

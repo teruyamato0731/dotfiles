@@ -55,5 +55,5 @@ desc = "Go ghq root"
 
 [[mgr.prepend_keymap]]
 on   = [ "g", "r" ]
-run  = 'shell -- ya emit cd "$(git rev-parse --show-toplevel)"'
+run  = 'shell -- r="$(git rev-parse --show-toplevel 2>/dev/null)" && [ -n "$r" ] && ya emit cd "$r"'
 desc = "Go git root"

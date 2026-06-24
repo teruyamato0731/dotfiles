@@ -158,7 +158,10 @@ y() {
   command rm -f -- "$tmp"
 
   if [ -n "${cwd}" ] && [ "${cwd}" != "${PWD}" ] && [ -d "${cwd}" ]; then
-    builtin cd -- "${cwd}" || return
+    builtin cd -- "${cwd}" || {
+      echo "failed to cd to yazi cwd: ${cwd}" >&2
+      return 1
+    }
   fi
 
   return "${status}"
