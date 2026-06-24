@@ -39,7 +39,7 @@ end
 if ya.target_family() == "unix" then
   Header:children_add(function()
     return ui.Line {
-      ui.Span(ya.user_name()):fg("green"),
+      ui.Span(ya.user_name() or "unknown"):fg("green"),
       ui.Span(" ➜ "):fg("white"),
     }
   end, 500, Header.LEFT)
