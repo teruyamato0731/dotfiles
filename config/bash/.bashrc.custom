@@ -34,6 +34,8 @@ if [ -d "$HOME/dotfiles/bin" ]; then
     export PATH="$HOME/dotfiles/bin:$PATH"
 fi
 
+export HISTIGNORE="${HISTIGNORE:+${HISTIGNORE}:}y:y *"
+
 # Aliases
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
