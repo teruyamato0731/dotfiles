@@ -36,26 +36,27 @@ local function git_info()
   }
 end
 
-Header:children_add(function()
-  if ya.target_family() ~= "unix" then
-    return ""
-  end
+if ya.target_family() == "unix" then
+  Header:children_add(function()
+    return ui.Line {
+      ui.Span(ya.user_name()):fg("green"),
+      ui.Span(" ➜ "):fg("white"),
+    }
+  end, 500, Header.LEFT)
 
-  return ui.Span(ya.user_name() .. " ➜ "):fg("green")
-end, 500, Header.LEFT)
+  Header:children_add(function()
+    local git = git_info()
+    if not git then
+      return ""
+    end
 
-Header:children_add(function()
-  if ya.target_family() ~= "unix" then
-    return ""
-  end
-
-  local git = git_info()
-  if not git then
-    return ""
-  end
-
-  return ui.Span(" (" .. git.branch .. ") "):fg("cyan")
-end, 2000, Header.LEFT)
+    return ui.Line {
+      ui.Span(" ("):fg("cyan"),
+      ui.Span(git.branch):fg("lightred"),
+      ui.Span(") "):fg("cyan"),
+    }
+  end, 2000, Header.LEFT)
+end
 
 Status:children_add(function()
   local h = cx.active.current.hovered
