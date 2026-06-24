@@ -285,7 +285,10 @@ install_symlinks() {
   ln -nfs "${DOTFILES_DIR}/config/mise/config.toml" "${HOME}/.config/mise/config.toml"
   # yazi config
   mkdir -p "${HOME}/.config/yazi"
+  ln -nfs "${DOTFILES_DIR}/config/yazi/init.lua" "${HOME}/.config/yazi/init.lua"
   ln -nfs "${DOTFILES_DIR}/config/yazi/yazi.toml" "${HOME}/.config/yazi/yazi.toml"
+  ln -nfs "${DOTFILES_DIR}/config/yazi/keymap.toml" "${HOME}/.config/yazi/keymap.toml"
+  ln -nfs "${DOTFILES_DIR}/config/yazi/plugins" "${HOME}/.config/yazi/plugins"
 }
 
 post_instructions() {
