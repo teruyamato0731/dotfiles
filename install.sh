@@ -63,6 +63,32 @@ APT_PACKAGES=(
   ccache
 )
 
+setup_github_cli_apt_repo() {
+  info "Setting up GitHub CLI apt repository..."
+
+  local keyring="/etc/apt/keyrings/githubcli-archive-keyring.gpg"
+  local source_list="/etc/apt/sources.list.d/github-cli.list"
+  local arch
+
+  arch="$(dpkg --print-architecture)"
+
+  sudo mkdir -p -m 755 /etc/apt/keyrings
+  sudo mkdir -p -m 755 /etc/apt/sources.list.d
+
+  if [ ! -f "${keyring}" ]; then
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg |
+      sudo tee "${keyring}" >/dev/null
+    sudo chmod go+r "${keyring}"
+  fi
+
+  echo "deb [arch=${arch} signed-by=${keyring}] https://cli.github.com/packages stable main" |
+    sudo tee "${source_list}" >/dev/null
+}
+
+install_apt_repositories() {
+  setup_github_cli_apt_repo
+}
+
 install_apt_packages() {
   info "Installing apt packages..."
   sudo apt-get update
@@ -303,6 +329,7 @@ post_instructions() {
 }
 
 main() {
+  install_apt_repositories
   install_apt_packages
   setup
   install_mise
