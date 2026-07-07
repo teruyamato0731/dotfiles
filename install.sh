@@ -55,7 +55,6 @@ APT_PACKAGES=(
   7zip
   tree
   htop
-  gh
   jq
   build-essential
   cmake
@@ -128,6 +127,7 @@ install_bash_completions() {
   info "Installing bash completions..."
   local mise
   local completion_dir
+  local gh_bin
   local ghq_bin
   local bat_bin
   local rg_bin
@@ -142,6 +142,13 @@ install_bash_completions() {
   mkdir -p "${completion_dir}"
 
   "${mise}" completion bash --include-bash-completion-lib > "${completion_dir}/mise"
+
+  gh_bin="$("${mise}" which gh 2>/dev/null || true)"
+  if [ -n "${gh_bin}" ]; then
+    "${gh_bin}" completion -s bash > "${completion_dir}/gh"
+  else
+    warn "gh is not installed by mise; skipping gh completion."
+  fi
 
   ghq_bin="$("${mise}" which ghq 2>/dev/null || true)"
   if [ -n "${ghq_bin}" ]; then
