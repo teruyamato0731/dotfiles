@@ -50,6 +50,7 @@ APT_PACKAGES=(
   bash-completion
   git
   curl
+  ca-certificates
   file
   unzip
   7zip
@@ -63,22 +64,40 @@ APT_PACKAGES=(
   ccache
 )
 
+install_apt_bootstrap_packages() {
+  if command -v curl >/dev/null 2>&1 &&
+     dpkg -s ca-certificates >/dev/null 2>&1; then
+    return 0
+  fi
+
+  info "Installing apt bootstrap packages..."
+  sudo apt-get update
+  sudo DEBIAN_FRONTEND=noninteractive apt-get install -y curl ca-certificates
+}
+
 setup_github_cli_apt_repo() {
   info "Setting up GitHub CLI apt repository..."
 
   local keyring="/etc/apt/keyrings/githubcli-archive-keyring.gpg"
   local source_list="/etc/apt/sources.list.d/github-cli.list"
   local arch
+  local tmp_keyring
 
+  install_apt_bootstrap_packages
   arch="$(dpkg --print-architecture)"
 
   sudo mkdir -p -m 755 /etc/apt/keyrings
   sudo mkdir -p -m 755 /etc/apt/sources.list.d
 
   if [ ! -f "${keyring}" ]; then
-    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg |
-      sudo tee "${keyring}" >/dev/null
-    sudo chmod go+r "${keyring}"
+    tmp_keyring="$(mktemp)"
+    if curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg -o "${tmp_keyring}"; then
+      sudo install -m 0644 "${tmp_keyring}" "${keyring}"
+      rm -f -- "${tmp_keyring}"
+    else
+      rm -f -- "${tmp_keyring}"
+      return 1
+    fi
   fi
 
   echo "deb [arch=${arch} signed-by=${keyring}] https://cli.github.com/packages stable main" |
