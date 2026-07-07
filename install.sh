@@ -52,6 +52,7 @@ APT_PACKAGES=(
   curl
   file
   unzip
+  7zip
   tree
   htop
   gh
