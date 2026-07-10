@@ -11,6 +11,11 @@ if command -v mise >/dev/null 2>&1; then
   eval "$(mise activate bash)"
 fi
 
+if command -v edit >/dev/null 2>&1; then
+  export VISUAL=edit
+  export EDITOR=edit
+fi
+
 # For PS1
 GIT_PS1_SHOWDIRTYSTATE=true
 GIT_PS1_SHOWUPSTREAM=auto
