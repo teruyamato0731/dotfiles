@@ -1,24 +1,8 @@
-# shellcheck disable=SC2148
+# shellcheck shell=bash
 # shellcheck disable=SC2034
-
-TERM='xterm-256color'
-export MANPAGER="bat -plman"
-
-if [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
-  export PATH="$HOME/.local/bin:$PATH"
-fi
-
-if [ -d "$HOME/dotfiles/bin" ] && [[ ":$PATH:" != *":$HOME/dotfiles/bin:"* ]]; then
-  export PATH="$HOME/dotfiles/bin:$PATH"
-fi
 
 if command -v mise >/dev/null 2>&1; then
   eval "$(mise activate bash)"
-fi
-
-if command -v edit >/dev/null 2>&1; then
-  export VISUAL=edit
-  export EDITOR=edit
 fi
 
 # For PS1
@@ -40,20 +24,8 @@ _shorten_path() {
 # shellcheck disable=SC2154
 PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\] ➜ \[\033[01;34m\]$(_shorten_path)\[\033[00m\]$(__git_ps1 " \[\033[0;36m\](\[\033[1;31m\]%s\[\033[0;36m\])\[\033[00m\]") \n\$ '
 
-# Aliases
-alias ls='ls --color=auto'
-alias grep='grep --color=auto'
-alias ll='ls -alF'
-alias cat='bat --paging=never'
-
 # For fzf
 # shellcheck disable=SC1091
-export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git'
-export FZF_CTRL_T_COMMAND='fd --hidden --exclude .git'
-export FZF_ALT_C_COMMAND='fd --type d --hidden --exclude .git'
-export FZF_DEFAULT_OPTS='--height 70% --layout reverse --border'
-export FZF_CTRL_T_OPTS='--preview "bat -n --color=always {} 2> /dev/null || tree -C {}"'
-export FZF_ALT_C_OPTS='--preview "tree --gitignore -C {}"'
 if command -v fzf >/dev/null 2>&1; then
   eval "$(fzf --bash)"
 fi

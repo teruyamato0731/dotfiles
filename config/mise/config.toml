@@ -3,6 +3,24 @@ experimental = true
 disable_backends = ["asdf", "vfox"]
 minimum_release_age = "7d"
 
+[env]
+_.path = ["{{env.HOME}}/.local/bin", "{{env.HOME}}/dotfiles/bin"]
+TERM = 'xterm-256color'
+MANPAGER = "bat -plman"
+VISUAL = "edit"
+EDITOR = "edit"
+
+FZF_DEFAULT_COMMAND = "fd --type f --hidden --exclude .git"
+FZF_CTRL_T_COMMAND = "fd --hidden --exclude .git"
+FZF_ALT_C_COMMAND = "fd --type d --hidden --exclude .git"
+FZF_DEFAULT_OPTS = "--height 70% --layout reverse --border"
+
+[shell_alias]
+ls = 'ls --color=auto'
+ll = 'ls -alF'
+grep = 'grep --color=auto'
+cat = 'bat --paging=never'
+
 [tools]
 "aqua:x-motemen/ghq" = "1.10.1"
 "aqua:cli/cli" = "2.96.0"
