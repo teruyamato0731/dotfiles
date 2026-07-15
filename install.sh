@@ -23,28 +23,7 @@ err_exit() {
   exit 1
 }
 
-get_dotfiles_dir() {
-  # Decide dotfiles directory based on how the script was invoked.
-  # - If DOTFILES_DIR env is set, prefer it.
-  # - If piped or redirected, fall back to $HOME/dotfiles.
-  # - Otherwise, use the directory containing this script.
-  if [ -n "${DOTFILES_DIR:-}" ]; then
-    printf '%s\n' "${DOTFILES_DIR}"
-    return 0
-  fi
-
-  local src
-  src="${BASH_SOURCE[0]:-$0}"
-  if [[ "${src}" == /dev/fd/* || "${src}" == /proc/* || ! -e "${src}" ]]; then
-    printf '%s\n' "${HOME}/dotfiles"
-    return 0
-  fi
-
-  cd -P "$(dirname "${src}")" >/dev/null 2>&1
-  pwd
-}
-
-DOTFILES_DIR="$(get_dotfiles_dir)"
+DOTFILES_DIR="${HOME}/dotfiles"
 CACHE_DIR="${XDG_CACHE_HOME:-${HOME}/.cache}/dotfiles"
 APT_PACKAGES=(
   bash-completion
