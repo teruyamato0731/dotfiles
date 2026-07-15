@@ -266,13 +266,6 @@ install_symlinks() {
     mkdir -p "${ghq_root}/github.com/teruyamato0731"
     ln -nfs "${DOTFILES_DIR}" "${ghq_root}/github.com/teruyamato0731/dotfiles"
   fi
-  # .gitconfig.custom
-  ln -nfs "${DOTFILES_DIR}/.config/git/.gitconfig.custom" "${HOME}/.gitconfig.custom"
-  # .bashrc.custom
-  ln -nfs "${DOTFILES_DIR}/.config/bash/.bashrc.custom" "${HOME}/.bashrc.custom"
-  if ! grep -q 'source ~/.bashrc.custom' "${HOME}/.bashrc"; then
-    echo '[ -f ~/.bashrc.custom ] && source ~/.bashrc.custom' >> "${HOME}/.bashrc"
-  fi
   mkdir -p "${HOME}/.config"
   # mise config
   ln -nfs "${DOTFILES_DIR}/.config/mise" "${HOME}/.config/mise"

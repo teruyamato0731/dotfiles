@@ -8,6 +8,18 @@ dotfiles.root = "~/dotfiles"
 dotfiles.default_mode = "symlink"
 
 [dotfiles]
+"~/.profile/mise-activate" = { block = '''
+if command -v mise >/dev/null 2>&1; then
+  eval "$(mise activate bash --shims)"
+fi
+''' }
+"~/.bashrc/custom" = { block = '''
+if [ -f ~/.bashrc.custom ]; then
+  source ~/.bashrc.custom
+fi
+''' }
+"~/.bashrc.custom" = "~/dotfiles/.config/bash/.bashrc.custom"
+"~/.gitconfig.custom" = "~/dotfiles/.config/git/.gitconfig.custom"
 "~/.config/git" = {}
 "~/.config/yazi" = {}
 
