@@ -296,9 +296,13 @@ main() {
   fi
 
   case "${profile}" in
-    dev|host)
+    (dev|host)
       ;;
-    *)
+    (-h|--help)
+      usage
+      return 0
+      ;;
+    (*)
       usage
       err_exit "Unknown profile: ${profile}"
       ;;
