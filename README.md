@@ -35,6 +35,13 @@ git clone https://github.com/teruyamato0731/dotfiles.git ~/dotfiles
 ~/dotfiles/install.sh
 ```
 
+The installation profile defaults to `dev`, which installs the CLI-focused development environment. Use the `host` profile on a physical Ubuntu host to also install fonts and `tio`:
+
+```bash
+~/dotfiles/install.sh dev
+~/dotfiles/install.sh host
+```
+
 Or use curl:
 
 ```bash

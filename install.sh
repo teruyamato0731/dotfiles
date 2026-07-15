@@ -7,7 +7,7 @@ set -euo pipefail
 #   - sudo
 #   - apt-get
 # Usage:
-#   ./install.sh
+#   ./install.sh [dev|host]
 # After running the script, please execute the following command:
 #   git config --global include.path '~/.gitconfig.custom'
 
@@ -21,6 +21,16 @@ warn() {
 err_exit() {
   printf '\033[31m[Error] %s:\n  %s\033[m\n' "$0:${BASH_LINENO[0]}" "$*" >&2
   exit 1
+}
+
+usage() {
+  cat <<EOF
+Usage: $0 [profile]
+
+Profiles:
+  dev   CLI-focused development environment (default)
+  host  dev plus fonts and tio for a physical Ubuntu host
+EOF
 }
 
 DOTFILES_DIR="${HOME}/dotfiles"
@@ -278,14 +288,32 @@ post_instructions() {
 }
 
 main() {
+  local profile="${1:-dev}"
+
+  if [ "$#" -gt 1 ]; then
+    usage
+    err_exit "Expected at most one profile argument."
+  fi
+
+  case "${profile}" in
+    dev|host)
+      ;;
+    *)
+      usage
+      err_exit "Unknown profile: ${profile}"
+      ;;
+  esac
+
   install_apt_packages
   setup
   install_mise
   install_symlinks
   bootstrap_mise
   install_bash_completions
-  install_tio
-  install_fonts
+  if [ "${profile}" = "host" ]; then
+    install_tio
+    install_fonts
+  fi
   post_instructions
 }
 
