@@ -23,28 +23,7 @@ err_exit() {
   exit 1
 }
 
-get_dotfiles_dir() {
-  # Decide dotfiles directory based on how the script was invoked.
-  # - If DOTFILES_DIR env is set, prefer it.
-  # - If piped or redirected, fall back to $HOME/dotfiles.
-  # - Otherwise, use the directory containing this script.
-  if [ -n "${DOTFILES_DIR:-}" ]; then
-    printf '%s\n' "${DOTFILES_DIR}"
-    return 0
-  fi
-
-  local src
-  src="${BASH_SOURCE[0]:-$0}"
-  if [[ "${src}" == /dev/fd/* || "${src}" == /proc/* || ! -e "${src}" ]]; then
-    printf '%s\n' "${HOME}/dotfiles"
-    return 0
-  fi
-
-  cd -P "$(dirname "${src}")" >/dev/null 2>&1
-  pwd
-}
-
-DOTFILES_DIR="$(get_dotfiles_dir)"
+DOTFILES_DIR="${HOME}/dotfiles"
 CACHE_DIR="${XDG_CACHE_HOME:-${HOME}/.cache}/dotfiles"
 APT_PACKAGES=(
   bash-completion
@@ -101,15 +80,14 @@ install_mise() {
   curl -fsSL https://mise.run | MISE_QUIET=1 sh
 }
 
-install_mise_tools() {
-  info "Installing mise-managed tools..."
+bootstrap_mise() {
+  info "Applying mise bootstrap configuration..."
   local mise
   local mise_config
   mise="$(mise_bin)" || err_exit "mise is not installed."
   mise_config="${HOME}/.config/mise/config.toml"
   "${mise}" trust "${mise_config}"
-  # Install from the global mise config, independent of the dotfiles repo cwd.
-  "${mise}" install -C "${HOME}"
+  "${mise}" bootstrap --yes -C "${HOME}"
 }
 
 install_completion_file() {
@@ -279,25 +257,15 @@ install_symlinks() {
     ln -nfs "${DOTFILES_DIR}" "${ghq_root}/github.com/teruyamato0731/dotfiles"
   fi
   # .gitconfig.custom
-  ln -nfs "${DOTFILES_DIR}/config/git/.gitconfig.custom" "${HOME}/.gitconfig.custom"
+  ln -nfs "${DOTFILES_DIR}/.config/git/.gitconfig.custom" "${HOME}/.gitconfig.custom"
   # .bashrc.custom
-  ln -nfs "${DOTFILES_DIR}/config/bash/.bashrc.custom" "${HOME}/.bashrc.custom"
+  ln -nfs "${DOTFILES_DIR}/.config/bash/.bashrc.custom" "${HOME}/.bashrc.custom"
   if ! grep -q 'source ~/.bashrc.custom' "${HOME}/.bashrc"; then
     echo '[ -f ~/.bashrc.custom ] && source ~/.bashrc.custom' >> "${HOME}/.bashrc"
   fi
-  # git ignore global
-  mkdir -p "${HOME}/.config/git"
-  ln -nfs "${DOTFILES_DIR}/config/git/ignore" "${HOME}/.config/git/ignore"
+  mkdir -p "${HOME}/.config"
   # mise config
-  mkdir -p "${HOME}/.config/mise"
-  ln -nfs "${DOTFILES_DIR}/config/mise/config.toml" "${HOME}/.config/mise/config.toml"
-  # yazi config
-  mkdir -p "${HOME}/.config/yazi"
-  ln -nfs "${DOTFILES_DIR}/config/yazi/init.lua" "${HOME}/.config/yazi/init.lua"
-  ln -nfs "${DOTFILES_DIR}/config/yazi/yazi.toml" "${HOME}/.config/yazi/yazi.toml"
-  ln -nfs "${DOTFILES_DIR}/config/yazi/keymap.toml" "${HOME}/.config/yazi/keymap.toml"
-  ln -nfs "${DOTFILES_DIR}/config/yazi/theme.toml" "${HOME}/.config/yazi/theme.toml"
-  ln -nfs "${DOTFILES_DIR}/config/yazi/plugins" "${HOME}/.config/yazi/plugins"
+  ln -nfs "${DOTFILES_DIR}/.config/mise" "${HOME}/.config/mise"
 }
 
 post_instructions() {
@@ -314,7 +282,7 @@ main() {
   setup
   install_mise
   install_symlinks
-  install_mise_tools
+  bootstrap_mise
   install_bash_completions
   install_tio
   install_fonts

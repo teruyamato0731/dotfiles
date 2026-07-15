@@ -1,7 +1,15 @@
+min_version = "2026.7.6"
+
 [settings]
 experimental = true
 disable_backends = ["asdf", "vfox"]
 minimum_release_age = "7d"
+dotfiles.root = "~/dotfiles"
+dotfiles.default_mode = "symlink"
+
+[dotfiles]
+"~/.config/git" = {}
+"~/.config/yazi" = {}
 
 [env]
 _.path = ["{{env.HOME}}/dotfiles/bin"]
