@@ -5,7 +5,6 @@ minimum_release_age = "7d"
 
 [env]
 _.path = ["{{env.HOME}}/dotfiles/bin"]
-TERM = 'xterm-256color'
 MANPAGER = "bat -plman"
 VISUAL = "edit"
 EDITOR = "edit"

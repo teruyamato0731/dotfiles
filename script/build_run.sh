@@ -24,6 +24,10 @@ main() {
   if [ -t 0 ] && [ -t 1 ]; then
     docker_run_opts+=(-it)
   fi
+  # ホスト側の TERM 環境変数をコンテナに引き継ぐ
+  if [ -n "${TERM:-}" ]; then
+    docker_run_opts+=(-e "TERM=$TERM")
+  fi
   docker run "${docker_run_opts[@]}" "${IMAGE_NAME}" || die "Failed to run Docker container."
 }
 
