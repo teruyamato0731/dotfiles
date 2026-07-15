@@ -279,25 +279,25 @@ install_symlinks() {
     ln -nfs "${DOTFILES_DIR}" "${ghq_root}/github.com/teruyamato0731/dotfiles"
   fi
   # .gitconfig.custom
-  ln -nfs "${DOTFILES_DIR}/config/git/.gitconfig.custom" "${HOME}/.gitconfig.custom"
+  ln -nfs "${DOTFILES_DIR}/.config/git/.gitconfig.custom" "${HOME}/.gitconfig.custom"
   # .bashrc.custom
-  ln -nfs "${DOTFILES_DIR}/config/bash/.bashrc.custom" "${HOME}/.bashrc.custom"
+  ln -nfs "${DOTFILES_DIR}/.config/bash/.bashrc.custom" "${HOME}/.bashrc.custom"
   if ! grep -q 'source ~/.bashrc.custom' "${HOME}/.bashrc"; then
     echo '[ -f ~/.bashrc.custom ] && source ~/.bashrc.custom' >> "${HOME}/.bashrc"
   fi
   # git ignore global
   mkdir -p "${HOME}/.config/git"
-  ln -nfs "${DOTFILES_DIR}/config/git/ignore" "${HOME}/.config/git/ignore"
+  ln -nfs "${DOTFILES_DIR}/.config/git/ignore" "${HOME}/.config/git/ignore"
   # mise config
   mkdir -p "${HOME}/.config/mise"
-  ln -nfs "${DOTFILES_DIR}/config/mise/config.toml" "${HOME}/.config/mise/config.toml"
+  ln -nfs "${DOTFILES_DIR}/.config/mise/config.toml" "${HOME}/.config/mise/config.toml"
   # yazi config
   mkdir -p "${HOME}/.config/yazi"
-  ln -nfs "${DOTFILES_DIR}/config/yazi/init.lua" "${HOME}/.config/yazi/init.lua"
-  ln -nfs "${DOTFILES_DIR}/config/yazi/yazi.toml" "${HOME}/.config/yazi/yazi.toml"
-  ln -nfs "${DOTFILES_DIR}/config/yazi/keymap.toml" "${HOME}/.config/yazi/keymap.toml"
-  ln -nfs "${DOTFILES_DIR}/config/yazi/theme.toml" "${HOME}/.config/yazi/theme.toml"
-  ln -nfs "${DOTFILES_DIR}/config/yazi/plugins" "${HOME}/.config/yazi/plugins"
+  ln -nfs "${DOTFILES_DIR}/.config/yazi/init.lua" "${HOME}/.config/yazi/init.lua"
+  ln -nfs "${DOTFILES_DIR}/.config/yazi/yazi.toml" "${HOME}/.config/yazi/yazi.toml"
+  ln -nfs "${DOTFILES_DIR}/.config/yazi/keymap.toml" "${HOME}/.config/yazi/keymap.toml"
+  ln -nfs "${DOTFILES_DIR}/.config/yazi/theme.toml" "${HOME}/.config/yazi/theme.toml"
+  ln -nfs "${DOTFILES_DIR}/.config/yazi/plugins" "${HOME}/.config/yazi/plugins"
 }
 
 post_instructions() {
