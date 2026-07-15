@@ -4,7 +4,7 @@ disable_backends = ["asdf", "vfox"]
 minimum_release_age = "7d"
 
 [env]
-_.path = ["{{env.HOME}}/.local/bin", "{{env.HOME}}/dotfiles/bin"]
+_.path = ["{{env.HOME}}/dotfiles/bin"]
 TERM = 'xterm-256color'
 MANPAGER = "bat -plman"
 VISUAL = "edit"
