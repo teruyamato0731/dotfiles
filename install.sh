@@ -101,15 +101,14 @@ install_mise() {
   curl -fsSL https://mise.run | MISE_QUIET=1 sh
 }
 
-install_mise_tools() {
-  info "Installing mise-managed tools..."
+bootstrap_mise() {
+  info "Applying mise bootstrap configuration..."
   local mise
   local mise_config
   mise="$(mise_bin)" || err_exit "mise is not installed."
   mise_config="${HOME}/.config/mise/config.toml"
   "${mise}" trust "${mise_config}"
-  # Install from the global mise config, independent of the dotfiles repo cwd.
-  "${mise}" install -C "${HOME}"
+  "${mise}" bootstrap --yes -C "${HOME}"
 }
 
 install_completion_file() {
@@ -286,12 +285,8 @@ install_symlinks() {
     echo '[ -f ~/.bashrc.custom ] && source ~/.bashrc.custom' >> "${HOME}/.bashrc"
   fi
   mkdir -p "${HOME}/.config"
-  # git config
-  ln -nfs "${DOTFILES_DIR}/.config/git" "${HOME}/.config/git"
   # mise config
   ln -nfs "${DOTFILES_DIR}/.config/mise" "${HOME}/.config/mise"
-  # yazi config
-  ln -nfs "${DOTFILES_DIR}/.config/yazi" "${HOME}/.config/yazi"
 }
 
 post_instructions() {
@@ -308,7 +303,7 @@ main() {
   setup
   install_mise
   install_symlinks
-  install_mise_tools
+  bootstrap_mise
   install_bash_completions
   install_tio
   install_fonts
