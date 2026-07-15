@@ -32,8 +32,22 @@ Clone this repository and run the installation script:
 
 ```bash
 git clone https://github.com/teruyamato0731/dotfiles.git ~/dotfiles
-~/dotfiles/install.sh
+~/dotfiles/install.sh host
 ```
+
+Or use curl:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/teruyamato0731/dotfiles/main/install.sh | bash -s -- host
+```
+
+Or use wget:
+
+```bash
+wget -qO- https://raw.githubusercontent.com/teruyamato0731/dotfiles/main/install.sh | bash -s -- host
+```
+
+<details><summary>Profiles</summary>
 
 The installation profile defaults to `dev`, which installs the CLI-focused development environment. Use the `host` profile on a physical Ubuntu host to also install fonts and `tio`:
 
@@ -42,17 +56,14 @@ The installation profile defaults to `dev`, which installs the CLI-focused devel
 ~/dotfiles/install.sh host
 ```
 
-Or use curl:
+When piping the script to Bash, pass the profile after `bash -s --`, for example:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/teruyamato0731/dotfiles/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/teruyamato0731/dotfiles/main/install.sh | bash -s -- dev
+wget -qO- https://raw.githubusercontent.com/teruyamato0731/dotfiles/main/install.sh | bash -s -- host
 ```
 
-Or use wget:
-
-```bash
-wget -qO- https://raw.githubusercontent.com/teruyamato0731/dotfiles/main/install.sh | bash
-```
+</details>
 
 ## Try on Docker
 
