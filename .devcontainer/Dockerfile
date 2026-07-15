@@ -26,11 +26,13 @@ CMD [ "/bin/bash" ]
 
 FROM dev AS preview
 
+ARG DOTFILES_PROFILE=dev
+
 COPY --chown=ubuntu:ubuntu . /home/ubuntu/dotfiles
 WORKDIR /home/ubuntu/dotfiles
 
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt,sharing=locked \
-  ./install.sh
+  ./install.sh "${DOTFILES_PROFILE}"
 
 CMD [ "/bin/bash" ]
