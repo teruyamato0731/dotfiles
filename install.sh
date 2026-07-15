@@ -7,7 +7,7 @@ set -euo pipefail
 #   - sudo
 #   - apt-get
 # Usage:
-#   ./install.sh or DOTFILES_DIR=/path/to/dotfiles ./install.sh
+#   ./install.sh
 # After running the script, please execute the following command:
 #   git config --global include.path '~/.gitconfig.custom'
 
