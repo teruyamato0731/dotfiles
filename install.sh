@@ -69,8 +69,9 @@ setup() {
 }
 
 mise_bin() {
-  if command -v mise >/dev/null 2>&1; then
-    command -v mise
+  local mise
+  if mise="$(type -P mise 2>/dev/null)" && [ -x "${mise}" ]; then
+    printf '%s\n' "${mise}"
     return 0
   fi
   if [ -x "${HOME}/.local/bin/mise" ]; then
@@ -109,12 +110,15 @@ bootstrap_mise() {
   info "Applying mise bootstrap configuration..."
   local profile="$1"
   local mise
+  local mise_dir
   local mise_config_dir
   mise="$(mise_bin)" || err_exit "mise is not installed."
+  mise_dir="$(dirname "${mise}")"
   mise_config_dir="${HOME}/.config/mise"
   "${mise}" trust "${mise_config_dir}/config.toml"
   "${mise}" trust "${mise_config_dir}/config.${profile}.toml"
-  "${mise}" -C "${HOME}" -E "${profile}" bootstrap --yes
+  PATH="${mise_dir}:${PATH}" \
+    "${mise}" -C "${HOME}" -E "${profile}" bootstrap --yes
 }
 
 post_instructions() {
