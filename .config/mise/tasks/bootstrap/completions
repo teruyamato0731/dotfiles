@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # [MISE] description="Install bash completions for mise-managed tools"
+# [MISE] hide=true
 set -euo pipefail
 
 info() {

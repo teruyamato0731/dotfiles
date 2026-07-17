@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # [MISE] description="Install Moralerspace fonts"
+# [MISE] hide=true
 set -euo pipefail
 
 info() {

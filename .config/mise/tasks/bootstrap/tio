@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # [MISE] description="Install tio via snap"
+# [MISE] hide=true
 set -euo pipefail
 
 if ! command -v snap >/dev/null 2>&1; then
