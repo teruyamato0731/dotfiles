@@ -37,6 +37,7 @@ DOTFILES_DIR="${HOME}/dotfiles"
 CACHE_DIR="${XDG_CACHE_HOME:-${HOME}/.cache}/dotfiles"
 APT_PACKAGES=(
   bash-completion
+  zsh
   git
   curl
   gpg
