@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#MISE description="Install tio via snap"
+# [MISE] description="Install tio via snap"
 set -euo pipefail
 
 if ! command -v snap >/dev/null 2>&1; then

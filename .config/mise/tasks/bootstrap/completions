@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#MISE description="Install bash completions for mise-managed tools"
+# [MISE] description="Install bash completions for mise-managed tools"
 set -euo pipefail
 
 info() {
