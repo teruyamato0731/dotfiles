@@ -35,9 +35,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Create symlink
-        run: ln -s "${GITHUB_WORKSPACE}" "${HOME}/dotfiles"
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -75,14 +72,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Create symlink
-        run: ln -s "${GITHUB_WORKSPACE}" "${HOME}/dotfiles"
-
       - name: Run in Dev Container
         uses: devcontainers/ci@v0.3
         with:
           runCmd: |
+            ln -s "$PWD" "$HOME/dotfiles"
             ./install.sh
+            echo "::group::Re-run installer to verify idempotency"
+            ./install.sh
+            echo "::endgroup::"
+            test -x "$HOME/.local/bin/mise"
 
   host:
     runs-on: ubuntu-24.04
@@ -91,6 +90,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Link checkout
+        run: ln -s "${GITHUB_WORKSPACE}" "${HOME}/dotfiles"
+
       - name: Run on Host
         run: |
           ./install.sh host
+
+      - name: Verify installation
+        run: |
+          set -euo pipefail
+
+          mise="${HOME}/.local/bin/mise"
+          test -x "${mise}"
+          "${mise}" --version
+
+          gh_bin="$("${mise}" -C "${HOME}" which gh)"
+          test -x "${gh_bin}"
+          "${gh_bin}" --version
+
+          test -s "${HOME}/.local/share/bash-completion/completions/gh"
+          test -f "${HOME}/.local/share/fonts/MoralerspaceNeon-Regular.ttf"
+          test -f "${HOME}/.local/share/fonts/MoralerspaceNeonHW-Regular.ttf"
