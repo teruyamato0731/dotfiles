@@ -33,6 +33,46 @@ if [[ -f "${HOME}/dotfiles/.config/shell/functions.sh" ]]; then
   source "${HOME}/dotfiles/.config/shell/functions.sh"
 fi
 
+# ---------------------------------------------------------------------------
+# Key bindings
+# ---------------------------------------------------------------------------
+
+# Ctrl+O: ghqリポジトリへ移動
+_zle_gcd() {
+  zle -I
+  gcd
+  local result=$?
+  zle reset-prompt
+  return "$result"
+}
+
+zle -N gcd-widget _zle_gcd
+bindkey '^O' gcd-widget
+
+# Ctrl+]: git wswを実行
+_zle_git_wsw() {
+  zle -I
+  git wsw
+  local result=$?
+  zle reset-prompt
+  return "$result"
+}
+
+zle -N git-wsw-widget _zle_git_wsw
+bindkey '^]' git-wsw-widget
+
+# Ctrl+X Ctrl+Y: yaziを開き、終了後にcwdを反映
+_zle_yazi() {
+  zle -I
+  y
+  local result=$?
+  zle reset-prompt
+  return "$result"
+}
+
+zle -N yazi-widget _zle_yazi
+bindkey '^X^Y' yazi-widget
+
 if command -v starship >/dev/null 2>&1; then
   eval "$(starship init zsh)"
 fi

@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # Functions that must run in the current shell or are shared by Bash and zsh.
 
 # cd to a ghq repository, or open it in VS Code with Ctrl-O.
@@ -25,11 +26,11 @@ y() {
 
   local tmp
   local cwd
-  local status
+  local result
 
   tmp="$(mktemp "${TMPDIR:-/tmp}/yazi-cwd.XXXXXX")" || return
   command yazi "$@" --cwd-file="$tmp"
-  status=$?
+  result=$?
   cwd="$(cat -- "$tmp" 2>/dev/null || true)"
   command rm -f -- "$tmp"
 
@@ -40,7 +41,7 @@ y() {
     }
   fi
 
-  return "${status}"
+  return "${result}"
 }
 
 if [ -n "${WSL_DISTRO_NAME:-}" ]; then
