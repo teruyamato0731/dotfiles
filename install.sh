@@ -58,7 +58,7 @@ install_apt_packages() {
 }
 
 setup() {
-  repo_url="https://github.com/teruyamato0731/dotfiles.git"
+  local repo_url="https://github.com/teruyamato0731/dotfiles.git"
   if [ ! -d "${DOTFILES_DIR}" ]; then
     # Clone dotfiles if missing
     warn "DOTFILES_DIR not found; cloning ${repo_url} into ${DOTFILES_DIR}."
@@ -90,172 +90,6 @@ install_mise() {
   curl -fsSL https://mise.run | MISE_QUIET=1 sh
 }
 
-bootstrap_mise() {
-  info "Applying mise bootstrap configuration..."
-  local mise
-  local mise_config
-  mise="$(mise_bin)" || err_exit "mise is not installed."
-  mise_config="${HOME}/.config/mise/config.toml"
-  "${mise}" trust "${mise_config}"
-  "${mise}" bootstrap --yes -C "${HOME}"
-}
-
-install_completion_file() {
-  local src="$1"
-  local dest="$2"
-
-  if [ -f "${src}" ]; then
-    cp -f "${src}" "${dest}"
-  else
-    warn "Completion file not found: ${src}"
-  fi
-}
-
-install_bash_completions() {
-  info "Installing bash completions..."
-  local mise
-  local completion_dir
-  local gh_bin
-  local ghq_bin
-  local bat_bin
-  local rg_bin
-  local fd_bin
-  local btm_bin
-  local uv_bin
-  local uvx_bin
-  local yazi_bin
-
-  mise="$(mise_bin)" || err_exit "mise is not installed."
-  completion_dir="${XDG_DATA_HOME:-${HOME}/.local/share}/bash-completion/completions"
-  mkdir -p "${completion_dir}"
-
-  "${mise}" completion bash --include-bash-completion-lib > "${completion_dir}/mise"
-
-  gh_bin="$("${mise}" which gh 2>/dev/null || true)"
-  if [ -n "${gh_bin}" ]; then
-    "${gh_bin}" completion -s bash > "${completion_dir}/gh"
-  else
-    warn "gh is not installed by mise; skipping gh completion."
-  fi
-
-  ghq_bin="$("${mise}" which ghq 2>/dev/null || true)"
-  if [ -n "${ghq_bin}" ]; then
-    install_completion_file "$(dirname "${ghq_bin}")/misc/bash/_ghq" "${completion_dir}/ghq"
-  else
-    warn "ghq is not installed by mise; skipping ghq completion."
-  fi
-
-  bat_bin="$("${mise}" which bat 2>/dev/null || true)"
-  if [ -n "${bat_bin}" ]; then
-    install_completion_file "$(dirname "${bat_bin}")/autocomplete/bat.bash" "${completion_dir}/bat"
-  else
-    warn "bat is not installed by mise; skipping bat completion."
-  fi
-
-  rg_bin="$("${mise}" which rg 2>/dev/null || true)"
-  if [ -n "${rg_bin}" ]; then
-    install_completion_file "$(dirname "${rg_bin}")/complete/rg.bash" "${completion_dir}/rg"
-  else
-    warn "rg is not installed by mise; skipping rg completion."
-  fi
-
-  fd_bin="$("${mise}" which fd 2>/dev/null || true)"
-  if [ -n "${fd_bin}" ]; then
-    install_completion_file "$(dirname "${fd_bin}")/autocomplete/fd.bash" "${completion_dir}/fd"
-  else
-    warn "fd is not installed by mise; skipping fd completion."
-  fi
-
-  btm_bin="$("${mise}" which btm 2>/dev/null || true)"
-  if [ -n "${btm_bin}" ]; then
-    install_completion_file "$(dirname "${btm_bin}")/completion/btm.bash" "${completion_dir}/btm"
-  else
-    warn "btm is not installed by mise; skipping btm completion."
-  fi
-
-  uv_bin="$("${mise}" which uv 2>/dev/null || true)"
-  if [ -n "${uv_bin}" ]; then
-    "${uv_bin}" generate-shell-completion bash > "${completion_dir}/uv"
-  else
-    warn "uv is not installed by mise; skipping uv completion."
-  fi
-
-  uvx_bin="$("${mise}" which uvx 2>/dev/null || true)"
-  if [ -n "${uvx_bin}" ]; then
-    "${uvx_bin}" --generate-shell-completion bash > "${completion_dir}/uvx"
-  else
-    warn "uvx is not installed by mise; skipping uvx completion."
-  fi
-
-  yazi_bin="$("${mise}" which yazi 2>/dev/null || true)"
-  if [ -n "${yazi_bin}" ]; then
-    install_completion_file "$(dirname "${yazi_bin}")/completions/yazi.bash" "${completion_dir}/yazi"
-    install_completion_file "$(dirname "${yazi_bin}")/completions/ya.bash" "${completion_dir}/ya"
-  else
-    warn "yazi is not installed by mise; skipping yazi completion."
-  fi
-}
-
-install_tio() {
-  # snap がある場合のみ
-  if command -v snap &>/dev/null; then
-    if ! command -v tio &>/dev/null; then
-      info "Installing tio..."
-      sudo snap install tio --classic
-    fi
-  fi
-}
-
-download_if_missing() {
-  local url="$1"
-  local dest="$2"
-  local tmp
-
-  if [ -f "${dest}" ]; then
-    return 0
-  fi
-
-  tmp="$(mktemp "${dest}.tmp.XXXXXX")"
-  if curl -fsSLo "${tmp}" "${url}"; then
-    mv -f "${tmp}" "${dest}"
-  else
-    rm -f "${tmp}"
-    return 1
-  fi
-}
-
-install_fonts() {
-  info "Installing fonts..."
-  local font_cache_dir="${CACHE_DIR}/fonts"
-  local font_dir="${HOME}/.local/share/fonts"
-  local version="v2.0.0"
-  local moralerspace_zip="${font_cache_dir}/Moralerspace_${version}.zip"
-  local moralerspace_hw_zip="${font_cache_dir}/MoralerspaceHW_${version}.zip"
-  local extract_dir
-
-  mkdir -p "${font_cache_dir}" "${font_dir}"
-
-  if [ -f "${font_dir}/MoralerspaceNeon-Regular.ttf" ] &&
-     [ -f "${font_dir}/MoralerspaceNeonHW-Regular.ttf" ]; then
-    info "Moralerspace fonts are already installed."
-    return 0
-  fi
-
-  download_if_missing \
-    "https://github.com/yuru7/moralerspace/releases/download/${version}/Moralerspace_${version}.zip" \
-    "${moralerspace_zip}"
-  download_if_missing \
-    "https://github.com/yuru7/moralerspace/releases/download/${version}/MoralerspaceHW_${version}.zip" \
-    "${moralerspace_hw_zip}"
-
-  extract_dir="$(mktemp -d)"
-  unzip -q "${moralerspace_zip}" -d "${extract_dir}"
-  unzip -q "${moralerspace_hw_zip}" -d "${extract_dir}"
-  find "${extract_dir}" -name '*.ttf' -exec mv -f {} "${font_dir}/" \;
-  rm -rf -- "${extract_dir}"
-  fc-cache -f "${font_dir}" >/dev/null 2>&1 || true
-}
-
 install_symlinks() {
   info "Setting up symlinks for dotfiles..."
   local ghq_root
@@ -269,6 +103,18 @@ install_symlinks() {
   mkdir -p "${HOME}/.config"
   # mise config
   ln -nfs "${DOTFILES_DIR}/.config/mise" "${HOME}/.config/mise"
+}
+
+bootstrap_mise() {
+  info "Applying mise bootstrap configuration..."
+  local profile="$1"
+  local mise
+  local mise_config_dir
+  mise="$(mise_bin)" || err_exit "mise is not installed."
+  mise_config_dir="${HOME}/.config/mise"
+  "${mise}" trust "${mise_config_dir}/config.toml"
+  "${mise}" trust "${mise_config_dir}/config.${profile}.toml"
+  "${mise}" -C "${HOME}" -E "${profile}" bootstrap --yes
 }
 
 post_instructions() {
@@ -305,12 +151,7 @@ main() {
   setup
   install_mise
   install_symlinks
-  bootstrap_mise
-  install_bash_completions
-  if [ "${profile}" = "host" ]; then
-    install_tio
-    install_fonts
-  fi
+  bootstrap_mise "${profile}"
   post_instructions
 }
 

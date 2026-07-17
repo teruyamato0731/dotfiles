@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# [MISE] description="Install Moralerspace fonts"
+# [MISE] hide=true
+set -euo pipefail
+
+info() {
+  printf '\033[32m[Info] %s:\n  %s\033[m\n' "${MISE_TASK_FILE:-$0}" "$*"
+}
+
+download_if_missing() {
+  local url="$1"
+  local dest="$2"
+  local tmp
+
+  if [ -f "${dest}" ]; then
+    return 0
+  fi
+
+  tmp="$(mktemp "${dest}.tmp.XXXXXX")"
+  if curl -fsSLo "${tmp}" "${url}"; then
+    mv -f "${tmp}" "${dest}"
+  else
+    rm -f "${tmp}"
+    return 1
+  fi
+}
+
+info "Installing fonts..."
+font_cache_dir="${XDG_CACHE_HOME:-${HOME}/.cache}/dotfiles/fonts"
+font_dir="${HOME}/.local/share/fonts"
+version="v2.0.0"
+moralerspace_zip="${font_cache_dir}/Moralerspace_${version}.zip"
+moralerspace_hw_zip="${font_cache_dir}/MoralerspaceHW_${version}.zip"
+
+mkdir -p "${font_cache_dir}" "${font_dir}"
+
+if [ -f "${font_dir}/MoralerspaceNeon-Regular.ttf" ] &&
+   [ -f "${font_dir}/MoralerspaceNeonHW-Regular.ttf" ]; then
+  info "Moralerspace fonts are already installed."
+  exit 0
+fi
+
+download_if_missing \
+  "https://github.com/yuru7/moralerspace/releases/download/${version}/Moralerspace_${version}.zip" \
+  "${moralerspace_zip}"
+download_if_missing \
+  "https://github.com/yuru7/moralerspace/releases/download/${version}/MoralerspaceHW_${version}.zip" \
+  "${moralerspace_hw_zip}"
+
+extract_dir="$(mktemp -d)"
+trap 'rm -rf -- "${extract_dir}"' EXIT
+unzip -q "${moralerspace_zip}" -d "${extract_dir}"
+unzip -q "${moralerspace_hw_zip}" -d "${extract_dir}"
+find "${extract_dir}" -name '*.ttf' -exec mv -f {} "${font_dir}/" \;
+fc-cache -f "${font_dir}" >/dev/null 2>&1 || true

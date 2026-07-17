@@ -1,0 +1,3 @@
+[tasks.bootstrap]
+description = "Bootstrap the physical Ubuntu host environment"
+depends = ["bootstrap:completions", "bootstrap:fonts", "bootstrap:tio"]
