@@ -69,8 +69,9 @@ setup() {
 }
 
 mise_bin() {
-  if command -v mise >/dev/null 2>&1; then
-    command -v mise
+  local mise
+  if mise="$(type -P mise 2>/dev/null)" && [ -x "${mise}" ]; then
+    printf '%s\n' "${mise}"
     return 0
   fi
   if [ -x "${HOME}/.local/bin/mise" ]; then
