@@ -9,6 +9,13 @@ setopt HIST_SAVE_NO_DUPS
 setopt SHARE_HISTORY
 setopt INTERACTIVE_COMMENTS
 
+zsh_completion_dir="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/site-functions"
+if [[ -d "$zsh_completion_dir" ]]; then
+  typeset -U fpath
+  fpath=("$zsh_completion_dir" "${fpath[@]}")
+fi
+unset zsh_completion_dir
+
 mkdir -p "${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
 autoload -Uz compinit
 compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
