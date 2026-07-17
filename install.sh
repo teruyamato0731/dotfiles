@@ -90,16 +90,6 @@ install_mise() {
   curl -fsSL https://mise.run | MISE_QUIET=1 sh
 }
 
-bootstrap_mise() {
-  info "Applying mise bootstrap configuration..."
-  local mise
-  local mise_config
-  mise="$(mise_bin)" || err_exit "mise is not installed."
-  mise_config="${HOME}/.config/mise/config.toml"
-  "${mise}" trust "${mise_config}"
-  "${mise}" bootstrap --yes -C "${HOME}"
-}
-
 install_symlinks() {
   info "Setting up symlinks for dotfiles..."
   local ghq_root
@@ -115,17 +105,16 @@ install_symlinks() {
   ln -nfs "${DOTFILES_DIR}/.config/mise" "${HOME}/.config/mise"
 }
 
-run_bootstrap_tasks() {
+bootstrap_mise() {
+  info "Applying mise bootstrap configuration..."
   local profile="$1"
   local mise
   local mise_config_dir
-
   mise="$(mise_bin)" || err_exit "mise is not installed."
-  mise_config_dir="${DOTFILES_DIR}/.config/mise"
+  mise_config_dir="${HOME}/.config/mise"
   "${mise}" trust "${mise_config_dir}/config.toml"
   "${mise}" trust "${mise_config_dir}/config.${profile}.toml"
-  info "Running mise bootstrap tasks for profile: ${profile}"
-  "${mise}" -C "${DOTFILES_DIR}" -E "${profile}" run bootstrap
+  "${mise}" -C "${HOME}" -E "${profile}" bootstrap --yes
 }
 
 post_instructions() {
@@ -162,8 +151,7 @@ main() {
   setup
   install_mise
   install_symlinks
-  bootstrap_mise
-  run_bootstrap_tasks "${profile}"
+  bootstrap_mise "${profile}"
   post_instructions
 }
 
