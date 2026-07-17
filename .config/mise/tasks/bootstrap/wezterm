@@ -9,12 +9,6 @@ readonly keyring="/usr/share/keyrings/wezterm-fury.gpg"
 readonly source_list="/etc/apt/sources.list.d/wezterm.list"
 readonly repository="deb [signed-by=${keyring}] https://apt.fury.io/wez/ * *"
 
-if dpkg-query -W -f='${db:Status-Status}\n' "${package}" 2>/dev/null |
-  grep -qx 'installed'; then
-  printf '%s is already installed; skipping.\n' "${package}"
-  exit 0
-fi
-
 if dpkg-query -W -f='${db:Status-Status}\n' wezterm 2>/dev/null |
   grep -qx 'installed'; then
   printf 'wezterm is already installed and conflicts with %s.\n' "${package}" >&2
@@ -39,4 +33,4 @@ printf '%s\n' "${repository}" |
   sudo tee "${source_list}" >/dev/null
 
 sudo apt-get update
-sudo DEBIAN_FRONTEND=noninteractive apt-get install -y wezterm-nightly
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "${package}"
