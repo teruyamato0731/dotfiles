@@ -19,11 +19,10 @@ else
 fi
 _shorten_path() {
   # "$(ghq root)/github.com/" を @ に短縮する
-  local path="${PWD}"
   local path="${PWD/#$__GHQ_GITHUB_PATH/@}"
   # ホームディレクトリを ~ に短縮
   path="${path/#$HOME/\~}"
-  echo "${path}"
+  printf '%s\n' "${path}"
 }
 # shellcheck disable=SC2154
 PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\] ➜ \[\033[01;34m\]$(_shorten_path)\[\033[00m\]$(__git_ps1 " \[\033[0;36m\](\[\033[1;31m\]%s\[\033[0;36m\])\[\033[00m\]") \n\$ '
@@ -32,9 +31,8 @@ PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\] ➜ \[\033[
 # shellcheck disable=SC1091
 if command -v fzf >/dev/null 2>&1; then
   eval "$(fzf --bash)"
+  _fzf_setup_completion path nano edit
 fi
-
-_fzf_setup_completion path nano edit
 
 # Advanced customization of fzf options via _fzf_comprun function
 # - The first argument to the function is the name of the command.

@@ -1,3 +1,7 @@
 .cache/
 tmp/
 backup/
+
+# mise
+mise.local.toml
+mise.*.local.toml
