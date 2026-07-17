@@ -1,5 +1,4 @@
-# Functions that need to change the current shell's working directory live
-# here so they can be shared by Bash and zsh.
+# Functions that must run in the current shell or are shared by Bash and zsh.
 
 # cd to a ghq repository, or open it in VS Code with Ctrl-O.
 gcd() {

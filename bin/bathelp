@@ -4,4 +4,9 @@ set -euo pipefail
 # Preview help with bat.
 # Usage: bathelp <command>
 # Example: bathelp fzf
+if (($# == 0)); then
+  printf 'Usage: bathelp COMMAND [ARG...]\n' >&2
+  exit 2
+fi
+
 "$@" --help 2>&1 | bat --plain --language=help
