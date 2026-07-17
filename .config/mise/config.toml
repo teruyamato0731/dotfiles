@@ -22,6 +22,7 @@ fi
 "~/.gitconfig.custom" = "~/dotfiles/.config/git/.gitconfig.custom"
 "~/.config/git" = {}
 "~/.config/yazi" = {}
+"~/.config/wezterm" = {}
 
 [env]
 _.path = ["{{env.HOME}}/dotfiles/bin"]
