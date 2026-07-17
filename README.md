@@ -65,6 +65,13 @@ wget -qO- https://raw.githubusercontent.com/teruyamato0731/dotfiles/main/install
 
 </details>
 
+Each profile is backed by a mise config environment. After mise is installed, the selected bootstrap tasks can also be run directly:
+
+```bash
+mise -E dev run bootstrap
+mise -E host run bootstrap
+```
+
 ## Try on Docker
 
 You can try these dotfiles in a Docker container without installing them on your host system:

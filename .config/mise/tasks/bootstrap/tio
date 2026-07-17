@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#MISE description="Install tio via snap"
+set -euo pipefail
+
+if ! command -v snap >/dev/null 2>&1; then
+  exit 0
+fi
+
+if ! command -v tio >/dev/null 2>&1; then
+  printf '\033[32m[Info] %s:\n  Installing tio...\033[m\n' "${MISE_TASK_FILE:-$0}"
+  sudo snap install tio --classic
+fi
