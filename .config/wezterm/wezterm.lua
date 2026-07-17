@@ -9,12 +9,7 @@ config.initial_rows = 40
 
 wezterm.on("gui-startup", function(cmd)
   local _, _, window = mux.spawn_window(cmd or {})
-  if window then
-    local gui_window = window:gui_window()
-    if gui_window then
-      gui_window:maximize()
-    end
-  end
+  window:gui_window():maximize()
 end)
 
 -- ---------------------------------------------------------------------------
