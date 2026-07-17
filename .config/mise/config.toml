@@ -25,6 +25,7 @@ fi
 "~/.config/yazi" = {}
 "~/.config/wezterm" = {}
 "~/.config/zsh" = {}
+"~/.config/starship.toml" = {}
 
 [env]
 _.path = ["{{env.HOME}}/dotfiles/bin"]
@@ -55,5 +56,6 @@ cat = 'bat --paging=never'
 "aqua:microsoft/edit" = "2.0.0"
 "aqua:sharkdp/bat" = "0.26.1"
 "aqua:sharkdp/fd" = "10.4.2"
+"aqua:starship/starship" = "1.26.0"
 "aqua:sxyazi/yazi" = "26.5.6"
 "aqua:x-motemen/ghq" = "1.10.1"
