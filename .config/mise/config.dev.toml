@@ -1,5 +1,3 @@
 [tasks.bootstrap]
 description = "Bootstrap the CLI-focused development environment"
-run = [
-  { task = "bootstrap:completions" },
-]
+depends = ["bootstrap:completions"]
