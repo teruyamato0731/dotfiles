@@ -39,6 +39,7 @@ APT_PACKAGES=(
   bash-completion
   git
   curl
+  gpg
   file
   unzip
   7zip
