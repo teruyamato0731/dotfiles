@@ -1,1 +1,3 @@
 export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
+# Ubuntuの/etc/zsh/zshrcによるcompinitを無効化する
+skip_global_compinit=1
