@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Git switch branch with fzf.
+query="${1:-}"
+branch="$(git branch --all | sed -e 's/.* //' -e 's/.*origin\///' | sort -u | \
+  fzf +m \
+    --query "${query}" \
+    --select-1 \
+    --preview 'git log -n 30 --color=always --oneline {}' \
+    --header 'Press Enter to switch' --color header:italic \
+    --footer='Ctrl-Q to create new branch: ' \
+    --bind 'change:transform-footer:echo Ctrl-Q to create new branch: {q}' \
+    --bind 'ctrl-q:become(git switch -c {q})' \
+    --prompt 'branch> ' \
+  )" || branch=""
+
+if [ -n "${branch}" ]; then
+  git switch "${branch}"
+fi

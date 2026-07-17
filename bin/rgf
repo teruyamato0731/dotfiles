@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Interactive ripgrep + fzf + bat + code search.
+# Usage:
+#   rgf <検索ワード> : 検索ワードを入力した状態でインタラクティブ検索を起動
+#   rgf              : 空の状態でインタラクティブ検索を起動
+
+# rgの共通オプション
+# --column, --line-number: VSCodeでの行・列指定ジャンプに必要
+# --no-heading: fzfでパースしやすくするためファイル名を行ごとに表示
+# --smart-case: 小文字のみの入力は大小文字区別なし、大文字が混ざると区別あり
+# --hidden: 隠しファイルも検索対象にする
+rg_prefix="rg --column --line-number --no-heading --color=always --smart-case --hidden --glob '!.git' --glob '!build' --glob '!install' --glob '!.venv' --glob '!node_modules' --glob '!Debug' --glob '!Release'"
+
+# 引数があればそれを初期クエリとして扱う（複数単語のスペース区切りも許容）
+initial_query="${*:-}"
+
+fzf --ansi --disabled \
+  --query "${initial_query}" \
+  --bind "start:reload:${rg_prefix} {q} || true" \
+  --bind "change:reload:sleep 0.1; ${rg_prefix} {q} || true" \
+  --delimiter : \
+  --preview "bat --style=header,grid,numbers --color=always --highlight-line {2} {1} 2> /dev/null" \
+  --preview-window "right,50%,+{2}-2,~3" \
+  --header 'Ctrl-O: open in code | Ctrl-/: toggle preview | Alt-Up/Down: scroll preview' \
+  --color header:italic \
+  --bind "ctrl-o:become(code -g {1}:{2}:{3})" \
+  --bind 'ctrl-/:change-preview-window(down,70%,border-horizontal|hidden|)'

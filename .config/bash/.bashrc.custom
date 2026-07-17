@@ -29,7 +29,7 @@ PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\] ➜ \[\033[
 
 # For fzf
 # shellcheck disable=SC1091
-if command -v fzf >/dev/null 2>&1; then
+if [[ $- == *i* ]] && command -v fzf >/dev/null 2>&1; then
   eval "$(fzf --bash)"
   _fzf_setup_completion path nano edit
 fi
@@ -73,143 +73,15 @@ _fzf_compgen_dir() {
   fi
 }
 
-# cd to ghq repo, open in code
-gcd() {
-  local dir
-  dir="$(ghq list | fzf +m \
-    --query "${1:-}" \
-    --select-1 \
-    --preview "cd $(ghq root) && bat --color=always --style=header,grid,numbers --line-range :200 {}/README* 2> /dev/null || tree -C {}" \
-    --header 'Press Enter to cd, Ctrl-O to open in code' --color header:italic \
-    --bind 'ctrl-o:become(d="$(ghq root)"/{}; w=$(fd -d 1 -e code-workspace . "$d" | head -n 1); code "${w:-$d}")' \
-    --bind 'ctrl-/:change-preview-window(down,70%,border-horizontal|hidden|)' \
-    --prompt 'ghq> ')"
-  if [ -n "${dir}" ]; then
-    cd "$(ghq root)"/"${dir}" && pwd
-  fi
-}
-
-# git switch branch with fzf
-gsw() {
-  local branch
-  branch="$(git branch --all | sed -e 's/.* //' -e 's/.*origin\///' | sort -u | \
-    fzf +m \
-      --query "${1:-}" \
-      --select-1 \
-      --preview 'git log -n 30 --color=always --oneline {}' \
-      --header 'Press Enter to switch' --color header:italic \
-      --footer='Ctrl-Q to create new branch: ' \
-      --bind 'change:transform-footer:echo Ctrl-Q to create new branch: {q}' \
-      --bind 'ctrl-q:become(git switch -c {q})' \
-      --prompt 'branch> ')"
-  if [ -n "${branch}" ]; then
-    git switch "${branch}"
-  fi
-}
-
-# ghq get repository with fzf
-gg() {
-  local repo
-  # shellcheck disable=SC2016
-  repo="$(gh api -X GET /user/repos -F sort=updated -F per_page=100 --jq '.[] | "\(.full_name) \(.clone_url)"' | fzf +m \
-    --query "${1:-}" \
-    --select-1 \
-    --header 'Press Enter to clone selected repository' --color header:italic \
-    --with-nth=1 \
-    --accept-nth=2 \
-    --preview 'GH_FORCE_TTY=${FZF_PREVIEW_COLUMNS} gh repo view {1}' \
-    --prompt 'repo> ')"
-  if [ -n "${repo}" ]; then
-    ghq get "${repo}"
-  fi
-}
-
-# Generate Co-Authored-By trailer for git commit messages
-# Usage: cab <github-username>
-cab() {
-  gh api "/users/$1" -q '"Co-Authored-By: \(.name // .login) <\(.email // "\(.id)+\(.login)@users.noreply.github.com")>"'
-}
-
-batdiff() {
-  git diff --name-only --relative --diff-filter=d -z | xargs -0 bat --diff
-}
-
-# Preview help with bat
-# Usage: bathelp <command>
-# Example: bathelp fzf
-bathelp() {
-  "$@" --help 2>&1 | bat --plain --language=help
-}
-
-# yazi file manager
-y() {
-  if ! command -v yazi >/dev/null 2>&1; then
-    echo "yazi is not installed." >&2
-    return 127
-  fi
-
-  local tmp
-  local cwd
-  local status
-
-  tmp="$(mktemp "${TMPDIR:-/tmp}/yazi-cwd.XXXXXX")" || return
-  command yazi "$@" --cwd-file="$tmp"
-  status=$?
-  cwd="$(cat -- "$tmp" 2>/dev/null || true)"
-  command rm -f -- "$tmp"
-
-  if [ -n "${cwd}" ] && [ "${cwd}" != "${PWD}" ] && [ -d "${cwd}" ]; then
-    builtin cd -- "${cwd}" || {
-      echo "failed to cd to yazi cwd: ${cwd}" >&2
-      return 1
-    }
-  fi
-
-  return "${status}"
-}
-
-# ripgrep + fzf + bat + code
-# Usage:
-#   rgf <検索ワード> : 検索ワードを入力した状態でインタラクティブ検索を起動
-#   rgf              : 空の状態でインタラクティブ検索を起動
-rgf() {
-  # rgの共通オプション
-  # --column, --line-number: VSCodeでの行・列指定ジャンプに必要
-  # --no-heading: fzfでパースしやすくするためファイル名を行ごとに表示
-  # --smart-case: 小文字のみの入力は大小文字区別なし、大文字が混ざると区別あり
-  # --hidden: 隠しファイルも検索対象にする
-  local rg_prefix="rg --column --line-number --no-heading --color=always --smart-case --hidden --glob '!.git' --glob '!build' --glob '!install' --glob '!.venv' --glob '!node_modules' --glob '!Debug' --glob '!Release'"
-
-  # 引数があればそれを初期クエリとして扱う（複数単語のスペース区切りも許容）
-  local initial_query="${*:-}"
-
-  fzf --ansi --disabled \
-      --query "$initial_query" \
-      --bind "start:reload:$rg_prefix {q} || true" \
-      --bind "change:reload:sleep 0.1; $rg_prefix {q} || true" \
-      --delimiter : \
-      --preview "bat --style=header,grid,numbers --color=always --highlight-line {2} {1} 2> /dev/null" \
-      --preview-window "right,50%,+{2}-2,~3" \
-      --header 'Ctrl-O: open in code | Ctrl-/: toggle preview | Alt-Up/Down: scroll preview' \
-      --color header:italic \
-      --bind "ctrl-o:become(code -g {1}:{2}:{3})" \
-      --bind 'ctrl-/:change-preview-window(down,70%,border-horizontal|hidden|)'
-}
+# Shared functions that need to change the current shell's working directory.
+# Keep these separate so they can also be sourced from zsh in the future.
+if [ -f "${HOME}/dotfiles/.config/shell/functions.sh" ]; then
+  # shellcheck disable=SC1091
+  source "${HOME}/dotfiles/.config/shell/functions.sh"
+fi
 
 if [[ $- == *i* ]]; then
   bind -x '"\C-o": "gcd"'
   bind -x '"\C-]": "git wsw"'
   bind -x '"\C-x\C-y": "y"'
-fi
-
-if [[ -n "${WSL_DISTRO_NAME:-}" ]]; then
-  # For WSL, set Windows browser as default
-  # This allow `gh browse` or `open .`
-  # ref: https://x.com/mattn_jp/status/1965950125416808682
-  # ref: https://zenn.dev/kaityo256/articles/open_command_on_wsl
-  export BROWSER='/mnt/c/Windows/System32/rundll32.exe url.dll,FileProtocolHandler'
-  open() {
-    local path="${1:-.}"
-    explorer.exe "$(wslpath -w "${path}")"
-  }
 fi
