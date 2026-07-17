@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Generate a Co-Authored-By trailer for a Git commit message.
+# Usage: cab <github-username>
+username="${1:?Usage: cab <github-username>}"
+gh api "/users/${username}" -q '"Co-Authored-By: \(.name // .login) <\(.email // "\(.id)+\(.login)@users.noreply.github.com")>"'

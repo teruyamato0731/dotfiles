@@ -147,14 +147,16 @@ This dotfiles repository automatically installs the following useful CLI tools a
 #### Advanced fzf Integration
 
 - **Environment Variables**: Search with preview functionality
-- **Custom Functions**:
-    - `gcd()` - Select ghq repository with fzf and cd
-    - `gsw()` - Select Git branch with fzf and switch
-    - `gg()` - Search GitHub repositories with fzf and execute `ghq get`
-    - `bathelp()` - Preview help with bat
-    - `batdiff()` - Display Git diff with bat
+- **Shell Functions** (`.config/shell/functions.sh`):
+    - `gcd()` - Select a ghq repository with fzf and cd
     - `y()` - Launch yazi and apply its final cwd to the shell
-    - `git wsw` - Select Git worktree with fzf and open in VS Code
+- **Interactive Commands** (`bin/`):
+    - `gsw` - Select a Git branch with fzf and switch
+    - `gg` - Search GitHub repositories with fzf and execute `ghq get`
+    - `bathelp` - Preview help with bat
+    - `batdiff` - Display Git diff with bat
+    - `rgf` - Search files with ripgrep, fzf, bat, and VS Code
+    - `git wsw` - Select a Git worktree with fzf and open in VS Code
 - **Key Bindings**:
     - `Ctrl+O` - Execute gcd function
     - `Ctrl+]` - Execute `git wsw`

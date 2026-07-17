@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Preview help with bat.
+# Usage: bathelp <command>
+# Example: bathelp fzf
+"$@" --help 2>&1 | bat --plain --language=help
