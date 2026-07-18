@@ -30,48 +30,10 @@ PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\] ➜ \[\033[
 # For fzf
 # shellcheck disable=SC1091
 if [[ $- == *i* ]] && command -v fzf >/dev/null 2>&1; then
+  source "${HOME}/dotfiles/.config/shell/fzf.sh"
   eval "$(fzf --bash)"
   _fzf_setup_completion path nano edit
 fi
-
-# Advanced customization of fzf options via _fzf_comprun function
-# - The first argument to the function is the name of the command.
-# - You should make sure to pass the rest of the arguments ($@) to fzf.
-_fzf_comprun() {
-  local command=$1
-  shift
-  case "$command" in
-    (export|unset)
-      fzf --preview "eval 'echo \$'{}" "$@"
-      ;;
-    (*)
-      # evalを使ってFZF_CTRL_T_OPTS内のクォーテーションを解釈させる
-      eval "fzf ${FZF_CTRL_T_OPTS}" '"$@"'
-      ;;
-  esac
-}
-
-# Use fd (https://github.com/sharkdp/fd) for listing path candidates.
-# - The first argument to the function ($1) is the base path to start traversal
-# - See the source code (completion.{bash,zsh}) for the details.
-_fzf_compgen_path() {
-  # $1 が "." の場合は引数として渡さない
-  if [ "$1" = "." ]; then
-    fd --hidden --exclude '.git' .
-  else
-    fd --hidden --exclude '.git' . "$1"
-  fi
-}
-
-# Use fd to generate the list for directory completion
-_fzf_compgen_dir() {
-  # $1 が "." の場合は引数として渡さない
-  if [ "$1" = "." ]; then
-    fd --type d --hidden --exclude '.git' .
-  else
-    fd --type d --hidden --exclude '.git' . "$1"
-  fi
-}
 
 # Shared functions that need to change the current shell's working directory.
 # Keep these separate so they can also be sourced from zsh in the future.

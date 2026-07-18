@@ -52,6 +52,7 @@ if command -v mise >/dev/null 2>&1; then
 fi
 
 if command -v fzf >/dev/null 2>&1; then
+  source "${HOME}/dotfiles/.config/shell/fzf.sh"
   source <(fzf --zsh)
 fi
 
