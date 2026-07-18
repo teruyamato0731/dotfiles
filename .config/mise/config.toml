@@ -51,6 +51,7 @@ la = 'ls -la --git'
 lt = 'ls -l --tree --git'
 grep = 'grep --color=auto'
 cat = 'bat --paging=never'
+lg = 'lazygit'
 
 [tools]
 "aqua:BurntSushi/ripgrep" = "15.1.0"
@@ -59,8 +60,11 @@ cat = 'bat --paging=never'
 "aqua:cli/cli" = "2.96.0"
 "aqua:eza-community/eza" = "0.23.4"
 "aqua:jdx/usage" = "3.5.2"
+"aqua:jesseduffield/lazygit" = "0.63.0"
 "aqua:junegunn/fzf" = "0.73.1"
 "aqua:microsoft/edit" = "2.0.0"
+"aqua:nektos/act" = "0.2.89"
+"aqua:openai/codex" = "0.144.3"
 "aqua:sharkdp/bat" = "0.26.1"
 "aqua:sharkdp/fd" = "10.4.2"
 "aqua:starship/starship" = "1.26.0"
