@@ -54,8 +54,7 @@ config.window_padding = {
 config.enable_scroll_bar = true
 config.window_close_confirmation = "NeverPrompt"
 
--- OSネイティブ風の装飾ではなく、シンプルなタブバーを使用する
-config.use_fancy_tab_bar = false
+config.use_fancy_tab_bar = true
 config.tab_bar_at_bottom = false
 
 -- ---------------------------------------------------------------------------
