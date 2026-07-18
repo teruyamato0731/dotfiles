@@ -41,12 +41,14 @@ FZF_DEFAULT_COMMAND = "fd --type f --hidden --exclude .git"
 FZF_CTRL_T_COMMAND = "fd --hidden --exclude .git"
 FZF_ALT_C_COMMAND = "fd --type d --hidden --exclude .git"
 FZF_DEFAULT_OPTS = "--height 70% --layout reverse --border"
-FZF_CTRL_T_OPTS = "--preview \"bat -n --color=always {} 2> /dev/null || tree -C {}\""
-FZF_ALT_C_OPTS = "--preview \"tree --gitignore -C {}\""
+FZF_CTRL_T_OPTS = "--preview 'bat -n --color=always {} 2> /dev/null || eza --tree --level=2 --icons --color=always {}'"
+FZF_ALT_C_OPTS = "--preview 'eza --tree --level=2 --icons --color=always {}'"
 
 [shell_alias]
-ls = 'ls --color=auto'
-ll = 'ls -alF'
+ls = 'eza --group-directories-first --icons'
+ll = 'ls -l --git'
+la = 'ls -la --git'
+lt = 'ls -l --tree --git'
 grep = 'grep --color=auto'
 cat = 'bat --paging=never'
 
@@ -55,6 +57,7 @@ cat = 'bat --paging=never'
 "aqua:ClementTsang/bottom" = "0.14.1"
 "aqua:astral-sh/uv" = "0.11.23"
 "aqua:cli/cli" = "2.96.0"
+"aqua:eza-community/eza" = "0.23.4"
 "aqua:jdx/usage" = "3.5.2"
 "aqua:junegunn/fzf" = "0.73.1"
 "aqua:microsoft/edit" = "2.0.0"

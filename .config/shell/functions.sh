@@ -7,7 +7,7 @@ gcd() {
   dir="$(ghq list | fzf +m \
     --query "${1:-}" \
     --select-1 \
-    --preview "cd $(ghq root) && bat --color=always --style=header,grid,numbers --line-range :200 {}/README* 2> /dev/null || tree -C {}" \
+    --preview "cd $(ghq root) && bat --color=always --style=header,grid,numbers --line-range :200 {}/README* 2> /dev/null || eza --tree --level=2 --icons --color=always {}" \
     --header 'Press Enter to cd, Ctrl-O to open in code' --color header:italic \
     --bind 'ctrl-o:become(d="$(ghq root)"/{}; w=$(fd -d 1 -e code-workspace . "$d" | head -n 1); code "${w:-$d}")' \
     --bind 'ctrl-/:change-preview-window(down,70%,border-horizontal|hidden|)' \
