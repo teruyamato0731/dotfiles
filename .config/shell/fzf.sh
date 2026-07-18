@@ -32,6 +32,11 @@ _fzf_comprun() {
     (export|unset)
       fzf --preview "eval 'echo \$'{}" "$@"
       ;;
+    (ssh)
+      fzf --preview 'ssh -G -- {} 2>/dev/null | bat --color=always --style=plain --language=ssh_config' \
+          --preview-label=' effective ssh config ' \
+          "$@"
+      ;;
     (*)
       eval "fzf ${FZF_CTRL_T_OPTS}" '"$@"'
       ;;
