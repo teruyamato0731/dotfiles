@@ -12,6 +12,4 @@ max_width = 1000
 max_height = 1000
 
 [opener]
-edit = [
-  { run = '${EDITOR:-nano} %s', block = true, for = "unix" },
-]
+edit = [{ run = '${EDITOR:-nano} %s < /dev/tty', block = true, for = "unix" }]
