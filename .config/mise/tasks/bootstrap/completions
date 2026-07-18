@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# [MISE] description="Install bash completions for mise-managed tools"
+# [MISE] description="Install shell completions for mise-managed tools"
 # [MISE] hide=true
 set -euo pipefail
 
@@ -22,72 +22,89 @@ install_completion_file() {
   fi
 }
 
-info "Installing bash completions..."
-completion_dir="${XDG_DATA_HOME:-${HOME}/.local/share}/bash-completion/completions"
-mkdir -p "${completion_dir}"
+info "Installing shell completions..."
+bash_completion_dir="${XDG_DATA_HOME:-${HOME}/.local/share}/bash-completion/completions"
+zsh_completion_dir="${XDG_DATA_HOME:-${HOME}/.local/share}/zsh/site-functions"
+mkdir -p "${bash_completion_dir}" "${zsh_completion_dir}"
 
-mise completion bash --include-bash-completion-lib > "${completion_dir}/mise"
+mise completion bash --include-bash-completion-lib > "${bash_completion_dir}/mise"
+mise completion zsh > "${zsh_completion_dir}/_mise"
 
 gh_bin="$(mise which gh 2>/dev/null || true)"
 if [ -n "${gh_bin}" ]; then
-  "${gh_bin}" completion -s bash > "${completion_dir}/gh"
+  "${gh_bin}" completion -s bash > "${bash_completion_dir}/gh"
+  "${gh_bin}" completion -s zsh > "${zsh_completion_dir}/_gh"
 else
-  warn "gh is not installed by mise; skipping gh completion."
+  warn "gh is not installed by mise; skipping gh completions."
 fi
 
 ghq_bin="$(mise which ghq 2>/dev/null || true)"
 if [ -n "${ghq_bin}" ]; then
-  install_completion_file "$(dirname "${ghq_bin}")/misc/bash/_ghq" "${completion_dir}/ghq"
+  ghq_dir="$(dirname "${ghq_bin}")"
+  install_completion_file "${ghq_dir}/misc/bash/_ghq" "${bash_completion_dir}/ghq"
+  install_completion_file "${ghq_dir}/misc/zsh/_ghq" "${zsh_completion_dir}/_ghq"
 else
-  warn "ghq is not installed by mise; skipping ghq completion."
+  warn "ghq is not installed by mise; skipping ghq completions."
 fi
 
 bat_bin="$(mise which bat 2>/dev/null || true)"
 if [ -n "${bat_bin}" ]; then
-  install_completion_file "$(dirname "${bat_bin}")/autocomplete/bat.bash" "${completion_dir}/bat"
+  bat_dir="$(dirname "${bat_bin}")"
+  install_completion_file "${bat_dir}/autocomplete/bat.bash" "${bash_completion_dir}/bat"
+  install_completion_file "${bat_dir}/autocomplete/bat.zsh" "${zsh_completion_dir}/_bat"
 else
-  warn "bat is not installed by mise; skipping bat completion."
+  warn "bat is not installed by mise; skipping bat completions."
 fi
 
 rg_bin="$(mise which rg 2>/dev/null || true)"
 if [ -n "${rg_bin}" ]; then
-  install_completion_file "$(dirname "${rg_bin}")/complete/rg.bash" "${completion_dir}/rg"
+  "${rg_bin}" --generate complete-bash > "${bash_completion_dir}/rg"
+  "${rg_bin}" --generate complete-zsh > "${zsh_completion_dir}/_rg"
 else
-  warn "rg is not installed by mise; skipping rg completion."
+  warn "rg is not installed by mise; skipping rg completions."
 fi
 
 fd_bin="$(mise which fd 2>/dev/null || true)"
 if [ -n "${fd_bin}" ]; then
-  install_completion_file "$(dirname "${fd_bin}")/autocomplete/fd.bash" "${completion_dir}/fd"
+  fd_dir="$(dirname "${fd_bin}")"
+  install_completion_file "${fd_dir}/autocomplete/fd.bash" "${bash_completion_dir}/fd"
+  install_completion_file "${fd_dir}/autocomplete/_fd" "${zsh_completion_dir}/_fd"
 else
-  warn "fd is not installed by mise; skipping fd completion."
+  warn "fd is not installed by mise; skipping fd completions."
 fi
 
 btm_bin="$(mise which btm 2>/dev/null || true)"
 if [ -n "${btm_bin}" ]; then
-  install_completion_file "$(dirname "${btm_bin}")/completion/btm.bash" "${completion_dir}/btm"
+  btm_dir="$(dirname "${btm_bin}")"
+  install_completion_file "${btm_dir}/completion/btm.bash" "${bash_completion_dir}/btm"
+  install_completion_file "${btm_dir}/completion/_btm" "${zsh_completion_dir}/_btm"
 else
-  warn "btm is not installed by mise; skipping btm completion."
+  warn "btm is not installed by mise; skipping btm completions."
 fi
 
 uv_bin="$(mise which uv 2>/dev/null || true)"
 if [ -n "${uv_bin}" ]; then
-  "${uv_bin}" generate-shell-completion bash > "${completion_dir}/uv"
+  "${uv_bin}" generate-shell-completion bash > "${bash_completion_dir}/uv"
+  "${uv_bin}" generate-shell-completion zsh > "${zsh_completion_dir}/_uv"
 else
-  warn "uv is not installed by mise; skipping uv completion."
+  warn "uv is not installed by mise; skipping uv completions."
 fi
 
 uvx_bin="$(mise which uvx 2>/dev/null || true)"
 if [ -n "${uvx_bin}" ]; then
-  "${uvx_bin}" --generate-shell-completion bash > "${completion_dir}/uvx"
+  "${uvx_bin}" --generate-shell-completion bash > "${bash_completion_dir}/uvx"
+  "${uvx_bin}" --generate-shell-completion zsh > "${zsh_completion_dir}/_uvx"
 else
-  warn "uvx is not installed by mise; skipping uvx completion."
+  warn "uvx is not installed by mise; skipping uvx completions."
 fi
 
 yazi_bin="$(mise which yazi 2>/dev/null || true)"
 if [ -n "${yazi_bin}" ]; then
-  install_completion_file "$(dirname "${yazi_bin}")/completions/yazi.bash" "${completion_dir}/yazi"
-  install_completion_file "$(dirname "${yazi_bin}")/completions/ya.bash" "${completion_dir}/ya"
+  yazi_dir="$(dirname "${yazi_bin}")"
+  install_completion_file "${yazi_dir}/completions/yazi.bash" "${bash_completion_dir}/yazi"
+  install_completion_file "${yazi_dir}/completions/ya.bash" "${bash_completion_dir}/ya"
+  install_completion_file "${yazi_dir}/completions/_yazi" "${zsh_completion_dir}/_yazi"
+  install_completion_file "${yazi_dir}/completions/_ya" "${zsh_completion_dir}/_ya"
 else
-  warn "yazi is not installed by mise; skipping yazi completion."
+  warn "yazi is not installed by mise; skipping yazi completions."
 fi
