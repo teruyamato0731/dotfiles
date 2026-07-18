@@ -1,0 +1,38 @@
+#!/bin/sh
+#
+# A sudo askpass helper that prompts for the password with Zenity.
+#
+# sudo uses this helper when `-A`/`--askpass` is specified, or when no
+# terminal is available and SUDO_ASKPASS is configured, and authentication
+# is required. The helper only collects the password; sudo still performs
+# the authentication and authorization.
+#
+# This helper is intended for the host environment.
+# Dev Containers use passwordless sudo and do not require it.
+#
+# Requirements:
+#   - Zenity installed at /usr/bin/zenity
+#   - An active graphical session available to the current user
+#
+# Install Zenity on Ubuntu/Debian with:
+#
+#   sudo apt install zenity
+#
+# Usage:
+#
+#   SUDO_ASKPASS="$HOME/dotfiles/bin/sudo-askpass" sudo -A id
+#   SUDO_ASKPASS="$HOME/dotfiles/bin/sudo-askpass" sudo -A apt update
+#
+# To make the helper available to commands started by Codex, set SUDO_ASKPASS
+# when launching Codex. Child processes inherit the variable:
+#
+#   SUDO_ASKPASS="$HOME/dotfiles/bin/sudo-askpass" codex
+#
+# After that, use sudo with -A from Codex without setting the variable again:
+#
+#   sudo -A id
+#   sudo -A apt update
+
+exec /usr/bin/zenity \
+  --password \
+  --title='Administrator authentication'
