@@ -91,7 +91,7 @@ bindkey '^]' git-wsw-widget
 # Ctrl+X Ctrl+Y: yaziを開き、終了後にcwdを反映
 _zle_yazi() {
   zle -I
-  y
+  y </dev/tty
   local result=$?
   zle reset-prompt
   return "$result"
