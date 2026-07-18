@@ -41,8 +41,8 @@ FZF_DEFAULT_COMMAND = "fd --type f --hidden --exclude .git"
 FZF_CTRL_T_COMMAND = "fd --hidden --exclude .git"
 FZF_ALT_C_COMMAND = "fd --type d --hidden --exclude .git"
 FZF_DEFAULT_OPTS = "--height 70% --layout reverse --border"
-FZF_CTRL_T_OPTS = "--preview \"bat -n --color=always {} 2> /dev/null || tree -C {}\""
-FZF_ALT_C_OPTS = "--preview \"tree --gitignore -C {}\""
+FZF_CTRL_T_OPTS = "--preview 'bat -n --color=always {} 2> /dev/null || eza --tree --level=2 --icons --color=always {}'"
+FZF_ALT_C_OPTS = "--preview 'eza --tree --level=2 --icons --color=always {}'"
 
 [shell_alias]
 ls = 'eza --group-directories-first --icons'
