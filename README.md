@@ -88,6 +88,27 @@ git clone https://github.com/teruyamato0731/dotfiles.git ~/dotfiles
 code ~/dotfiles
 ```
 
+### Work in a Dev Container from WezTerm
+
+The WezTerm configuration discovers running Dev Containers through the
+`devcontainer.local_folder` Docker label and creates an
+[ExecDomain](https://wezterm.org/config/lua/ExecDomain.html) for each one.
+Start or reload WezTerm after the Dev Container is running.
+
+When exactly one Dev Container is running, WezTerm opens directly in that
+container. The existing new-tab and pane-split shortcuts then continue to open
+shells in the same container:
+
+- `Ctrl+Shift+T` — new tab
+- `Alt+Enter` — horizontal split
+- `Alt+Shift+Enter` — vertical split
+
+When multiple Dev Containers are running, press `Ctrl+Shift+D` and select the
+desired **Dev Container** domain first. Subsequent tabs and splits inherit that
+domain. The shell runs as the container's configured user and starts in the
+mounted workspace directory when it can be detected. Docker must be available
+to the user running WezTerm.
+
 <details><summary>Apply to all Dev Containers</summary>
 
 To have these dotfiles applied automatically inside every VS Code Dev Container you open, add the following to your VS Code user settings (Open Settings → Open Settings (JSON)):
