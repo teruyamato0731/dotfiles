@@ -24,7 +24,7 @@ fi
 ''' }
 "~/.bashrc.custom" = "~/dotfiles/.config/bash/.bashrc.custom"
 "~/.gitconfig.custom" = "~/dotfiles/.config/git/.gitconfig.custom"
-"~/.zshenv" = "~/dotfiles/.config/zshenv"
+"~/.zshenv" = "~/dotfiles/.config/zsh/.zshenv"
 "~/.config/git" = {}
 "~/.config/yazi" = {}
 "~/.config/wezterm" = {}
