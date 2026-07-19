@@ -93,10 +93,10 @@ code ~/dotfiles
 The WezTerm configuration discovers running Dev Containers through the
 `devcontainer.local_folder` Docker label and creates an
 [ExecDomain](https://wezterm.org/config/lua/ExecDomain.html) for each one.
-Start or reload WezTerm after the Dev Container is running.
 
 WezTerm starts in the host shell by default. To open a shell in a Dev Container,
-press `Ctrl+Shift+D` and select its **Dev Container** domain. The existing
+press `Ctrl+Shift+D` and select its **Dev Container** domain. This refreshes the
+domain list first, so containers started after WezTerm are included. The existing
 new-tab and pane-split shortcuts then continue to open shells in that container:
 
 - `Ctrl+Shift+T` — new tab

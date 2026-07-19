@@ -1,6 +1,7 @@
 local wezterm = require("wezterm")
 
 local M = {}
+local pending_launcher_windows_key = "pending_devcontainer_launcher_windows"
 
 local function path_basename(path)
   return path:match("([^/]+)/?$") or path
@@ -119,5 +120,36 @@ function M.domains()
 
   return exec_domains
 end
+
+-- ExecDomain definitions are evaluated when the configuration is loaded.  Keep
+-- the domain picker current by reloading once when it is explicitly requested.
+-- The window-config-reloaded event guarantees that the picker opens only after
+-- newly discovered domains have been registered.
+function M.launcher_action()
+  return wezterm.action_callback(function(window)
+    local pending_windows = wezterm.GLOBAL[pending_launcher_windows_key] or {}
+    pending_windows[tostring(window:window_id())] = true
+    wezterm.GLOBAL[pending_launcher_windows_key] = pending_windows
+
+    wezterm.reload_configuration()
+  end)
+end
+
+wezterm.on("window-config-reloaded", function(window, pane)
+  local pending_windows = wezterm.GLOBAL[pending_launcher_windows_key] or {}
+  local window_id = tostring(window:window_id())
+
+  if not pending_windows[window_id] then
+    return
+  end
+
+  pending_windows[window_id] = nil
+  wezterm.GLOBAL[pending_launcher_windows_key] = pending_windows
+
+  window:perform_action(
+    wezterm.action.ShowLauncherArgs({ flags = "DOMAINS" }),
+    pane
+  )
+end)
 
 return M

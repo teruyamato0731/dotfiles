@@ -82,11 +82,11 @@ config.cursor_blink_rate = 0
 -- ---------------------------------------------------------------------------
 
 config.keys = {
-  -- Ctrl+Shift+D: Dev Containerを選択
+  -- Ctrl+Shift+D: Dev Container一覧を更新して選択
   {
     key = "d",
     mods = "CTRL|SHIFT",
-    action = act.ShowLauncherArgs({ flags = "DOMAINS" }),
+    action = devcontainer.launcher_action(),
   },
 
   -- Ctrl+Shift+T: 新しいタブ
