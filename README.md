@@ -95,19 +95,18 @@ The WezTerm configuration discovers running Dev Containers through the
 [ExecDomain](https://wezterm.org/config/lua/ExecDomain.html) for each one.
 Start or reload WezTerm after the Dev Container is running.
 
-When exactly one Dev Container is running, WezTerm opens directly in that
-container. The existing new-tab and pane-split shortcuts then continue to open
-shells in the same container:
+WezTerm starts in the host shell by default. To open a shell in a Dev Container,
+press `Ctrl+Shift+D` and select its **Dev Container** domain. The existing
+new-tab and pane-split shortcuts then continue to open shells in that container:
 
 - `Ctrl+Shift+T` — new tab
 - `Alt+Enter` — horizontal split
 - `Alt+Shift+Enter` — vertical split
 
-When multiple Dev Containers are running, press `Ctrl+Shift+D` and select the
-desired **Dev Container** domain first. Subsequent tabs and splits inherit that
-domain. The shell runs as the container's configured user and starts in the
-mounted workspace directory when it can be detected. Docker must be available
-to the user running WezTerm.
+When multiple Dev Containers are running, select the desired domain first.
+Subsequent tabs and splits inherit that domain. The shell runs as the
+container's configured user and starts in the mounted workspace directory when
+it can be detected. Docker must be available to the user running WezTerm.
 
 <details><summary>Apply to all Dev Containers</summary>
 
