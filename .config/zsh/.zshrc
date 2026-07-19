@@ -54,6 +54,11 @@ fi
 if command -v fzf >/dev/null 2>&1; then
   source "${HOME}/dotfiles/.config/shell/fzf.sh"
   source <(fzf --zsh)
+
+  # shim pathをPATHから除外する
+  typeset -T PATH path
+  path=("${(@)path:#${HOME}/.local/share/mise/shims}")
+  rehash
 fi
 
 if [[ -f "${HOME}/dotfiles/.config/shell/functions.sh" ]]; then
