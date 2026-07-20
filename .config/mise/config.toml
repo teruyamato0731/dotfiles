@@ -26,6 +26,7 @@ fi
 "~/.gitconfig.custom" = "~/dotfiles/.config/git/.gitconfig.custom"
 "~/.zshenv" = "~/dotfiles/.config/zsh/.zshenv"
 "~/.config/git" = {}
+"~/.config/lazygit" = {}
 "~/.config/yazi" = {}
 "~/.config/wezterm" = {}
 "~/.config/zsh" = {}
@@ -58,6 +59,7 @@ lg = 'lazygit'
 "aqua:ClementTsang/bottom" = "0.14.1"
 "aqua:astral-sh/uv" = "0.11.23"
 "aqua:cli/cli" = "2.96.0"
+"aqua:dandavison/delta" = "0.19.2"
 "aqua:eza-community/eza" = "0.23.4"
 "aqua:jdx/usage" = "3.5.2"
 "aqua:jesseduffield/lazygit" = "0.63.0"
