@@ -10,6 +10,9 @@ config.initial_rows = 40
 
 config.exec_domains = docker.domains()
 
+-- devcontainer へ SSH_AUTH_SOCK が継承されて、寿命切れになる問題の回避
+config.mux_enable_ssh_agent = false
+
 wezterm.on("gui-startup", function(cmd)
   local _, _, window = mux.spawn_window(cmd or {})
   window:gui_window():maximize()
