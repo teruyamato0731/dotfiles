@@ -88,25 +88,26 @@ git clone https://github.com/teruyamato0731/dotfiles.git ~/dotfiles
 code ~/dotfiles
 ```
 
-### Work in a Dev Container from WezTerm
+### Work in Docker containers from WezTerm
 
-The WezTerm configuration discovers running Dev Containers through the
-`devcontainer.local_folder` Docker label and creates an
-[ExecDomain](https://wezterm.org/config/lua/ExecDomain.html) for each one.
+The WezTerm configuration discovers all running Docker containers and creates
+an [ExecDomain](https://wezterm.org/config/lua/ExecDomain.html) for each one.
+Dev Containers are included as normal Docker containers.
 
-WezTerm starts in the host shell by default. To open a shell in a Dev Container,
-press `Ctrl+Shift+D` and select its **Dev Container** domain. This refreshes the
-domain list first, so containers started after WezTerm are included. The existing
+WezTerm starts in the host shell by default. To open a shell in a container,
+press `Ctrl+Shift+D` and select its **Docker** domain. This refreshes the domain
+list first, so containers started after WezTerm are included. The existing
 new-tab and pane-split shortcuts then continue to open shells in that container:
 
 - `Ctrl+Shift+T` — new tab
 - `Alt+Enter` — horizontal split
 - `Alt+Shift+Enter` — vertical split
 
-When multiple Dev Containers are running, select the desired domain first.
-Subsequent tabs and splits inherit that domain. The shell runs as the
-container's configured user and starts in the mounted workspace directory when
-it can be detected. Docker must be available to the user running WezTerm.
+When multiple containers are running, select the desired domain first.
+Subsequent tabs and splits inherit that domain. The default shell is `/bin/sh`;
+change `default_prog` in `wezterm.lua` if needed. Docker must be available to
+the user running WezTerm. This is a plain `docker exec` shell and does not
+replicate Dev Container-specific user or workspace settings.
 
 <details><summary>Apply to all Dev Containers</summary>
 
