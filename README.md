@@ -88,26 +88,13 @@ git clone https://github.com/teruyamato0731/dotfiles.git ~/dotfiles
 code ~/dotfiles
 ```
 
-### Work in Docker containers from WezTerm
+### WezTerm Docker domains
 
-The WezTerm configuration discovers all running Docker containers and creates
-an [ExecDomain](https://wezterm.org/config/lua/ExecDomain.html) for each one.
-Dev Containers are included as normal Docker containers.
+`Ctrl+Shift+D` で起動中の Docker / Dev Container を選択できます。
+選択した domain は、新しいタブとペイン分割にも引き継がれます。
 
-WezTerm starts in the host shell by default. To open a shell in a container,
-press `Ctrl+Shift+D` and select its **Docker** domain. This refreshes the domain
-list first, so containers started after WezTerm are included. The existing
-new-tab and pane-split shortcuts then continue to open shells in that container:
-
-- `Ctrl+Shift+T` — new tab
-- `Alt+Enter` — horizontal split
-- `Alt+Shift+Enter` — vertical split
-
-When multiple containers are running, select the desired domain first.
-Subsequent tabs and splits inherit that domain. The default shell is `/bin/sh`;
-change `default_prog` in `wezterm.lua` if needed. Docker must be available to
-the user running WezTerm. This is a plain `docker exec` shell and does not
-replicate Dev Container-specific user or workspace settings.
+- `Ctrl+Shift+T` — 新しいタブ
+- `Alt+Enter` / `Alt+Shift+Enter` — ペイン分割
 
 <details><summary>Apply to all Dev Containers</summary>
 

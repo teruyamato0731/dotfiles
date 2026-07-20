@@ -8,9 +8,7 @@ local config = wezterm.config_builder()
 config.initial_cols = 150
 config.initial_rows = 40
 
-config.exec_domains = docker.domains({
-  default_prog = { "/bin/sh" },
-})
+config.exec_domains = docker.domains()
 
 wezterm.on("gui-startup", function(cmd)
   local _, _, window = mux.spawn_window(cmd or {})
