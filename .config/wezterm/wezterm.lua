@@ -1,11 +1,14 @@
 local wezterm = require("wezterm")
 local mux = wezterm.mux
 local act = wezterm.action
+local docker = require("domains.docker")
 
 local config = wezterm.config_builder()
 
 config.initial_cols = 150
 config.initial_rows = 40
+
+config.exec_domains = docker.domains()
 
 wezterm.on("gui-startup", function(cmd)
   local _, _, window = mux.spawn_window(cmd or {})
@@ -79,6 +82,16 @@ config.cursor_blink_rate = 0
 -- ---------------------------------------------------------------------------
 
 config.keys = {
+  -- Ctrl+Shift+D: Dockerコンテナ一覧を更新して選択
+  {
+    key = "d",
+    mods = "CTRL|SHIFT",
+    action = wezterm.action_callback(function(window, pane)
+      wezterm.reload_configuration()
+      window:perform_action(act.ShowLauncherArgs({ flags = "DOMAINS" }), pane)
+    end),
+  },
+
   -- Ctrl+Shift+T: 新しいタブ
   {
     key = "t",

@@ -88,6 +88,14 @@ git clone https://github.com/teruyamato0731/dotfiles.git ~/dotfiles
 code ~/dotfiles
 ```
 
+### WezTerm Docker domains
+
+`Ctrl+Shift+D` で起動中の Docker / Dev Container を選択できます。
+選択した domain は、新しいタブとペイン分割にも引き継がれます。
+
+- `Ctrl+Shift+T` — 新しいタブ
+- `Alt+Enter` / `Alt+Shift+Enter` — ペイン分割
+
 <details><summary>Apply to all Dev Containers</summary>
 
 To have these dotfiles applied automatically inside every VS Code Dev Container you open, add the following to your VS Code user settings (Open Settings → Open Settings (JSON)):
