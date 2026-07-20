@@ -70,6 +70,9 @@ config.audible_bell = "Disabled"
 -- TERMは基本的にデフォルトのxterm-256colorのままにする
 -- config.term = "xterm-256color"
 
+-- Kitty Keyboard Protocol を有効化
+config.enable_kitty_keyboard = true
+
 -- ---------------------------------------------------------------------------
 -- Cursor
 -- ---------------------------------------------------------------------------
