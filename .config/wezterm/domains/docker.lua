@@ -29,6 +29,27 @@ local function decode_json(value)
   end
 end
 
+local function merge_metadata(metadata)
+  if type(metadata) ~= "table" then
+    return {}
+  end
+
+  if metadata[1] == nil then
+    return metadata
+  end
+
+  local merged = {}
+  for _, entry in ipairs(metadata) do
+    if type(entry) == "table" then
+      for key, value in pairs(entry) do
+        merged[key] = value
+      end
+    end
+  end
+
+  return merged
+end
+
 local function devcontainer_info(container)
   local labels = (container.Config or {}).Labels or {}
   local local_folder = labels["devcontainer.local_folder"]
@@ -36,12 +57,7 @@ local function devcontainer_info(container)
     return nil
   end
 
-  local metadata = decode_json(labels["devcontainer.metadata"]) or {}
-  if type(metadata) ~= "table" then
-    metadata = {}
-  else
-    metadata = metadata[1] or metadata
-  end
+  local metadata = merge_metadata(decode_json(labels["devcontainer.metadata"]))
 
   local cwd = absolute_path(metadata.workspaceFolder)
   if not cwd then
