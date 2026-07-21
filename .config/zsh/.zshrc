@@ -31,30 +31,20 @@ zstyle ':completion:*:descriptions' format '%F{yellow}-- %d --%f'
 zstyle ':completion:*' list-colors "${(s.:.)${LS_COLORS-}}"
 
 # Key bindings
+bindkey -e
 zmodload zsh/terminfo
-autoload -Uz up-line-or-beginning-search
-autoload -Uz down-line-or-beginning-search
+autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 
-typeset _zsh_up_key="${terminfo[kcuu1]-}"
-typeset _zsh_down_key="${terminfo[kcud1]-}"
-typeset _zsh_keymap
+[[ -n ${terminfo[kcuu1]-} ]] &&
+  bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search
 
-for _zsh_keymap in emacs viins; do
-  if [[ -n "$_zsh_up_key" ]]; then
-    bindkey -M "$_zsh_keymap" "$_zsh_up_key" up-line-or-beginning-search
-  fi
+[[ -n ${terminfo[kcud1]-} ]] &&
+  bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
 
-  if [[ -n "$_zsh_down_key" ]]; then
-    bindkey -M "$_zsh_keymap" "$_zsh_down_key" down-line-or-beginning-search
-  fi
-
-  bindkey -M "$_zsh_keymap" '^W' backward-kill-word
-  bindkey -M "$_zsh_keymap" '^[d' kill-word
-done
-
-unset _zsh_up_key _zsh_down_key _zsh_keymap
+bindkey '^W' backward-kill-word
+bindkey '^[d' kill-word
 
 bindkey '^[[1;5D' backward-word
 bindkey '^[[1;5C' forward-word
