@@ -218,7 +218,19 @@ config.keys = {
     key = "9",
     mods = "ALT",
     action = act.ActivateTab(8),
-  }
+  },
+
+  -- Ctrl+Backspace: 単語削除
+  {
+    key = "Backspace",
+    mods = "CTRL",
+    action = wezterm.action.SendString("\x17"),
+  },
+  {
+    key = "phys:Delete",
+    mods = "CTRL",
+    action = wezterm.action.SendString("\x1bd"),
+  },
 }
 
 return config

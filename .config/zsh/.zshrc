@@ -28,17 +28,23 @@ zstyle ':completion:*' matcher-list \
 
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*:descriptions' format '%F{yellow}-- %d --%f'
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' list-colors "${(s.:.)${LS_COLORS-}}"
 
-# history search with up/down arrow keys
+# Key bindings
 bindkey -e
-autoload -Uz up-line-or-beginning-search
-autoload -Uz down-line-or-beginning-search
+zmodload zsh/terminfo
+autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 
-bindkey "$key[Up]" up-line-or-beginning-search
-bindkey "$key[Down]" down-line-or-beginning-search
+[[ -n ${terminfo[kcuu1]-} ]] &&
+  bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search
+
+[[ -n ${terminfo[kcud1]-} ]] &&
+  bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
+
+bindkey '^W' backward-kill-word
+bindkey '^[d' kill-word
 
 bindkey '^[[1;5D' backward-word
 bindkey '^[[1;5C' forward-word
