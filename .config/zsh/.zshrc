@@ -50,8 +50,8 @@ for _zsh_keymap in emacs viins; do
     bindkey -M "$_zsh_keymap" "$_zsh_down_key" down-line-or-beginning-search
   fi
 
-  bindkey -M "$_zsh_keymap" $'\e[99~' backward-kill-word
-  bindkey -M "$_zsh_keymap" $'\e[100~' kill-word
+  bindkey -M "$_zsh_keymap" '^W' backward-kill-word
+  bindkey -M "$_zsh_keymap" '^[d' kill-word
 done
 
 unset _zsh_up_key _zsh_down_key _zsh_keymap
