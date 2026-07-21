@@ -88,10 +88,10 @@ git clone https://github.com/teruyamato0731/dotfiles.git ~/dotfiles
 code ~/dotfiles
 ```
 
-### WezTerm Docker domains
+### WezTerm Docker
 
 `Ctrl+Shift+D` で起動中の Docker / Dev Container を選択できます。
-選択した domain は、新しいタブとペイン分割にも引き継がれます。
+選択したコンテナは、新しいタブとペイン分割にも引き継がれます。
 
 - `Ctrl+Shift+T` — 新しいタブ
 - `Alt+Enter` / `Alt+Shift+Enter` — ペイン分割
