@@ -1,7 +1,7 @@
 local wezterm = require("wezterm")
 local mux = wezterm.mux
 local act = wezterm.action
-local docker = require("domains.docker")
+local docker = require("docker")
 
 local config = wezterm.config_builder()
 

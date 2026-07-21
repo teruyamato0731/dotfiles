@@ -5,6 +5,15 @@ local M = {}
 
 local container_var = "wezterm_docker_container"
 
+local function error_message(err)
+  if type(err) ~= "string" then
+    return "unknown error"
+  end
+
+  local message = err:match("^%s*(.-)%s*$")
+  return message ~= "" and message or "unknown error"
+end
+
 local function basename(path)
   return path:match("([^/]+)/?$") or path
 end
@@ -96,7 +105,6 @@ local function describe(container)
     cwd = cwd,
     id = container.Id,
     label = label,
-    name = name,
     user = devcontainer and devcontainer.user,
   }
 end
@@ -193,10 +201,9 @@ local function spawn_tab(window, pane, container)
   )
 end
 
-local function split(window, pane, container, direction)
-  local action = direction == "Right" and act.SplitHorizontal or act.SplitVertical
+local function split(window, pane, container, split_action)
   window:perform_action(
-    action({
+    split_action({
       args = command(container),
       domain = { DomainName = "local" },
     }),
@@ -232,7 +239,7 @@ end
 function M.select(window, pane)
   local containers, err = list_containers()
   if not containers then
-    notify(window, "一覧を取得できません: " .. (err or "unknown error"))
+    notify(window, "一覧を取得できません: " .. error_message(err))
     return
   end
 
@@ -274,7 +281,7 @@ function M.spawn_tab(window, pane)
   end
 
   if err then
-    notify(window, "コンテナを取得できません: " .. err)
+    notify(window, "コンテナを取得できません: " .. error_message(err))
     return
   end
 
@@ -284,12 +291,12 @@ end
 function M.split_horizontal(window, pane)
   local container, err = container_for(pane)
   if container then
-    split(window, pane, container, "Right")
+    split(window, pane, container, act.SplitHorizontal)
     return
   end
 
   if err then
-    notify(window, "コンテナを取得できません: " .. err)
+    notify(window, "コンテナを取得できません: " .. error_message(err))
     return
   end
 
@@ -299,12 +306,12 @@ end
 function M.split_vertical(window, pane)
   local container, err = container_for(pane)
   if container then
-    split(window, pane, container, "Bottom")
+    split(window, pane, container, act.SplitVertical)
     return
   end
 
   if err then
-    notify(window, "コンテナを取得できません: " .. err)
+    notify(window, "コンテナを取得できません: " .. error_message(err))
     return
   end
 
