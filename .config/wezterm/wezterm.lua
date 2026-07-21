@@ -8,8 +8,6 @@ local config = wezterm.config_builder()
 config.initial_cols = 150
 config.initial_rows = 40
 
-config.exec_domains = docker.domains()
-
 -- devcontainer へ SSH_AUTH_SOCK が継承されて、寿命切れになる問題の回避
 config.mux_enable_ssh_agent = false
 
@@ -88,13 +86,12 @@ config.cursor_blink_rate = 0
 -- ---------------------------------------------------------------------------
 
 config.keys = {
-  -- Ctrl+Shift+D: Dockerコンテナ一覧を更新して選択
+  -- Ctrl+Shift+D: 起動中のDockerコンテナを選択
   {
     key = "d",
     mods = "CTRL|SHIFT",
     action = wezterm.action_callback(function(window, pane)
-      wezterm.reload_configuration()
-      window:perform_action(act.ShowLauncherArgs({ flags = "DOMAINS" }), pane)
+      docker.select(window, pane)
     end),
   },
 
@@ -102,7 +99,9 @@ config.keys = {
   {
     key = "t",
     mods = "CTRL|SHIFT",
-    action = act.SpawnTab("CurrentPaneDomain"),
+    action = wezterm.action_callback(function(window, pane)
+      docker.spawn_tab(window, pane)
+    end),
   },
 
   -- Ctrl+Shift+W: 現在のペインを閉じる
@@ -116,18 +115,18 @@ config.keys = {
   {
     key = "Enter",
     mods = "ALT",
-    action = act.SplitHorizontal({
-      domain = "CurrentPaneDomain",
-    }),
+    action = wezterm.action_callback(function(window, pane)
+      docker.split_horizontal(window, pane)
+    end),
   },
 
   -- Alt+Shift+Enter: 上下分割
   {
     key = "Enter",
     mods = "ALT|SHIFT",
-    action = act.SplitVertical({
-      domain = "CurrentPaneDomain",
-    }),
+    action = wezterm.action_callback(function(window, pane)
+      docker.split_vertical(window, pane)
+    end),
   },
 
   -- Alt+h/j/k/l: ペイン移動
