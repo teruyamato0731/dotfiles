@@ -15,7 +15,7 @@ local function focus_preview()
 
   local ratio = rt.mgr.ratio
   normal_ratio = { ratio.parent, ratio.current, ratio.preview }
-  set_ratio { 1, 1, 6 }
+  set_ratio { 1, 2, 5 }
 end
 
 local function unfocus_preview()
