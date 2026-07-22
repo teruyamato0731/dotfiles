@@ -1,2 +1,3 @@
 [mgr]
 cwd = { fg = "blue" }
+syntect_theme = "~/.config/yazi/themes/Monokai Extended.tmTheme"
