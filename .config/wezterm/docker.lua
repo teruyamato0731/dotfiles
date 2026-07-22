@@ -158,11 +158,16 @@ local function list_containers()
   return result
 end
 
-local function command(container)
+local function command(container, shell_command)
   local result = { "docker", "exec", "-it" }
 
   table.insert(result, "--env")
   table.insert(result, "WEZTERM_DOCKER_CONTAINER=" .. container.id)
+
+  if shell_command then
+    table.insert(result, "--env")
+    table.insert(result, "WEZTERM_DOCKER_COMMAND=" .. shell_command)
+  end
 
   if container.user and container.user ~= "" then
     table.insert(result, "--user")
@@ -181,7 +186,7 @@ local function command(container)
       .. "[ -z \"$encoded\" ] || printf '\\033]1337;SetUserVar="
       .. container_var
       .. "=%s\\007' \"$encoded\"; "
-      .. 'for shell in zsh bash sh; do if command -v "$shell" >/dev/null 2>&1; then exec "$shell" -l; fi; done; exit 127'
+      .. 'for shell in zsh bash sh; do if command -v "$shell" >/dev/null 2>&1; then if [ -n "$WEZTERM_DOCKER_COMMAND" ]; then exec "$shell" -lc "$WEZTERM_DOCKER_COMMAND"; fi; exec "$shell" -l; fi; done; exit 127'
   )
 
   return result
@@ -191,10 +196,10 @@ local function notify(window, message)
   window:toast_notification("Docker", message, 4000)
 end
 
-local function spawn_tab(window, pane, container)
+local function spawn_tab(window, pane, container, shell_command)
   window:perform_action(
     act.SpawnCommandInNewTab({
-      args = command(container),
+      args = command(container, shell_command),
       domain = { DomainName = "local" },
     }),
     pane
@@ -286,6 +291,21 @@ function M.spawn_tab(window, pane)
   end
 
   window:perform_action(act.SpawnTab("CurrentPaneDomain"), pane)
+end
+
+function M.lazygit(window, pane)
+  local container, err = container_for(pane)
+  if container then
+    spawn_tab(window, pane, container, "exec lazygit")
+    return
+  end
+
+  if err then
+    notify(window, "コンテナを取得できません: " .. error_message(err))
+    return
+  end
+
+  window:perform_action(act.SpawnCommandInNewTab({ args = { "lazygit" } }), pane)
 end
 
 function M.split_horizontal(window, pane)

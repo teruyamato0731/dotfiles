@@ -104,6 +104,15 @@ config.keys = {
     end),
   },
 
+  -- Ctrl+Shift+G: lazygitを新しいタブで起動
+  {
+    key = "g",
+    mods = "CTRL|SHIFT",
+    action = wezterm.action_callback(function(window, pane)
+      docker.lazygit(window, pane)
+    end),
+  },
+
   -- Ctrl+Shift+W: 現在のペインを閉じる
   {
     key = "w",
