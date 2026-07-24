@@ -47,6 +47,14 @@ else
   warn "ghq is not installed by mise; skipping ghq completions."
 fi
 
+lazygit_bin="$(mise which lazygit 2>/dev/null || true)"
+if [ -n "${lazygit_bin}" ]; then
+  "${lazygit_bin}" completion bash > "${bash_completion_dir}/lazygit"
+  "${lazygit_bin}" completion zsh > "${zsh_completion_dir}/_lazygit"
+else
+  warn "lazygit is not installed by mise; skipping lazygit completions."
+fi
+
 bat_bin="$(mise which bat 2>/dev/null || true)"
 if [ -n "${bat_bin}" ]; then
   bat_dir="$(dirname "${bat_bin}")"

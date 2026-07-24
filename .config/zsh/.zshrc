@@ -20,15 +20,35 @@ mkdir -p "${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
 autoload -Uz compinit
 compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
 
-# completion settings
-zstyle ':completion:*' menu select
+# Completion settings
+zstyle ':completion:*' menu no
 zstyle ':completion:*' matcher-list \
   'm:{a-zA-Z}={A-Za-z}' \
   'r:|[._-]=** r:|=**'
 
+if [[ -z ${LS_COLORS-} ]] && (( $+commands[dircolors] )); then
+  eval "$(dircolors -b)"
+fi
+
 zstyle ':completion:*' group-name ''
-zstyle ':completion:*:descriptions' format '%F{yellow}-- %d --%f'
+zstyle ':completion:*:descriptions' format '[%d]'
 zstyle ':completion:*' list-colors "${(s.:.)${LS_COLORS-}}"
+
+zstyle ':fzf-tab:*' fzf-flags \
+  --height=70% \
+  --layout=reverse \
+  --border
+
+zstyle ':fzf-tab:complete:(cat|bat):*' fzf-preview \
+  'bat -n --color=always "$realpath" 2>/dev/null || eza --tree --level=2 --icons --color=always "$realpath"'
+
+zstyle ':fzf-tab:complete:cd:*' fzf-preview \
+  'eza --tree --level=2 --icons --color=always "$realpath"'
+
+zstyle ':fzf-tab:complete:export:*' fzf-preview 'print -r -- "${(P)word}"'
+zstyle ':fzf-tab:complete:unset:*' fzf-preview 'print -r -- "${(P)word}"'
+
+zstyle ':fzf-tab:*' switch-group '[' ']'
 
 # Key bindings
 bindkey -e
@@ -60,6 +80,12 @@ fi
 if command -v fzf >/dev/null 2>&1; then
   source "${HOME}/dotfiles/.config/shell/fzf.sh"
   source <(fzf --zsh)
+
+  _fzf_tab="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh"
+  if [[ -r "$_fzf_tab" ]]; then
+    source "$_fzf_tab"
+  fi
+  unset _fzf_tab
 
   # shim pathをPATHから除外する
   typeset -T PATH path

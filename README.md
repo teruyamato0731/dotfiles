@@ -155,6 +155,19 @@ This dotfiles repository automatically installs the following useful CLI tools a
 #### Advanced fzf Integration
 
 - **Environment Variables**: Search with preview functionality
+- **Zsh Completion**: [fzf-tab](https://github.com/Aloxaf/fzf-tab) replaces the
+  standard completion selection menu while retaining Zsh compsys and fzf's
+  `Ctrl+R`, `Ctrl+T`, and `Alt+C` bindings.
+    - mise bootstraps fzf-tab v1.3.0 at
+      `d7e0234614dbe5369fdd760907d12c0e05a4dccc`.
+    - Its explicit `--height=70%`, reverse layout, and border match the
+      standard fzf geometry without inheriting all `FZF_DEFAULT_OPTS`.
+    - `Tab`/`Shift+Tab` move through candidates, `Ctrl+Space` toggles
+      multi-selection, `[`/`]` switch completion groups, and `/` continues
+      directory completion.
+    - `cd` previews use `eza --tree --level=2 --icons`; `cat`/`bat` file
+      candidates use the same `bat` preview as fzf's `**<Tab>` completion.
+      `export`/`unset` preview the focused variable's value.
 - **Shell Functions** (`.config/shell/functions.sh`):
     - `gcd()` - Select a ghq repository with fzf and cd
     - `y()` - Launch yazi and apply its final cwd to the shell
