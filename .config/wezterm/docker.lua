@@ -158,15 +158,21 @@ local function list_containers()
   return result
 end
 
+local function add_env(args, name, value)
+  table.insert(args, "--env")
+  table.insert(args, name .. "=" .. value)
+end
+
 local function command(container, shell_command)
   local result = { "docker", "exec", "-it" }
 
-  table.insert(result, "--env")
-  table.insert(result, "WEZTERM_DOCKER_CONTAINER=" .. container.id)
+  add_env(result, "TERM", "xterm-256color")
+  add_env(result, "COLORTERM", "truecolor")
+  add_env(result, "TERM_PROGRAM", "WezTerm")
+  add_env(result, "WEZTERM_DOCKER_CONTAINER", container.id)
 
   if shell_command then
-    table.insert(result, "--env")
-    table.insert(result, "WEZTERM_DOCKER_COMMAND=" .. shell_command)
+    add_env(result, "WEZTERM_DOCKER_COMMAND", shell_command)
   end
 
   if container.user and container.user ~= "" then
