@@ -99,7 +99,7 @@ Settings → Open Settings (JSON)):
     "dotfiles.repository": "https://github.com/teruyamato0731/dotfiles.git",
     "dotfiles.installCommand": "./install.sh",
     "dotfiles.targetPath": "~/dotfiles"
-},
+}
 ~~~
 
 </details>

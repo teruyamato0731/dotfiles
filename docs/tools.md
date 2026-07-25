@@ -43,12 +43,24 @@ distinction.
 
 ## Repository and search workflows
 
-These commands are installed from <code>~/dotfiles/bin</code> and are
-available through the mise-managed PATH:
+The following commands and shell functions are available after shell setup.
+
+### Shell functions
+
+The functions <code>gcd</code> and <code>y</code> are defined in
+<code>.config/shell/functions.sh</code> and sourced by Bash and zsh:
 
 | Command | Usage |
 | --- | --- |
 | <code>gcd [QUERY]</code> | Select a ghq repository with fzf and change to it. Press <code>Ctrl-O</code> in the selector to open the repository in VS Code. |
+| <code>y [ARGS...]</code> | Start Yazi and apply its final directory to the current shell; see the [Yazi guide](yazi.md). |
+
+### Commands under <code>~/dotfiles/bin</code>
+
+These commands are available through the mise-managed PATH:
+
+| Command | Usage |
+| --- | --- |
 | <code>gg [QUERY]</code> | Search the authenticated user's GitHub repositories and clone the selected repository with ghq. Run <code>gh auth login</code> first. |
 | <code>gsw [QUERY]</code> | Select a local or remote branch and switch to it. Press <code>Ctrl-Q</code> to create a new branch from the current query. |
 | <code>git wsw [QUERY]</code> | Select a remote branch, create a sibling worktree, and open it in VS Code. Existing worktrees are reused. |
@@ -56,7 +68,6 @@ available through the mise-managed PATH:
 | <code>bathelp COMMAND [ARG...]</code> | Render a command's help output with bat. |
 | <code>batdiff</code> | Show the current Git diff through bat. |
 | <code>cab USERNAME</code> | Generate a GitHub Co-Authored-By trailer for a user. |
-| <code>y [ARGS...]</code> | Start Yazi and apply its final directory to the current shell; see the [Yazi guide](yazi.md). |
 
 The fzf selectors use a reverse layout and previews by default. The
 keybindings shared with the shell are documented in

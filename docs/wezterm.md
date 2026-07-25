@@ -41,9 +41,11 @@ install the host-only WezTerm package or fonts. The configuration lives in
 ## Docker tabs and panes
 
 <code>Ctrl-Shift-D</code> lists only running containers. For a Dev Container,
-the selector uses the Dev Container metadata to display its project name,
-working directory, and remote user. For other containers it falls back to the
-container name, image, and working directory.
+the selector displays its workspace name and uses Dev Container metadata to
+determine the working directory and remote user. For a Compose service, it
+displays the Compose project and service; for other containers, it displays
+the container name and image. The working directory is used when opening the
+shell but is not included in the selector label.
 
 After selecting a container:
 

@@ -36,6 +36,6 @@ Both modes use dark colors and let lazygit own the paging lifecycle. Select
 the pager using lazygit's pager action; the available action and key are
 shown in the in-app key hints for the installed version.
 
-The delta binary is managed by mise. If a pager fails, verify it with
-<code>mise which delta</code> and check that the custom Git configuration is
-included as described in the [Git guide](git.md).
+The delta binary is managed by mise. If a pager fails, verify that delta is
+available with <code>mise which delta</code> and inspect
+<code>.config/lazygit/config.yml</code>.
