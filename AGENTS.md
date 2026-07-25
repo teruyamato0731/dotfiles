@@ -86,9 +86,13 @@ replace pinned versions with floating versions such as `latest`.
 
 ## Shell conventions
 
-Shell scripts are Bash scripts.
+Executable shell scripts and mise tasks use Bash unless the file is explicitly
+zsh-specific.
 
 * Use `#!/usr/bin/env bash` for executable Bash scripts.
+* Files under `.config/zsh/` may use zsh-specific syntax.
+* Files under `.config/shell/` are sourced by both Bash and zsh; keep them
+  compatible with both shells unless documented otherwise.
 * Use `set -euo pipefail` for non-trivial executable scripts unless there is a
   documented reason not to.
 * Quote parameter expansions unless word splitting or glob expansion is
@@ -100,8 +104,8 @@ Shell scripts are Bash scripts.
 * Preserve the existing formatting style in surrounding code.
 * Keep scripts safe to run more than once.
 
-Do not introduce dependencies on shells other than Bash without updating the
-documentation and CI environment.
+Do not introduce a new shell dependency without updating the documentation and
+CI environment.
 
 ## Safety rules
 
@@ -177,15 +181,11 @@ not run. Do not claim that the change is fully validated.
 
 ## Documentation
 
-Update `README.md` when a change affects:
+Update `README.md` when installation, prerequisites, supported profiles, or the
+top-level feature overview changes.
 
-* installation commands;
-* prerequisites;
-* supported profiles;
-* installed user-facing tools;
-* environment variables or aliases users are expected to rely on;
-* Dev Container or Docker usage;
-* required post-installation steps.
+Update the relevant file under `docs/` when detailed usage, keybindings,
+aliases, tool behavior, or configuration changes.
 
 Keep implementation details in code comments or focused documentation rather
 than expanding the README unnecessarily.
