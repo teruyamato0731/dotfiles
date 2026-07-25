@@ -88,110 +88,42 @@ git clone https://github.com/teruyamato0731/dotfiles.git ~/dotfiles
 code ~/dotfiles
 ```
 
-### WezTerm Docker
-
-`Ctrl+Shift+D` で起動中の Docker / Dev Container を選択できます。
-選択したコンテナは、新しいタブとペイン分割にも引き継がれます。
-
-- `Ctrl+Shift+T` — 新しいタブ
-- `Alt+Enter` / `Alt+Shift+Enter` — ペイン分割
-
 <details><summary>Apply to all Dev Containers</summary>
 
-To have these dotfiles applied automatically inside every VS Code Dev Container you open, add the following to your VS Code user settings (Open Settings → Open Settings (JSON)):
+To have these dotfiles applied automatically inside every VS Code Dev
+Container you open, add the following to your VS Code user settings (Open
+Settings → Open Settings (JSON)):
 
-```json
+~~~json
 {
     "dotfiles.repository": "https://github.com/teruyamato0731/dotfiles.git",
     "dotfiles.installCommand": "./install.sh",
     "dotfiles.targetPath": "~/dotfiles"
-},
-```
+}
+~~~
 
 </details>
 
+### WezTerm and Docker
+
+The Docker tab, pane, and container-selection workflow is documented in
+[WezTerm and Docker integration](docs/wezterm.md).
+
 ## Features
 
-### CLI Tools and Utilities
+The installer configures a shared CLI-focused environment with mise and
+shell integrations for Bash and zsh. Detailed usage is organized by
+workflow:
 
-This dotfiles repository automatically installs the following useful CLI tools and utilities:
+- [CLI tools and common workflows](docs/tools.md)
+- [Bash, zsh, and fzf](docs/shell.md)
+- [Git configuration and helpers](docs/git.md)
+- [WezTerm and Docker integration](docs/wezterm.md)
+- [Yazi](docs/yazi.md)
+- [lazygit](docs/lazygit.md)
+- [zsh configuration details](docs/zsh.md)
 
-#### Basic Tools
-
-- **bash-completion** - Enhanced Bash completion functionality
-- **git** - Version control system
-- **curl** - Data transfer tool
-- **unzip** - Archive extraction tool
-- **tree** - Directory structure visualization
-- **htop** - Interactive process viewer
-- **jq** - JSON processor
-- **mise** - Development tool and runtime manager
-
-#### Enhanced Alternative Tools
-
-- **bat** - Syntax-highlighted `cat` alternative
-- **ripgrep** - Fast `grep` alternative
-- **fd** - Fast `find` alternative
-- **btm** - Resource monitor
-- **gh** - GitHub CLI
-- **yazi** - Terminal file manager
-
-#### Development Support Tools
-
-- **ghq** (v1.10.1) - Git repository unified management tool
-- **fzf** - Fast fuzzy finder
-
-### Custom Configurations and Aliases
-
-#### Bash Configuration (`.bashrc.custom`)
-
-- **Enhanced Prompt**: PS1 with Git branch and status display
-- **Useful Aliases**:
-    - `ls` → Enable color display
-    - `grep` → Enable color display
-    - `ll` → `ls -alF`
-    - `cat` → `bat --paging=never`
-
-#### Advanced fzf Integration
-
-- **Environment Variables**: Search with preview functionality
-- **Zsh Completion**: [fzf-tab](https://github.com/Aloxaf/fzf-tab) replaces the
-  standard completion selection menu while retaining Zsh compsys and fzf's
-  `Ctrl+R`, `Ctrl+T`, and `Alt+C` bindings.
-    - mise bootstraps fzf-tab v1.3.0 at
-      `d7e0234614dbe5369fdd760907d12c0e05a4dccc`.
-    - Its explicit `--height=70%`, reverse layout, and border match the
-      standard fzf geometry without inheriting all `FZF_DEFAULT_OPTS`.
-    - `Tab`/`Shift+Tab` move through candidates, `Ctrl+Space` toggles
-      multi-selection, `[`/`]` switch completion groups, and `/` continues
-      directory completion.
-    - `cd` previews use `eza --tree --level=2 --icons`; `cat`/`bat` file
-      candidates use the same `bat` preview as fzf's `**<Tab>` completion.
-      `export`/`unset` preview the focused variable's value.
-- **Shell Functions** (`.config/shell/functions.sh`):
-    - `gcd()` - Select a ghq repository with fzf and cd
-    - `y()` - Launch yazi and apply its final cwd to the shell
-- **Interactive Commands** (`bin/`):
-    - `gsw` - Select a Git branch with fzf and switch
-    - `gg` - Search GitHub repositories with fzf and execute `ghq get`
-    - `bathelp` - Preview help with bat
-    - `batdiff` - Display Git diff with bat
-    - `rgf` - Search files with ripgrep, fzf, bat, and VS Code
-    - `git wsw` - Select a Git worktree with fzf and open in VS Code
-- **Key Bindings**:
-    - `Ctrl+O` - Execute gcd function
-    - `Ctrl+]` - Execute `git wsw`
-
-#### Git Configuration (`.gitconfig.custom`)
-
-- **Editor**: VS Code (`code --wait`)
-- **Useful Aliases**:
-    - `aliases` - Display configured aliases list
-    - `amend` - Modify the latest commit
-    - `graph` - Graphical log display
-    - `fixup` - Select commit with fzf for fixup
-    - `ss` / `sp` - stash push/pop
-    - `undo` - Undo the latest commit
+See the [documentation index](docs/README.md) for the complete guide list.
 
 ## After Installation
 
