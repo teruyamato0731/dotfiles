@@ -55,8 +55,9 @@ APT_PACKAGES=(
 
 install_apt_packages() {
   info "Installing apt packages..."
-  sudo apt-get update
-  sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "${APT_PACKAGES[@]}"
+  sudo apt-get -q update
+  sudo DEBIAN_FRONTEND=noninteractive \
+    apt-get -q install -y "${APT_PACKAGES[@]}"
 }
 
 setup() {
