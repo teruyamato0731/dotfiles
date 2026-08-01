@@ -7,11 +7,6 @@ if command -v fzf >/dev/null 2>&1; then
     source "$_fzf_tab"
   fi
   unset _fzf_tab
-
-  # shim pathをPATHから除外する
-  typeset -T PATH path
-  path=("${(@)path:#${HOME}/.local/share/mise/shims}")
-  rehash
 fi
 
 if [[ -f "${HOME}/dotfiles/.config/shell/functions.sh" ]]; then
