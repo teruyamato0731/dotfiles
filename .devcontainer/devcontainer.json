@@ -7,12 +7,14 @@
   "remoteUser": "ubuntu",
   "workspaceMount": "source=${localWorkspaceFolder},target=/home/ubuntu/dotfiles,type=bind",
   "workspaceFolder": "/home/ubuntu/dotfiles",
-  "initializeCommand": "mkdir -p ${localWorkspaceFolder}/.cache",
+  "initializeCommand": "mkdir -p ${localWorkspaceFolder}/.cache/{xdg-cache,xdg-state/bash}",
   "postCreateCommand": [
     "./install.sh"
   ],
   "containerEnv": {
-    "HISTFILE": "${containerWorkspaceFolder}/.cache/.bash_history"
+    "XDG_CACHE_HOME": "${containerWorkspaceFolder}/.cache/xdg-cache",
+    "XDG_STATE_HOME": "${containerWorkspaceFolder}/.cache/xdg-state",
+    "HISTFILE": "${containerWorkspaceFolder}/.cache/xdg-state/bash/history"
   },
   "customizations": {
     "vscode": {
