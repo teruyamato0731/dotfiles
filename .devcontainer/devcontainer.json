@@ -5,17 +5,17 @@
     "target": "dev"
   },
   "remoteUser": "ubuntu",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/home/ubuntu/dotfiles,type=bind",
+  "workspaceFolder": "/home/ubuntu/dotfiles",
   "initializeCommand": "mkdir -p ${localWorkspaceFolder}/.cache",
-  // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "./install.sh && git config --global --add include.path ~/.gitconfig.custom",
+  "postCreateCommand": [
+    "./install.sh"
+  ],
   "containerEnv": {
     "HISTFILE": "${containerWorkspaceFolder}/.cache/.bash_history"
   },
   "customizations": {
     "vscode": {
-      "settings": {
-        "dotfiles.repository": "Override user's dotfiles.repository"
-      },
       "extensions": [
         "yzhang.markdown-all-in-one",
         "docker.docker",
