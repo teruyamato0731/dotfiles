@@ -7,7 +7,12 @@
   "remoteUser": "ubuntu",
   "workspaceMount": "source=${localWorkspaceFolder},target=/home/ubuntu/dotfiles,type=bind",
   "workspaceFolder": "/home/ubuntu/dotfiles",
-  "initializeCommand": "mkdir -p ${localWorkspaceFolder}/.cache/{xdg-cache,xdg-state/bash}",
+  "initializeCommand": [
+    "mkdir",
+    "-p",
+    "${localWorkspaceFolder}/.cache/xdg-cache",
+    "${localWorkspaceFolder}/.cache/xdg-state/bash"
+  ],
   "postCreateCommand": [
     "./install.sh"
   ],
