@@ -9,6 +9,10 @@ mkdir -p "${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
 autoload -Uz compinit
 compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
 
+zstyle ':completion:*:*:git:*' user-commands \
+  'amend:stage files interactively and amend the latest commit' \
+  'wsw:select a remote branch and open it in a worktree'
+
 # Completion settings
 zstyle ':completion:*' menu no
 zstyle ':completion:*' matcher-list \
