@@ -6,6 +6,7 @@ disable_backends = ["asdf", "vfox"]
 minimum_release_age = "7d"
 dotfiles.root = "~/dotfiles"
 dotfiles.default_mode = "symlink"
+not_found_auto_install = false
 
 [bootstrap.repos]
 "~/.local/share/zsh/plugins/fzf-tab" = { url = "https://github.com/Aloxaf/fzf-tab.git", ref = "d7e0234614dbe5369fdd760907d12c0e05a4dccc" }
