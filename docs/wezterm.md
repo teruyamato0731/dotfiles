@@ -60,5 +60,10 @@ terminal applications retain their color and keyboard behavior. If the
 current pane is not associated with a Docker container, the tab and split
 bindings use the normal local WezTerm domain.
 
+For Dev Containers, the shell also detects an active VS Code Server session and
+inherits <code>code</code>, <code>BROWSER</code>, and
+<code>VSCODE_IPC_HOOK_CLI</code> when available. The same environment is passed
+to lazygit; if no VS Code session is found, the container shell starts normally.
+
 The host user must be able to run Docker commands. A stopped container is
 removed from the selector; start it before using <code>Ctrl-Shift-D</code>.

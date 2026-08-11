@@ -163,6 +163,37 @@ local function add_env(args, name, value)
   table.insert(args, name .. "=" .. value)
 end
 
+local function vscode_environment()
+  return [[
+vscode_ipc_hook_cli=
+vscode_browser=
+for environ in /proc/[0-9]*/environ; do
+  [ -r "$environ" ] || continue
+  vscode_process_environment="$(tr '\0' '\n' < "$environ" 2>/dev/null)" || continue
+  vscode_ipc_hook_cli="$(printf '%s\n' "$vscode_process_environment" | sed -n 's/^VSCODE_IPC_HOOK_CLI=//p' | sed -n '1p')"
+  vscode_browser="$(printf '%s\n' "$vscode_process_environment" | sed -n 's/^BROWSER=//p' | sed -n '1p')"
+
+  if [ -n "$vscode_ipc_hook_cli" ] &&
+    [ -e "$vscode_ipc_hook_cli" ] &&
+    [ -n "$vscode_browser" ]; then
+    export VSCODE_IPC_HOOK_CLI="$vscode_ipc_hook_cli"
+    export BROWSER="$vscode_browser"
+
+    case "$vscode_browser" in
+      */bin/helpers/browser.sh)
+        vscode_remote_cli="${vscode_browser%/bin/helpers/browser.sh}/bin/remote-cli"
+        if [ -x "$vscode_remote_cli/code" ]; then
+          export PATH="$vscode_remote_cli${PATH:+:$PATH}"
+        fi
+        ;;
+    esac
+
+    break
+  fi
+done
+]]
+end
+
 local function command(container, shell_command)
   local result = { "docker", "exec", "-it" }
 
@@ -192,6 +223,7 @@ local function command(container, shell_command)
       .. "[ -z \"$encoded\" ] || printf '\\033]1337;SetUserVar="
       .. container_var
       .. "=%s\\007' \"$encoded\"; "
+      .. vscode_environment()
       .. 'for shell in zsh bash sh; do if command -v "$shell" >/dev/null 2>&1; then if [ -n "$WEZTERM_DOCKER_COMMAND" ]; then exec "$shell" -lc "$WEZTERM_DOCKER_COMMAND"; fi; exec "$shell" -l; fi; done; exit 127'
   )
 
