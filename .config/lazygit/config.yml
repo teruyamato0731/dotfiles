@@ -1,3 +1,8 @@
+os:
+  editPreset: vscode
+  open: 'code "{{filename}}"'
+  openLink: '"$BROWSER" "{{link}}"'
+  copyToClipboardCmd: 'printf "\033]52;c;$(printf {{text}} | base64 -w 0)\a" > /dev/tty'
 gui:
   language: "ja"
   nerdFontsVersion: "3"
