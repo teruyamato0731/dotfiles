@@ -1,7 +1,7 @@
 os:
   editPreset: vscode
   open: 'code "{{filename}}"'
-  openLink: '"$BROWSER" "{{link}}"'
+  openLink: 'if [ -n "$BROWSER" ]; then "$BROWSER" "{{link}}"; else xdg-open "{{link}}"; fi'
   copyToClipboardCmd: 'printf "\033]52;c;$(printf {{text}} | base64 -w 0)\a" > /dev/tty'
 gui:
   language: "ja"
