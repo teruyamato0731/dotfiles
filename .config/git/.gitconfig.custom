@@ -33,7 +33,7 @@
 	sp = stash pop
 	ss = stash push -u
 	undo = reset --mixed @^
-	update = submodule update --init --recursive
+	update = submodule update --init --recursive --jobs 4
 	fpush = push --force-with-lease
 	linetotal = !"git ls-files | xargs wc -l | tail -n1"
 [include]
