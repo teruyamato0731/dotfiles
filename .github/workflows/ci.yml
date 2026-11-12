@@ -26,7 +26,7 @@ defaults:
 
 jobs:
   docker-build:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 20
     permissions:
       contents: read
@@ -66,7 +66,7 @@ jobs:
           cache-to: type=gha,mode=max
 
   devcontainer:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 20
     steps:
       - name: Checkout
@@ -84,7 +84,7 @@ jobs:
             test -x "$HOME/.local/bin/mise"
 
   host:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 20
     steps:
       - name: Checkout

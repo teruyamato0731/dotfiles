@@ -3,7 +3,7 @@
 ## Repository purpose
 
 This repository manages personal dotfiles and development tools for Ubuntu
-24.04 LTS.
+26.04 LTS.
 
 Changes may affect package installation, files under `$HOME`, shell startup,
 Git configuration, and globally available command-line tools. Treat installer
@@ -54,7 +54,7 @@ When changing profile dependencies, verify that the relationship between
   * Contains shared Git configuration.
 * `.devcontainer/`
 
-  * Provides the Ubuntu 24.04 development and preview environments.
+  * Provides the Ubuntu 26.04 development and preview environments.
 * `.github/workflows/ci.yml`
 
   * Defines Docker, dev-container, host-profile, and idempotency checks.
@@ -121,7 +121,7 @@ The installer can:
 * alter shell and Git behaviour.
 
 Prefer static checks first. Perform full installation tests only in a
-disposable Ubuntu 24.04 container, Dev Container, or CI environment.
+disposable Ubuntu 26.04 container, Dev Container, or CI environment.
 
 Do not delete, overwrite, or migrate an existing user configuration without
 an explicit compatibility or backup strategy.

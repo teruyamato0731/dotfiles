@@ -1,4 +1,4 @@
-FROM ubuntu:24.04 AS dev
+FROM ubuntu:26.04 AS dev
 
 RUN rm -f /etc/apt/apt.conf.d/docker-clean
 
