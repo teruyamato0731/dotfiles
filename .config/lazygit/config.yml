@@ -9,10 +9,10 @@ gui:
   showNumstatInFilesView: true
   showDivergenceFromBaseBranch: arrowAndNumber
 git:
-  pagers:
+  diffRenderers:
     - colorArg: always
-      pager: delta --dark --paging=never
+      command: delta --dark --paging=never
     - colorArg: always
-      pager: delta --dark --paging=never --side-by-side
+      command: delta --dark --paging=never --side-by-side
   log:
     showWholeGraph: true
