@@ -1,4 +1,4 @@
---- @since 25.12.29
+--- @since 26.9.1
 --- @sync entry
 
 local normal_ratio
@@ -14,7 +14,7 @@ local function focus_preview()
   end
 
   local ratio = rt.mgr.ratio
-  normal_ratio = { ratio.parent, ratio.current, ratio.preview }
+  normal_ratio = { ratio[1], ratio[2], ratio[3] }
   set_ratio { 1, 2, 5 }
 end
 
