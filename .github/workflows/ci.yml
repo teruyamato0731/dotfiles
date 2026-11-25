@@ -82,6 +82,7 @@ jobs:
             ./install.sh
             echo "::endgroup::"
             test -x "$HOME/.local/bin/mise"
+            bash script/check_completions.sh
 
   host:
     runs-on: ubuntu-26.04
@@ -109,6 +110,6 @@ jobs:
           test -x "${gh_bin}"
           "${gh_bin}" --version
 
-          test -s "${HOME}/.local/share/bash-completion/completions/gh"
+          bash script/check_completions.sh
           test -f "${HOME}/.local/share/fonts/MoralerspaceNeon-Regular.ttf"
           test -f "${HOME}/.local/share/fonts/MoralerspaceNeonHW-Regular.ttf"
