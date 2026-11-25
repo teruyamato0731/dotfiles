@@ -1,3 +1,6 @@
+[dotfiles]
+"~/.config/ubuntu-xdg-terminals.list" = {}
+
 [tasks.bootstrap]
 description = "Bootstrap the physical Ubuntu host environment"
 depends = [
