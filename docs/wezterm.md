@@ -12,6 +12,22 @@ install the host-only WezTerm package or fonts. The configuration lives in
 <code>.config/wezterm</code> and is linked to
 <code>~/.config/wezterm</code>.
 
+## Default terminal on Ubuntu
+
+The `host` profile also links `~/.config/ubuntu-xdg-terminals.list` to
+select WezTerm as the preferred terminal for `xdg-terminal-exec` (including
+Ubuntu's default terminal shortcut). The `dev` profile does not manage this file.
+
+If the file already exists and is not managed by mise, review its contents
+and move it to a backup location before applying the host profile. To check
+the selected terminal on an Ubuntu desktop, run:
+
+```bash
+xdg-terminal-exec --print-id
+```
+
+The expected desktop entry is `org.wezfurlong.wezterm.desktop`.
+
 ## Window defaults
 
 - New windows start at 150 columns by 40 rows and are maximized at startup.
